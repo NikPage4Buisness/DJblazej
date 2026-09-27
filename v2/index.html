@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pl" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>DJ Błażej Biurkowski - wodzirej, zespół na wesele, event Warszawa</title>
+  <meta name="description" content="Od lat tworzę historie pisane muzyką. Doświadczenie, któremu możesz zaufać. Elegancja i fachowość, którą docenią Twoi goście.">
+  <meta name="theme-color" content="#F4F2EE">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,28,600&family=Manrope:wght@400..700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Klasa .js włącza animacje wejścia; awaryjnie pokazuje treść po 2,5 s, gdyby main.js się nie wczytał -->
+  <script>(function(c){c.remove('no-js');c.add('js');setTimeout(function(){c.add('is-ready')},2500)})(document.documentElement.classList)</script>
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <a class="bb-skip" href="#bb-main">Przejdź do treści</a>
+  <div class="bb-top-sentinel" aria-hidden="true"></div>
+
+  <!-- ============ NAWIGACJA (WP: header.php, menu = wp_nav_menu) ============ -->
+  <header class="bb-header">
+    <div class="bb-header__bar">
+      <a class="bb-header__logo" href="./" rel="home">
+        <img src="assets/logo.svg" alt="DJ Błażej Biurkowski" width="36" height="44">
+      </a>
+
+      <button class="bb-burger" type="button" aria-expanded="false" aria-controls="bb-menu-panel" aria-label="Otwórz menu">
+        <span></span><span></span>
+      </button>
+
+      <div class="bb-header__panel" id="bb-menu-panel">
+        <nav class="bb-nav" aria-label="Menu główne">
+          <!-- Klasy jak w wyjściu wp_nav_menu(): menu-item, menu-item-has-children, sub-menu, current-menu-item -->
+          <ul class="menu">
+            <li class="menu-item current-menu-item"><a href="./" aria-current="page">Home</a></li>
+            <li class="menu-item menu-item-has-children">
+              <a href="#">Oferta</a>
+              <ul class="sub-menu">
+                <li class="menu-item"><a href="https://djblazej.pl/oferta-weselna/">Wesela</a></li>
+                <li class="menu-item"><a href="https://djblazej.pl/oferta-eventy/">Eventy</a></li>
+                <li class="menu-item"><a href="https://djblazej.pl/oferta-studniowkowa/">Studniówki</a></li>
+              </ul>
+            </li>
+            <li class="menu-item menu-item-has-children">
+              <a href="#">Portfolio</a>
+              <ul class="sub-menu">
+                <li class="menu-item"><a href="https://djblazej.pl/portfolio-zdjecia/">Zdjęcia</a></li>
+                <li class="menu-item"><a href="https://djblazej.pl/portfolio-video/">Video</a></li>
+              </ul>
+            </li>
+            <li class="menu-item"><a href="https://djblazej.pl/referencje-dj-blazej/">Referencje</a></li>
+            <li class="menu-item"><a href="https://djblazej.pl/kontak-dj-blazej/">Kontakt</a></li>
+          </ul>
+        </nav>
+
+        <div class="bb-header__aside">
+          <ul class="bb-lang" aria-label="Wybór języka">
+            <li><a href="#" hreflang="en" lang="en">EN<span class="bb-sr"> – English</span></a></li>
+            <li><a href="./" hreflang="pl" aria-current="true">PL<span class="bb-sr" lang="en"> – Polish</span></a></li>
+          </ul>
+          <a class="bb-btn bb-btn--sm" href="https://djblazej.pl/kontak-dj-blazej/">Zapytaj o dostępność terminu</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="bb-main">
+    <!-- ============ HERO (WP: template-parts/hero.php lub blok HTML) ============ -->
+    <section class="bb-hero" aria-labelledby="bb-hero-title">
+      <div class="bb-hero__inner">
+
+        <div class="bb-hero__copy" data-parallax="-0.14">
+          <hgroup class="bb-hero__heading">
+            <p class="bb-hero__eyebrow" data-anim>Od lat tworzę</p>
+            <h1 class="bb-hero__title" id="bb-hero-title" data-anim data-split>historie pisane muzyką</h1>
+          </hgroup>
+          <span class="bb-hero__rule" data-anim="draw" aria-hidden="true"></span>
+          <p class="bb-hero__lead">
+            <span class="bb-hero__lead-1" data-anim>Doświadczenie, któremu możesz zaufać.</span>
+            <span class="bb-hero__lead-2" data-anim>Elegancja i fachowość,</span>
+            <em data-anim>którą docenią Twoi goście</em>
+          </p>
+        </div>
+
+        <div class="bb-hero__actions" data-anim data-parallax="-0.14">
+          <a class="bb-btn bb-btn--cta" href="https://djblazej.pl/kontak-dj-blazej/">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+            <span>Zapytaj o dostępność terminu</span>
+            <svg class="bb-btn__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5 19 12l-5.5 5.5"/></svg>
+          </a>
+          <ul class="bb-hero__contact">
+            <li>
+              <a href="mailto:info@biurkowski.pl">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.75" y="5" width="18.5" height="14" rx="1.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>
+                info@biurkowski.pl
+              </a>
+            </li>
+            <li>
+              <a href="tel:+48502169499">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 16.4v2.9a1.8 1.8 0 0 1-2 1.8A17.8 17.8 0 0 1 2.9 5.5a1.8 1.8 0 0 1 1.8-2h2.9a1.8 1.8 0 0 1 1.8 1.5c.1.9.4 1.8.7 2.6a1.8 1.8 0 0 1-.4 1.9L8.5 10.7a14.4 14.4 0 0 0 4.8 4.8l1.2-1.2a1.8 1.8 0 0 1 1.9-.4c.8.3 1.7.6 2.6.7a1.8 1.8 0 0 1 1.5 1.8z"/></svg>
+                tel: +48 502 169 499
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="bb-hero__visual">
+          <div class="bb-hero__monogram" data-anim="fade" data-parallax="0.24" aria-hidden="true">
+            <img src="assets/logo.svg" alt="" width="87" height="107">
+          </div>
+          <div class="bb-hero__stage">
+            <span class="bb-hero__shadow" data-anim="shadow" aria-hidden="true"></span>
+            <div class="bb-hero__figure" data-anim="figure">
+              <img src="assets/hero-person.png" width="410" height="901" fetchpriority="high"
+                   alt="Błażej Biurkowski w ciemnym, wąskim garniturze i białej koszuli, półsiedzący na wysokim czarnym hokerze, z białymi słuchawkami DJ-skimi w dłoni">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Linki social: placeholdery. Adresy z v1: instagram.com/djblazejb, youtube.com/user/blazejbiurkowski,
+           facebook.com/djblazejbiurkowski, tiktok.com/@biurkowskievents -->
+      <ul class="bb-hero__social" data-anim="fade" aria-label="Media społecznościowe">
+        <li><a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li>
+        <li><a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.6 16.8a24 24 0 0 1 0-9.6 2 2 0 0 1 1.4-1.5 50 50 0 0 1 16 0 2 2 0 0 1 1.4 1.5 24 24 0 0 1 0 9.6 2 2 0 0 1-1.4 1.5 50 50 0 0 1-16 0 2 2 0 0 1-1.4-1.5z"/><path d="m10 9 5 3-5 3z"/></svg></a></li>
+        <li><a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 2.5h-3a4.5 4.5 0 0 0-4.5 4.5v3H7v4h3v7.5h4V14h3l1-4h-4V7a1 1 0 0 1 1-1h2.5z"/></svg></a></li>
+        <li><a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 2.5v12.25a3.75 3.75 0 1 1-3.75-3.75M14.5 2.5c.4 2.9 2.4 4.9 5.25 5.25"/></svg></a></li>
+      </ul>
+
+      <div class="bb-hero__scroll" data-anim="fade" aria-hidden="true"><span></span></div>
+    </section>
+
+    <!-- Sticky CTA (mobile i tablet): pokazuje się po przewinięciu poza tekst hero -->
+    <a class="bb-sticky-cta" href="https://djblazej.pl/kontak-dj-blazej/">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+      <span>Zapytaj o dostępność terminu</span>
+      <svg class="bb-btn__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5 19 12l-5.5 5.5"/></svg>
+    </a>
+
+    <!-- TYMCZASOWE: miejsce na kolejne sekcje strony głównej (usuń przy wdrażaniu) -->
+    <div class="bb-next" aria-hidden="true"><span>Kolejne sekcje</span></div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# oryginały zdjęć (strona używa zoptymalizowanych wersji z assets/)
+assets/source/
+# lokalne narzędzia i serwer podglądu
+.claude/
+# systemowe
+.DS_Store
+Thumbs.db
+desktop.ini
