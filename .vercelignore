@@ -5,3 +5,5 @@ assets/source/
 README.md
 v2/README.md
 v2/wordpress/
+.vercel/
+.env*
