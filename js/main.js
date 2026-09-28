@@ -144,80 +144,11 @@
     requestAnimationFrame(step);
   }
 
-  /* ---------- DOCIĄGANIE SCROLLA ----------
-     Delikatny ruch w sekcji mieszczącej się na ekranie przenosi do kolejnej/poprzedniej.
-     W sekcjach wyższych niż ekran czytamy swobodnie, dociąganie działa tylko na krawędziach. */
-  var lastY = window.scrollY;
-  var dir = 0;
-  var idleTimer = null;
-  var touching = false;
-
-  function snapLocked() {
-    return busy || body.classList.contains('is-loading') || body.classList.contains('is-locked');
-  }
-
-  function doSnap() {
-    if (snapLocked() || touching) return;
-    var y = window.scrollY;
-    var vh = window.innerHeight;
-    var max = document.documentElement.scrollHeight - vh;
-    if (y <= 0 || y >= max - 1) return;
-
-    var idx = currentIndex(y + 1);
-    var s = sections[idx];
-    var top = s.offsetTop;
-    var bottom = top + s.offsetHeight;
-    var h = bottom - top;
-    var target = null;
-
-    if (h <= vh * 1.05) {
-      if (Math.abs(y - top) < 3) return;
-      target = dir > 0 ? bottom : top;
-    } else {
-      var endY = bottom - vh;
-      if (y > endY + 2) {
-        target = dir > 0 ? bottom : endY;
-      } else if (dir < 0 && y - top < vh * 0.3) {
-        target = top;
-      }
-    }
-    if (target !== null && Math.abs(target - y) > 2) scrollToY(target);
-  }
-
-  window.addEventListener('scroll', function () {
-    var y = window.scrollY;
-    if (!busy && y !== lastY) dir = y > lastY ? 1 : -1;
-    lastY = y;
-    requestAnimationFrame(onScrollUI);
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(doSnap, 160);
-  }, { passive: true });
-
-  window.addEventListener('touchstart', function () { touching = true; }, { passive: true });
-  window.addEventListener('touchend', function () {
-    touching = false;
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(doSnap, 220);
-  }, { passive: true });
+  /* ---------- PRZEWIJANIE ----------
+     Bez dociągania do sekcji: strona przewija się swobodnie,
+     JS tylko odświeża pasek postępu, nagłówek i paralaksę. */
+  window.addEventListener('scroll', function () { requestAnimationFrame(onScrollUI); }, { passive: true });
   window.addEventListener('resize', onScrollUI);
-
-  // Nie przerywamy użytkownikowi animacji: klawisze przewijania działają sekcjami
-  window.addEventListener('keydown', function (e) {
-    if (snapLocked()) return;
-    var tag = (document.activeElement && document.activeElement.tagName) || '';
-    if (/INPUT|TEXTAREA|SELECT/.test(tag)) return;
-    if (e.key === ' ' && /BUTTON|A/.test(tag)) return;
-    var keysDown = ['PageDown', ' '];
-    var keysUp = ['PageUp'];
-    if (keysDown.indexOf(e.key) === -1 && keysUp.indexOf(e.key) === -1) return;
-    var vh = window.innerHeight;
-    var idx = currentIndex(window.scrollY + 1);
-    var s = sections[idx];
-    if (s.offsetHeight > vh * 1.05) return; // wysoka sekcja: domyślne zachowanie
-    e.preventDefault();
-    var n = keysDown.indexOf(e.key) > -1 ? Math.min(idx + 1, sections.length - 1) : Math.max(idx - 1, 0);
-    scrollToY(sections[n].offsetTop);
-  });
 
   /* ---------- PRZEJŚCIA (kurtyna) ---------- */
   var curtain = document.getElementById('curtain');
@@ -234,7 +165,6 @@
     curtain.classList.add('is-in');
     setTimeout(function () {
       window.scrollTo(0, el.offsetTop);
-      lastY = window.scrollY;
       onScrollUI();
       curtain.classList.remove('is-in');
       curtain.classList.add('is-out');

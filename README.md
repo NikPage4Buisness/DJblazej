@@ -5,7 +5,7 @@ Statyczna strona (HTML + CSS + JS, bez frameworków), przygotowana do przeniesie
 ## Struktura
 - `index.html` – cała treść, sekcje: Home, Media, Oferta, Styl (wartości), Portfolio, Kontakt
 - `css/style.css` – kolory i fonty w zmiennych `:root` (paleta z obecnej strony: #ECEBE8, czerń, gradient do #C2C2C2)
-- `js/main.js` – loader, dociąganie scrolla, przejścia (kurtyna), linia postępu, filtr galerii, lightbox
+- `js/main.js` – loader, przejścia (kurtyna), linia postępu, filtr galerii, lightbox
 - `assets/` – zdjęcia pobrane z djblazej.pl
 
 ## Podgląd lokalny
@@ -14,5 +14,5 @@ Statyczna strona (HTML + CSS + JS, bez frameworków), przygotowana do przeniesie
 ## Przeniesienie na WordPress
 - Każda `<section>` = jedna sekcja/kontener w Gutenbergu lub Elementorze. Teksty są zwykłymi nagłówkami i akapitami (bez dzielenia na litery, bez tekstu na grafikach).
 - Galeria to zwykła lista `<li>` z atrybutem `data-cat` (kategoria filtra). W WP: blok Galeria + klasy CSS lub ten sam markup w bloku HTML.
-- Animacje sterowane są atrybutami: `data-reveal` (wejście elementu), `data-stagger` (wejście dzieci po kolei), `data-snap` + `data-label` + `data-theme` (sekcja do dociągania, nazwa w pasku postępu, jasny/ciemny nagłówek). W Elementorze dodaje się je w Zaawansowane → Atrybuty.
+- Animacje sterowane są atrybutami: `data-reveal` (wejście elementu), `data-stagger` (wejście dzieci po kolei), `data-snap` + `data-label` + `data-theme` (sekcja w pasku postępu i menu, jej nazwa, jasny/ciemny nagłówek). W Elementorze dodaje się je w Zaawansowane → Atrybuty.
 - `style.css` i `main.js` podpina się w motywie potomnym (`wp_enqueue_style` / `wp_enqueue_script`).
