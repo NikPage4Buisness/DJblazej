@@ -1630,7 +1630,18 @@ main { counter-reset: bb-sec; }
 @media (max-width: 767.98px) {
   .bb-stage__word { font-size: min(26vw, 36svh); }
   .bb-stage__kicker { font-size: 11px; letter-spacing: .26em; }
-  .bb-stage .bb-btn { padding-inline: 22px; }
+  /* telefon: więcej powietrza pod napisem, przycisk o połowę mniejszy i wycentrowany
+     (pełnowymiarowy przycisk jest w sticky CTA na dole ekranu) */
+  .bb-stage__actions { margin-top: 56px; gap: 22px; }
+  .bb-stage .bb-btn--cta {
+    align-self: center;
+    gap: 8px;
+    padding: 12px 18px;
+    font-size: 12.5px;
+    letter-spacing: .02em;
+  }
+  .bb-stage .bb-btn--cta svg:first-child { display: none; }
+  .bb-stage .bb-btn--cta .bb-btn__arrow { width: 14px; height: 14px; }
 
   .bb-display { font-size: clamp(2.5rem, 11vw, 3.5rem); }
   .bb-head--row { align-items: flex-start; }
