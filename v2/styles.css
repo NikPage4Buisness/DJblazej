@@ -1599,7 +1599,9 @@ main { counter-reset: bb-sec; }
   .bb-offer { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 
   .bb-values__grid { grid-template-columns: minmax(0, 1fr); }
-  .bb-values__slides { position: relative; top: auto; aspect-ratio: 16 / 10; }
+  /* zdjęcia są pionowe: kadr 4:5 (poziomy obcinał głowy), na tablecie ograniczona szerokość */
+  .bb-values__slides { position: relative; top: auto; width: min(100%, 560px); aspect-ratio: 4 / 5; }
+  .bb-values__slides img { object-position: 50% 22%; }
 
   .bb-contact__options { grid-template-columns: minmax(0, 1fr); max-width: 640px; }
   .bb-footer { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
