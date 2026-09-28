@@ -1,0 +1,7 @@
+# nie wysyłamy na Vercel: oryginały zdjęć i lokalne narzędzia
+assets/source/
+.claude/
+.git/
+README.md
+v2/README.md
+v2/wordpress/

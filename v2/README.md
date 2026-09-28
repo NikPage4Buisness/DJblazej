@@ -1,36 +1,91 @@
-# DJ Błażej Biurkowski | v2
+# DJ Błażej Biurkowski | v2 (cała strona)
 
-Druga wersja strony: czysty HTML + CSS + vanilla JS, bez frameworków, przygotowana do przeniesienia na WordPress.
-Na razie gotowe: górna nawigacja i hero strony głównej.
+One page w czystym HTML + CSS + vanilla JS, przygotowany do przeniesienia na WordPress tak,
+żeby klient mógł sam edytować wszystkie teksty oraz dodawać i usuwać zdjęcia, opinie i filmy.
 
-## Pliki
-- `index.html`: nawigacja, hero, sticky CTA (mobile) i tymczasowy placeholder `.bb-next` na kolejne sekcje
-- `styles.css`: tokeny kolorów i fontów w `:root` (`--bb-*`), wszystkie klasy z prefiksem `.bb-`
-- `main.js`: podział h1 na słowa, start animacji, tło nagłówka po scrollu, dropdowny, menu mobilne, sticky CTA, paralaksa
-- `assets/hero-person.png`, `assets/logo.svg`: **tymczasowe**, patrz niżej
-- `wordpress/functions-snippet.php`: podpięcie plików, fontów i menu w motywie potomnym
+## Sekcje
+| # | Sekcja | Kotwica | Co zawiera |
+|---|---|---|---|
+| – | Hero „Events” | `#home` | czarna scena; filmowe okręgi światła ze snopami spoza ekranu odsłaniają biały napis Events, potem dryfują; przycisk „Zapytaj o dostępność terminu”, telefon, e-mail |
+| 01 | Sylwetka (zamiast „O mnie”) | `#sylwetka` | postać na środku, fakty po lewej i prawej, cytat, „W mediach” (logotypy + zdjęcia z TV i prasy) |
+| 02 | Oferta | `#oferta`, `#wesela`, `#eventy`, `#studniowki` | 3 oferty: zdjęcie, opis, lista usług |
+| 03 | Styl | `#styl` | 4 wartości + zmieniające się zdjęcia; na wejściu czarna kurtyna z logo (jak w v1) |
+| 04 | Portfolio | `#portfolio` | 161 zdjęć, filtr kategorii, „Pokaż więcej”, lightbox |
+| 05 | Video | `#video` | 4 filmy (odtwarzacz ładuje się dopiero po kliknięciu) |
+| 06 | Referencje | `#referencje` | karuzela 10 opinii na „zakrzywionej przestrzeni” (łuki u góry i u dołu, karty skręcone w 3D); po „zakręceniu” myszą leci chwilę z bezwładem, hamuje i zostaje tam, gdzie się zatrzyma |
+| 07 | Kontakt | `#kontakt` | dwa kafle: telefon i e-mail (bez formularza), social media, stopka |
+
+Numery sekcji liczy CSS, więc po dodaniu, usunięciu lub przestawieniu sekcji nic nie trzeba poprawiać.
+
+## Hero: filmowe okręgi światła
+Oś czasu (main.js, obiekt `T`): strona startuje od czarnej sceny z samą nawigacją. Po 0,5 s pojawiają się okręgi
+światła – każdy ze snopem z reflektora spoza ekranu – krążą wokół niewidocznego napisu i spiralnie zbiegają się na nim,
+odsłaniając go tam, gdzie świecą. Po 4,1 s rozbłysk odsłania całe hero, a od 4,3 s okręgi przechodzą w swobodny dryf
+(na komputerze po całej scenie, na telefonie po napisie, żeby światło padało na tekst).
+
+Jak to działa: nad treścią leży czarna „zasłona” (`.bb-veil`, `mix-blend-mode: multiply`); białe okręgi i snopy
+w zasłonie przepuszczają obraz, reszta zostaje czarna. Widoczne światło to druga warstwa (`.bb-glow`) z tymi samymi
+okręgami i snopami. Wszystko porusza się wyłącznie transformacjami (GPU), poza ekranem animacja stoi.
+Bez JS zasłony nie ma, a przy `prefers-reduced-motion` od razu widać odsłoniętą scenę z nieruchomymi okręgami.
+
+## Kurtyna (sekcja Styl)
+Sekcja z atrybutem `data-curtain` dostaje przy wejściu na ekran czarną planszę z logo, która po chwili podnosi się
+do góry (to samo przejście co kurtyna w v1). W WP wystarczy dodać ten atrybut do sekcji (w Elementorze: Atrybuty).
 
 ## Podgląd lokalny
-`node .claude/serve.js 5520` (z folderu nadrzędnego), potem http://localhost:5520/v2/
+`node .claude/serve.js 5520` (z folderu nadrzędnego), potem http://localhost:5520/v2/.
+Zdjęcia portfolio, mediów i sekcji Styl są brane z `../assets/` (te same pliki co w v1, bez duplikowania).
+
+## Przeniesienie na WordPress
+Zasada: cała treść siedzi w HTML (nagłówki, akapity, listy, `<img>`), CSS i JS niczego nie dopisują.
+JS nie zależy od liczby elementów, więc dodanie lub usunięcie pozycji nie wymaga zmian w kodzie.
+
+Zalecane: motyw potomny + pola własne (ACF PRO albo darmowe Secure Custom Fields z polami „Repeater” i „Gallery”).
+Szablon wypisuje pola w tym samym markupie co `index.html`.
+
+| Sekcja | Pola do edycji przez klienta |
+|---|---|
+| Nagłówek | menu z `wp_nav_menu()` (pozycje jako Własne odnośniki: `#wesela`, `#portfolio`…) |
+| Hero | nadpis, napis „Events”, tekst i link przycisku, telefon, e-mail |
+| Sylwetka | nadtytuł, tytuł, lead, zdjęcie postaci; **Repeater „Fakty”**: etykieta, tytuł, opis (nieparzyste idą na lewo, parzyste na prawo); cytat; **Gallery „Logotypy mediów”**; **Gallery „Zdjęcia z mediów”** |
+| Oferta | tytuł; **Repeater „Oferty”**: kotwica, zdjęcie, nazwa, lead, Repeater „Usługi” (nazwa + opis), tagi |
+| Styl | tytuł; **Gallery „Zdjęcia”**; **Repeater „Wartości”**: nazwa + opis (edytor z pogrubieniem) |
+| Portfolio | tytuł; **Repeater „Zdjęcia”**: obraz + kategorie (wielokrotny wybór → atrybut `data-cat`); przyciski filtra = lista kategorii |
+| Video | **Repeater „Filmy”**: tytuł + adres YouTube/Vimeo |
+| Referencje | **Repeater „Opinie”**: treść + podpis (albo osobny typ wpisu) |
+| Kontakt | tytuł, opis, telefon, e-mail, linki social |
+
+Szczegóły techniczne:
+- `styles.css`, `main.js` i `assets/` → folder `/bb` w motywie potomnym; podpięcie w `wordpress/functions-snippet.php`.
+- Pasek logotypów mediów: JS sam klonuje listę do animacji, a klient edytuje jedną listę.
+- Portfolio: duże kafelki (co 9. zdjęcie) i doładowywanie po 9 zdjęć robi JS.
+- Polskie sierotki (a, i, o, u, w, z na końcu wiersza) poprawia JS automatycznie.
+- Lightbox i odtwarzacz wideo tworzy JS; bez JS linki otwierają zdjęcie lub film normalnie.
+- Pasek admina WP jest uwzględniony (`.admin-bar`). Logo SVG w bibliotece mediów wymaga wtyczki typu Safe SVG.
 
 ## Assety do podmiany
 | Plik | Teraz | Potrzebne |
 |---|---|---|
-| `assets/hero-person.png` | wycinek z obecnej strony, tylko 410×901 px (na desktopie rozciągany ~2×, na ekranach retina nieostry) | PNG/WebP z przezroczystym tłem, min. **1000×2200 px**, pełna sylwetka ze stopami i podstawą hokera. Po podmianie zaktualizuj `width`/`height` w `<img>` i dostrój pozycję cienia (`.bb-hero__shadow::before/::after`) |
-| `assets/logo.svg` | automatyczna wektoryzacja PNG 111×109 px (kształt zgodny, ale krawędzie mogą nie być idealne) | oryginalny plik wektorowy monogramu od projektanta |
+| `assets/hero-person-2.webp` | zdjęcie bez słuchawek z v1 (`assets/hero-2.webp`, 680×1474 px) z automatycznie wyciętym tłem i zachowanym cieniem | docelowo wycięcie z pliku w pełnej rozdzielczości (ręcznie lub w Photoshopie) |
+| `assets/logo.svg` | automatyczna wektoryzacja PNG 111×109 px | oryginalny wektor monogramu |
+| EN | `href="#"` | wersja angielska (np. Polylang) |
 
-Linki social (`#`) to placeholdery. Adresy z v1 są w komentarzu w `index.html`.
+## Teksty przeniesione 1:1 z obecnej strony (do decyzji klienta)
+Literówki zostawione bez zmian, żeby nie zmieniać treści klienta bez zgody:
+- „nieograniczać” → „nie ograniczać”
+- „Swój warsztat doskonalił” (3. osoba w tekście pisanym w 1. osobie) → „doskonaliłem”
+- „Cele jaki sobie założyłem” → „Cele, jakie sobie założyłem”
+- „Wprowadzę Twoją studniówke” → „studniówkę”
+- „niesmowity” (opinia Joanny i Łukasza) → „niesamowity”
 
-## Przeniesienie na WordPress
-- **Menu**: markup ma te same klasy, które generuje `wp_nav_menu()` (`menu-item`, `menu-item-has-children`, `sub-menu`, `current-menu-item`). Pozycje-rodzice („Oferta”, „Portfolio”) zakładamy jako Własne odnośniki z adresem `#`. `main.js` sam zamienia je na przyciski z `aria-expanded`. Wywołanie jest w komentarzu w `wordpress/functions-snippet.php`.
-- **EN | PL**: statyczna lista `.bb-lang`. W WP generuje się ją z Polylang (`pll_the_languages(['raw' => 1])`) w tym samym markupie.
-- **Hero**: sekcja `.bb-hero` + `.bb-sticky-cta` → `template-parts/hero.php` albo blok „Własny HTML”. Kursywa w podtytule to zwykłe `<em>`, więc w edytorze wystarczy ją zaznaczyć jako kursywę. Zdjęcie najlepiej przez `wp_get_attachment_image()` z `fetchpriority="high"` i `loading` wyłączonym (WP doda `srcset`).
-- **Animacje** sterowane są atrybutami: `data-anim` (wejście), `data-split` (h1 dzielony na słowa), `data-parallax="0.24"` (prędkość paralaksy). W Elementorze dodaje się je w Zaawansowane → Atrybuty.
-- **Pasek admina** WP jest uwzględniony (`.admin-bar .bb-header`).
-- **Logo SVG** w bibliotece mediów wymaga wtyczki typu Safe SVG.
-- **RODO**: Google Fonts z CDN można zamienić na fonty hostowane lokalnie (np. wtyczka OMGF), bez zmian w CSS.
+Nowe krótkie teksty dopisane przy przebudowie (do akceptacji): nazwa sekcji „Sylwetka”, etykiety i tytuły faktów,
+tytuły sekcji Styl („Zawsze w dobrym stylu i z klasą”), Portfolio („Łączymy muzykę i światło”),
+Video („Materiał z video z oryginalnym dźwiękiem”), Referencje („Goście mówili, że na takim weselu jeszcze nie byli”)
+oraz etykiety kafli kontaktu („Telefon”, „E-mail”, „Zadzwoń”, „Napisz e-mail” – dwa ostatnie z v1). Wszystkie pochodzą z treści obecnej strony.
 
-## Dostępność i wydajność
-- Jeden `<h1>` („historie pisane muzyką”), nadtytuł jako `<p>` w `<hgroup>`, skip link, widoczny focus, dropdowny obsługiwane klawiaturą (Tab otwiera, Escape zamyka).
-- Szary `#8A8A8A` (kontrast 3,09:1) tylko dla tekstu ≥ 24 px, więc spełnia AA dla dużego tekstu. Kursywa w podtytule ma min. 24 px.
-- `prefers-reduced-motion: reduce` wyłącza animacje i paralaksę; treść jest widoczna od razu.
+## Opinie (sekcja Referencje)
+Źródło: https://djblazej.pl/referencje-dj-blazej/ – na stronie jest 59 opinii. Do karuzeli wybrane zostało 10
+(wesela, studniówka, goście z zagranicy, Dj & Lady Sax, oświetlenie). Pisownia jest oryginalna (także literówki),
+a pominięte fragmenty dłuższych opinii są oznaczone „(…)”. Jedyne ingerencje: brakujące spacje po kropkach
+(„calu.Masz” → „calu. Masz”, „tańca .Wszyscy” → „tańca. Wszyscy”, „seenperform” → „seen perform”).
+Karuzela działa z dowolną liczbą opinii, więc w WP można wgrać wszystkie 59.

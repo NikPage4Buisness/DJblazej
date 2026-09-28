@@ -13,7 +13,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	$dir = get_stylesheet_directory_uri() . '/bb';
 	$ver = '2.0.0';
 
-	wp_enqueue_style( 'bb-fonts', 'https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,28,600&family=Manrope:wght@400..700&display=swap', array(), null );
+	wp_enqueue_style( 'bb-fonts', 'https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,18,800&family=Manrope:wght@400..700&display=swap', array(), null );
 	wp_enqueue_style( 'bb-styles', $dir . '/styles.css', array( 'bb-fonts' ), $ver );
 	wp_enqueue_script( 'bb-main', $dir . '/main.js', array(), $ver, array( 'strategy' => 'defer', 'in_footer' => false ) );
 } );
