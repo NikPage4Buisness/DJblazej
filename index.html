@@ -9,7 +9,7 @@
   <link rel="icon" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="is-loading">
@@ -50,8 +50,8 @@
     <nav class="menu" id="menu" aria-label="Menu główne">
       <ul class="menu__list">
         <li><a href="#home" data-nav>Home</a></li>
-        <li><a href="#oferta" data-nav>Oferta</a></li>
-        <li><a href="#media" data-nav>Media</a></li>
+        <li><a href="#oferta" data-nav>O mnie</a></li>
+        <li><a href="#media" data-nav>Występy</a></li>
         <li><a href="#portfolio" data-nav>Portfolio</a></li>
         <li><a href="#kontakt" data-nav>Kontakt</a></li>
       </ul>
@@ -68,13 +68,14 @@
   </header>
 
   <main>
-    <!-- 01 HERO -->
+    <!-- 01 HERO: teksty po lewej (Montserrat), po prawej wycięta postać przed dużym napisem w tle -->
     <section class="section hero" id="home" data-snap data-label="Home" data-theme="light">
-      <p class="hero__bg-word" aria-hidden="true">Events</p>
-      <div class="container hero__grid">
+      <div class="container hero__inner">
         <div class="hero__copy">
-          <h1 class="hero__title" data-reveal>Od lat tworzę historie pisane <em>muzyką</em></h1>
-          <p class="hero__lead" data-reveal>Doświadczenie, któremu możesz zaufać. Elegancja i fachowość, którą docenią Twoi goście</p>
+          <div class="hero__head">
+            <h1 class="hero__title" data-reveal>Od lat tworzę <br><em>historie</em> <br>pisane <em>muzyką</em></h1>
+            <p class="hero__lead" data-reveal>Doświadczenie, któremu możesz zaufać. Elegancja i fachowość, którą docenią Twoi goście</p>
+          </div>
 
           <div class="hero__cta" data-reveal>
             <div class="elegant-arrow" aria-hidden="true">
@@ -94,20 +95,28 @@
             <li><a href="tel:+48502169499">tel: +48 502 169 499</a></li>
           </ul>
         </div>
-        <figure class="hero__portrait" data-parallax="0.08">
-          <img src="assets/hero-2.webp" alt="DJ Błażej Biurkowski" width="680" height="1474" fetchpriority="high">
+      </div>
+      <!-- scena: duży napis w tle, przed nim postać z wyciętym tłem (częściowo go zasłania) -->
+      <div class="hero__stage" data-parallax="0.08">
+        <p class="hero__bg-word" aria-hidden="true">Music<br>Artist</p>
+        <figure class="hero__portrait">
+          <img src="assets/hero-cutout-1024.webp"
+               srcset="assets/hero-cutout-1024.webp 1024w, assets/hero-cutout-2048.webp 2048w"
+               sizes="(orientation: portrait) and (max-width: 767px) 210vw, (max-width: 699px) and (min-height: 521px) 210vw, (orientation: portrait) and (max-width: 1199px) 680px, 62vw"
+               width="1024" height="924"
+               alt="Błażej Biurkowski w granatowym garniturze ze słuchawkami DJ-skimi"
+               fetchpriority="high" decoding="async">
         </figure>
       </div>
-      <a class="scroll-cue" href="#media" data-nav aria-label="Przewiń do następnej sekcji"><span></span></a>
     </section>
 
-    <!-- 02 MEDIA -->
-    <section class="section media" id="media" data-snap data-label="Media" data-theme="light">
-      <div class="container media__layout">
-        <div class="media__intro">
+    <!-- 02 WYSTĘPY (telewizja, prasa, wyróżnienia) -->
+    <section class="section media" id="media" data-snap data-label="Występy" data-theme="light">
+      <div class="container">
+        <div class="media__head">
           <header class="sec-head">
             <span class="sec-head__num" aria-hidden="true">02</span>
-            <h2 class="sec-head__title" data-reveal>MEDIA</h2>
+            <h2 class="sec-head__title" data-reveal>Występy</h2>
             <span class="draw-line" data-reveal aria-hidden="true"></span>
           </header>
           <div class="media__text" data-reveal>
@@ -116,20 +125,33 @@
           </div>
         </div>
 
-        <!-- Bento: proporcje kafelków dobrane do kadrów (--g = względna wysokość w kolumnie), kolejno zapalają się w kolorze -->
-        <div class="media__bento" id="mediaBento" data-reveal>
-          <div class="bento__col bento__col--a">
-            <figure class="bento__tile" style="--g:1.01" data-seq="0"><button data-lb="media" data-src="assets/media/tv1.jpg"><img src="assets/media/tv1.jpg" width="1069" height="1080" alt="Błażej Biurkowski w studiu telewizyjnym" loading="lazy" decoding="async"></button></figure>
-            <figure class="bento__tile" style="--g:1.52" data-seq="5"><button data-lb="media" data-src="assets/media/tv4.jpg"><img src="assets/media/tv4.jpg" width="708" height="1080" alt="Laureat plebiscytu Orły" loading="lazy" decoding="async"></button></figure>
-          </div>
-          <div class="bento__col bento__col--b">
-            <figure class="bento__tile" style="--g:0.45" data-seq="1"><button data-lb="media" data-src="assets/media/tv5.jpg"><img src="assets/media/tv5.jpg" width="1920" height="864" alt="Rozmowa w programie Pytanie na śniadanie" loading="lazy" decoding="async"></button></figure>
-            <div class="bento__row" style="--g:0.5">
-              <figure class="bento__tile" style="--g:1" data-seq="2"><button data-lb="media" data-src="assets/media/tv2.jpg"><img src="assets/media/tv2.jpg" width="1063" height="1062" alt="Artykuł w magazynie Ślub" loading="lazy" decoding="async"></button></figure>
-              <figure class="bento__tile" style="--g:1" data-seq="3"><button data-lb="media" data-src="assets/media/tv3.jpg"><img src="assets/media/tv3.jpg" width="1060" height="1070" alt="Artykuł z cyklu Ślubne SOS" loading="lazy" decoding="async"></button></figure>
-            </div>
-            <figure class="bento__tile" style="--g:0.74" data-seq="4"><button data-lb="media" data-src="assets/media/tv6.jpg"><img src="assets/media/tv6.jpg" width="1080" height="799" alt="Rozmowa w programie o ślubach i weselach" loading="lazy" decoding="async"></button></figure>
-          </div>
+        <!-- Ściana kadrów: pierwszy rząd to telewizja (największe kadry), drugi to telewizja, prasa i wyróżnienie.
+             Każdy kafelek ma proporcje swojego kadru (--ar), rzędy wyrównują się do szerokości, więc nic nie jest przycinane.
+             Kafelki są szare i po kolei zapalają się w kolorze (JS: .is-lit, kolejność z data-seq). -->
+        <div class="media__wall" id="mediaBento" data-reveal>
+          <figure class="bento__tile wall__tile" style="--ar:.99" data-seq="0">
+            <button data-lb="media" data-src="assets/media/tv1.jpg"><img src="assets/media/tv1.jpg" width="1069" height="1080" alt="Błażej Biurkowski w studiu TVN24 BiS" loading="lazy" decoding="async"></button>
+            <span class="wall__badge wall__badge--round"><img src="assets/media/badge-tvn24bis.png" width="58" height="57" alt="TVN24 BiS"></span>
+          </figure>
+          <figure class="bento__tile wall__tile wall__tile--lead" style="--ar:2.222" data-seq="1">
+            <button data-lb="media" data-src="assets/media/tv5.jpg"><img src="assets/media/tv5.jpg" width="1920" height="864" alt="Rozmowa w programie Pytanie na śniadanie w TVP2" loading="lazy" decoding="async"></button>
+            <span class="wall__badge"><img src="assets/media/badge-pns.png" width="91" height="54" alt="Pytanie na śniadanie"></span>
+          </figure>
+          <figure class="bento__tile wall__tile" style="--ar:1.352" data-seq="2">
+            <button data-lb="media" data-src="assets/media/tv6.jpg"><img src="assets/media/tv6.jpg" width="1080" height="799" alt="Rozmowa o ślubach i weselach w programie Pytanie na śniadanie" loading="lazy" decoding="async"></button>
+            <span class="wall__badge"><img src="assets/media/badge-pns.png" width="91" height="54" alt="Pytanie na śniadanie"></span>
+          </figure>
+          <figure class="bento__tile wall__tile" style="--ar:1.001" data-seq="3">
+            <button data-lb="media" data-src="assets/media/tv2.jpg"><img src="assets/media/tv2.jpg" width="1063" height="1062" alt="Artykuł w magazynie Claudia Ślub" loading="lazy" decoding="async"></button>
+            <span class="wall__badge wall__badge--wide"><img src="assets/media/badge-claudia.png" width="108" height="28" alt="Claudia"></span>
+          </figure>
+          <figure class="bento__tile wall__tile" style="--ar:.991" data-seq="4">
+            <button data-lb="media" data-src="assets/media/tv3.jpg"><img src="assets/media/tv3.jpg" width="1060" height="1070" alt="Artykuł z cyklu Ślubne SOS" loading="lazy" decoding="async"></button>
+          </figure>
+          <figure class="bento__tile wall__tile" style="--ar:.656" data-seq="5">
+            <button data-lb="media" data-src="assets/media/tv4.jpg"><img src="assets/media/tv4.jpg" width="708" height="1080" alt="Laureat plebiscytu Orły" loading="lazy" decoding="async"></button>
+            <span class="wall__badge"><img src="assets/media/badge-orly.png" width="82" height="54" alt="Orły"></span>
+          </figure>
         </div>
       </div>
       <div class="marquee" aria-label="Media, w których występowałem">
@@ -154,23 +176,25 @@
       </div>
     </section>
 
-    <!-- 03 O MNIE / OFERTA -->
-    <section class="section about" id="oferta" data-snap data-label="Oferta" data-theme="light">
-      <div class="about__bg" data-reveal>
-        <img src="assets/about.webp" width="2244" height="2804" alt="Podświetlone stanowisko DJ-skie w eleganckiej sali" loading="lazy" decoding="async">
-      </div>
+    <!-- 03 O MNIE: Błażej mówi o sobie, więc cały tekst jest jednym cytatem; obok jego zdjęcie (wycięte tło), w tle miękkie wstęgi -->
+    <section class="section about" id="oferta" data-snap data-label="O mnie" data-theme="light">
+      <figure class="about__portrait" data-reveal>
+        <img src="assets/about-portrait.webp" width="720" height="1840" alt="Błażej Biurkowski siedzi na hokerze ze słuchawkami DJ-skimi w dłoni" loading="lazy" decoding="async">
+      </figure>
       <div class="container about__grid">
         <div class="about__copy">
-          <span class="sec-head__num" aria-hidden="true">03</span>
-          <h2 class="about__title" data-reveal>Szukacie DJ’a na <strong>EVENT</strong> lub <strong>WESELE</strong>, który wie jak poprowadzić imprezę <em>z klasą?</em></h2>
-          <span class="draw-line" data-reveal aria-hidden="true"></span>
-          <div class="about__text" data-stagger>
-            <p class="about__intro">Wieloletnie doświadczenie nauczyło mnie nieograniczać się do jednego stylu i gatunku muzycznego. Swój warsztat doskonalił pod okiem znanych radiowych i klubowych Dj-ów.</p>
+          <header class="about__head">
+            <span class="sec-head__num" aria-hidden="true">03</span>
+            <h2 class="about__title" data-reveal>O mnie</h2>
+            <span class="draw-line draw-line--center" data-reveal aria-hidden="true"></span>
+          </header>
+          <blockquote class="about__quote" data-stagger>
+            <p>Wieloletnie doświadczenie nauczyło mnie nieograniczać się do jednego stylu i gatunku muzycznego. Swój warsztat doskonalił pod okiem znanych radiowych i klubowych Dj-ów.</p>
             <p>Doświadczenie zdobyte na antenie Radia Fama pozwala mi swobodnie odnaleźć się w roli konferansjera i wodzireja. Gwarantuję profesjonalne poprowadzenie każdego wydarzenia i energię, która porwie gości do wspólnej zabawy.</p>
             <p>Cele jaki sobie założyłem to wyznaczanie standardów i podnoszenie jakości dzięki czemu znalazłem się w czołówce branży ślubnej.</p>
             <p>Moje wieloletnie doświadczenie zostało docenione przez MEDIA prestiżową funkcją <strong>Dyrektora Artystycznego targów WEDDING na PGE Narodowym</strong>. Stała obecność w centrum branżowych wydarzeń pozwala mi oferować rozwiązania, które wyprzedzają rynek i odpowiadają na potrzeby najbardziej wymagających klientów.</p>
-          </div>
-          <blockquote class="about__quote" data-reveal>Zapewniam niepowtarzalną atmosferę imprezy po której samo wspomnienie wywołuje uśmiech na twarzy zawsze w dobrym stylu i z klasą.</blockquote>
+            <p>Zapewniam niepowtarzalną atmosferę imprezy po której samo wspomnienie wywołuje uśmiech na twarzy zawsze w dobrym stylu i z klasą.</p>
+          </blockquote>
         </div>
       </div>
     </section>
@@ -181,9 +205,13 @@
       <canvas class="values__beams" aria-hidden="true"></canvas>
       <div class="container values__grid">
         <div class="values__slides" data-reveal aria-hidden="true">
-          <div class="values__slide is-active" style="background-image:url('assets/slide1.jpg')"></div>
-          <div class="values__slide" style="background-image:url('assets/slide2.jpg')"></div>
-          <div class="values__slide" style="background-image:url('assets/slide3.jpg')"></div>
+          <div class="values__slide is-active" style="background-image:url('assets/slides/img-5179.webp')"></div>
+          <div class="values__slide" data-bg="assets/slides/img-2881.webp"></div>
+          <div class="values__slide" data-bg="assets/slides/img-6908.webp"></div>
+          <div class="values__slide" data-bg="assets/slides/mg-2827.webp"></div>
+          <div class="values__slide" data-bg="assets/slides/img-3605.webp"></div>
+          <div class="values__slide" data-bg="assets/slides/img-3487.webp"></div>
+          <div class="values__slide" data-bg="assets/slides/img-6697.webp"></div>
           <span class="values__frame"></span>
         </div>
         <ol class="values__list">
@@ -229,6 +257,32 @@
           </div>
         </header>
         <ul class="gallery" id="gallery">
+          <!-- nowe zdjęcia od klienta (2026-09): na początku portfolio -->
+          <li class="gallery__item" data-cat="studniowki oswietlenie" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-3083.webp" data-caption="Studniówki"><img src="assets/portfolio/thumb/img-3083.webp" width="720" height="960" alt="Studniówka 2024: goście na parkiecie w fioletowym świetle, wzory gobo na ścianach sali" loading="lazy" decoding="async"><span class="gallery__tag">Studniówki</span></button></li>
+          <li class="gallery__item" data-cat="oswietlenie" data-ar="1.500"><button data-lb="gallery" data-src="assets/portfolio/full/img-9284.webp" data-caption="Oświetlenie"><img src="assets/portfolio/thumb/img-9284.webp" width="1080" height="720" alt="Scena w niebieskim świetle: wiązki reflektorów i wzory gobo na suficie" loading="lazy" decoding="async"><span class="gallery__tag">Oświetlenie</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="0.667"><button data-lb="gallery" data-src="assets/portfolio/full/mg-2784.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/mg-2784.webp" width="720" height="1080" alt="Saksofonistka na scenie w czerwonych i białych wiązkach światła" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="1.500"><button data-lb="gallery" data-src="assets/portfolio/full/mg-3427.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/mg-3427.webp" width="1080" height="720" alt="DJ przy konsolecie i wokalistka z saksofonem na scenie w niebieskim świetle" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="oswietlenie studniowki" data-ar="1.333"><button data-lb="gallery" data-src="assets/portfolio/full/img-2538.webp" data-caption="Oświetlenie"><img src="assets/portfolio/thumb/img-2538.webp" width="960" height="720" alt="Sala studniówkowa w czerwonym świetle, na parkiecie punkty światła z kuli lustrzanej" loading="lazy" decoding="async"><span class="gallery__tag">Oświetlenie</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="1.500"><button data-lb="gallery" data-src="assets/portfolio/full/mg-2696.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/mg-2696.webp" width="1080" height="720" alt="Saksofonistka na hokerze w fioletowych wiązkach światła i dymie" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="oswietlenie" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-3616.webp" data-caption="Oświetlenie"><img src="assets/portfolio/thumb/img-3616.webp" width="720" height="960" alt="Tańczący goście w zielonym świetle laserów i wzorach gobo" loading="lazy" decoding="async"><span class="gallery__tag">Oświetlenie</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="1.500"><button data-lb="gallery" data-src="assets/portfolio/full/mg-2871.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/mg-2871.webp" width="1080" height="720" alt="Saksofonistka na scenie w pomarańczowym świetle i dymie" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-1231.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/img-1231.webp" width="720" height="960" alt="Wokalistka i saksofonistka pod neonem DJ &amp; Lady Sax, scena w czerwonym świetle" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-0049.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/img-0049.webp" width="720" height="960" alt="Saksofonistka w okrągłej sali oświetlonej na niebiesko, w tle stoły gości" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="oswietlenie studniowki" data-ar="1.333"><button data-lb="gallery" data-src="assets/portfolio/full/img-3334.webp" data-caption="Oświetlenie"><img src="assets/portfolio/thumb/img-3334.webp" width="960" height="720" alt="Wiązki reflektorów i wzory gobo na parkiecie studniówki" loading="lazy" decoding="async"><span class="gallery__tag">Oświetlenie</span></button></li>
+          <li class="gallery__item" data-cat="oswietlenie" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-2696.webp" data-caption="Oświetlenie"><img src="assets/portfolio/thumb/img-2696.webp" width="720" height="960" alt="Sala z zielonymi neonami na suficie i nakrytymi stołami" loading="lazy" decoding="async"><span class="gallery__tag">Oświetlenie</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="1.500"><button data-lb="gallery" data-src="assets/portfolio/full/mg-2732.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/mg-2732.webp" width="1080" height="720" alt="DJ przy konsolecie w czerwonym świetle, w tle saksofonistka przy pulpicie z nutami" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="oswietlenie" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-5179.webp" data-caption="Oświetlenie"><img src="assets/portfolio/thumb/img-5179.webp" width="720" height="960" alt="Goście pod dekoracjami sufitowymi w turkusowym świetle" loading="lazy" decoding="async"><span class="gallery__tag">Oświetlenie</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-3484.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/img-3484.webp" width="720" height="960" alt="Solo na saksofonie w białych wiązkach światła i wzorach gobo" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="oswietlenie" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-3605.webp" data-caption="Oświetlenie"><img src="assets/portfolio/thumb/img-3605.webp" width="720" height="960" alt="Parkiet pod sufitem oświetlonym na fioletowo i zielono" loading="lazy" decoding="async"><span class="gallery__tag">Oświetlenie</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="0.667"><button data-lb="gallery" data-src="assets/portfolio/full/mg-2827.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/mg-2827.webp" width="720" height="1080" alt="Saksofonistka na scenie w czerwonych wiązkach światła i różowym dymie" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="oswietlenie" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-6908.webp" data-caption="Oświetlenie"><img src="assets/portfolio/thumb/img-6908.webp" width="720" height="960" alt="Ogród oświetlony na zielono i fioletowo podczas wieczornego przyjęcia" loading="lazy" decoding="async"><span class="gallery__tag">Oświetlenie</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-2881.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/img-2881.webp" width="720" height="960" alt="Saksofonistka i artystka w czerwonych sukniach przy konsolecie DJ, w tle nocna panorama miasta" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-3487.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/img-3487.webp" width="720" height="960" alt="Solo na saksofonie w żółtych wiązkach światła" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-6697.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/img-6697.webp" width="720" height="960" alt="Wokalistka na scenie w czerwonym świetle, w tle skrzypaczka" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="0.667"><button data-lb="gallery" data-src="assets/portfolio/full/mg-2819.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/mg-2819.webp" width="720" height="1080" alt="Saksofonistka na hokerze w czarno-białym kadrze, dym na scenie" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-3434.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/img-3434.webp" width="720" height="960" alt="Solo na saksofonie w fioletowym i czerwonym świetle obok konsolety DJ" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="sax" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-0567.webp" data-caption="Dj &amp; Lady Sax"><img src="assets/portfolio/thumb/img-0567.webp" width="720" height="960" alt="Wokalistka z mikrofonem, czarno-białe zdjęcie" loading="lazy" decoding="async"><span class="gallery__tag">Dj &amp; Lady Sax</span></button></li>
+          <li class="gallery__item" data-cat="oswietlenie" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/img-2532.webp" data-caption="Oświetlenie"><img src="assets/portfolio/thumb/img-2532.webp" width="720" height="960" alt="Sala studniówkowa w czerwonym świetle z dekoracją z balonów" loading="lazy" decoding="async"><span class="gallery__tag">Oświetlenie</span></button></li>
           <li class="gallery__item" data-cat="studniowki" data-ar="1.333"><button data-lb="gallery" data-src="assets/portfolio/full/001.webp" data-caption="Studniówki"><img src="assets/portfolio/thumb/001.webp" width="960" height="720" alt="Studniówki, DJ Błażej Biurkowski" loading="lazy" decoding="async"><span class="gallery__tag">Studniówki</span></button></li>
           <li class="gallery__item" data-cat="studniowki" data-ar="1.333"><button data-lb="gallery" data-src="assets/portfolio/full/002.webp" data-caption="Studniówki"><img src="assets/portfolio/thumb/002.webp" width="960" height="720" alt="Studniówki, DJ Błażej Biurkowski" loading="lazy" decoding="async"><span class="gallery__tag">Studniówki</span></button></li>
           <li class="gallery__item" data-cat="studniowki" data-ar="0.750"><button data-lb="gallery" data-src="assets/portfolio/full/003.webp" data-caption="Studniówki"><img src="assets/portfolio/thumb/003.webp" width="720" height="960" alt="Studniówki, DJ Błażej Biurkowski" loading="lazy" decoding="async"><span class="gallery__tag">Studniówki</span></button></li>
@@ -422,6 +476,11 @@
       </div>
       <footer class="footer">
         <p>ⓒ Błażej Biurkowski 2026. Wszelkie prawa zastrzeżone.</p>
+        <a class="footer__credit" href="https://www.nikpage.pl/" target="_blank" rel="noopener">
+          <span class="footer__credit-label">Projekt i realizacja</span>
+          <img src="assets/nikpage-n.webp" width="24" height="24" alt="" loading="lazy" decoding="async">
+          <span class="footer__credit-name"><b>Nik</b>Page</span>
+        </a>
       </footer>
     </section>
   </main>

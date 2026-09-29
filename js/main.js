@@ -14,15 +14,26 @@
   var MAX_TIME = 5000;
   var start = performance.now();
   var countEl = document.getElementById('loaderCount');
-  var critical = ['assets/hero-2.webp', 'assets/logo.png'];
+  var critical = ['assets/logo.png'];
+  // zdjęcie z hero: czekamy na ten wariant ze srcset, który przeglądarka faktycznie wybrała
+  var heroImg = document.querySelector('.hero__portrait img');
+  var total = critical.length + (heroImg ? 1 : 0);
   var loaded = 0;
   var assetsDone = false;
+  function assetReady() { loaded++; if (loaded === total) assetsDone = true; }
 
   critical.forEach(function (src) {
     var img = new Image();
-    img.onload = img.onerror = function () { loaded++; if (loaded === critical.length) assetsDone = true; };
+    img.onload = img.onerror = assetReady;
     img.src = src;
   });
+  if (heroImg) {
+    if (heroImg.complete) assetReady();
+    else {
+      heroImg.addEventListener('load', assetReady);
+      heroImg.addEventListener('error', assetReady);
+    }
+  }
 
   function tickLoader(now) {
     var t = Math.min((now - start) / MIN_TIME, 1);
@@ -51,7 +62,11 @@
 
   /* ---------- REVEAL ---------- */
   function initReveal() {
-    var els = document.querySelectorAll('[data-reveal], [data-stagger], .value');
+    // hero jest widoczne od razu po loaderze, także to, co leży przy dolnej krawędzi ekranu (np. kontakt na telefonie)
+    Array.prototype.forEach.call(document.querySelectorAll('#home [data-reveal], #home [data-stagger]'), function (el) {
+      el.classList.add('is-in');
+    });
+    var els = document.querySelectorAll('[data-reveal]:not(.is-in), [data-stagger]:not(.is-in), .value');
     if (!('IntersectionObserver' in window) || reduceMotion) {
       Array.prototype.forEach.call(els, function (el) { el.classList.add('is-in'); });
       return;
@@ -64,19 +79,79 @@
     Array.prototype.forEach.call(els, function (el) { io.observe(el); });
   }
 
-  /* ---------- RAIL (Draw Attention Line) ---------- */
+  /* ---------- RAIL: skróty sekcji jako nuty ----------
+     Każda sekcja ma inną nutę, a wartości rosną w dół strony jak zwalniająca fraza:
+     trzydziestodwójka, szesnastka, ósemka, ćwierćnuta, półnuta i na końcu cała nuta
+     (każda trwa dwa razy dłużej od poprzedniej; trzydziestodwójki i szesnastki jako pary
+     połączone belkami). Nutę można też wybrać ręcznie atrybutem
+     data-note na sekcji: trzydziestodwojka, szesnastka, osemka, cwiercnuta, polnuta, calka.
+     Główka nuty (punkt 9,27 w viewBox 24x34) leży na linii paska. */
   var dotsWrap = document.getElementById('railDots');
   var railFill = document.getElementById('railFill');
   var topProgress = document.getElementById('topProgress');
-  sections.forEach(function (s) {
+  var NOTE_SERIES = ['thirtysecond', 'sixteenth', 'eighth', 'quarter', 'half', 'whole'];
+  var NOTE_NAMES = {
+    trzydziestodwojka: 'thirtysecond', szesnastka: 'sixteenth', osemka: 'eighth',
+    cwiercnuta: 'quarter', polnuta: 'half', calka: 'whole'
+  };
+  var NOTE_HEAD = '<ellipse cx="9" cy="27" rx="5" ry="3.6" transform="rotate(-22 9 27)"/>';
+  function noteStem(top) {
+    return '<rect x="12.35" y="' + top + '" width="1.5" height="' + (26.6 - top).toFixed(1) + '" rx=".75"/>';
+  }
+  // dwie nuty połączone belkami (2 belki = szesnastki, 3 belki = trzydziestodwójki);
+  // druga nuta stoi o stopień wyżej, belki lekko się wznoszą, para jest wyśrodkowana na linii paska
+  function beamedPair(beams) {
+    var thick = beams > 2 ? 2 : 2.4;
+    var step = beams > 2 ? 3.4 : 3.8;
+    var top = beams > 2 ? 4 : 5;
+    var s = '<ellipse cx="4.1" cy="27" rx="4.4" ry="3.2" transform="rotate(-22 4.1 27)"/>' +
+      '<ellipse cx="14.1" cy="25" rx="4.4" ry="3.2" transform="rotate(-22 14.1 25)"/>' +
+      '<rect x="6.85" y="' + top + '" width="1.5" height="' + (26.6 - top).toFixed(1) + '" rx=".75"/>' +
+      '<rect x="16.85" y="' + (top - 2) + '" width="1.5" height="' + (26.6 - top).toFixed(1) + '" rx=".75"/>';
+    for (var b = 0; b < beams; b++) {
+      var y = top + b * step;
+      s += '<path d="M6.85 ' + y.toFixed(1) + 'L18.35 ' + (y - 2).toFixed(1) + 'v' + thick + 'L6.85 ' + (y + thick).toFixed(1) + 'z"/>';
+    }
+    return s;
+  }
+  var NOTE_SVG = {
+    thirtysecond: beamedPair(3),
+    sixteenth: beamedPair(2),
+    eighth: NOTE_HEAD + noteStem(4) + '<path d="M13.85 4c.45 4.6 6.55 6.3 5.35 13.4-.3-2.5-2.3-4.9-5.35-5.8z"/>',
+    quarter: NOTE_HEAD + noteStem(4),
+    half: '<path fill-rule="evenodd" d="M13.636 25.127A5 3.6 -22 0 1 4.364 28.873 5 3.6 -22 0 1 13.636 25.127ZM11.867 24.992A3.5 1.55 -35 0 1 6.133 29.008 3.5 1.55 -35 0 1 11.867 24.992Z"/>' + noteStem(4),
+    whole: '<path fill-rule="evenodd" d="M2.8 27A6.2 4.1 0 0 1 15.2 27 6.2 4.1 0 0 1 2.8 27ZM10.95 29.785A3.4 1.9 55 0 1 7.05 24.215 3.4 1.9 55 0 1 10.95 29.785Z"/>'
+  };
+  // efekty kliknięcia: dwie fale dźwięku z główki i mała ósemka, która odlatuje w górę
+  var NOTE_FX = '<circle class="note__ring" cx="9" cy="27" r="6"/><circle class="note__ring" cx="9" cy="27" r="6"/>' +
+    '<g class="note__float"><ellipse cx="17.6" cy="11.4" rx="2.3" ry="1.65" transform="rotate(-22 17.6 11.4)"/>' +
+    '<rect x="19.1" y="3.6" width=".9" height="7.6" rx=".45"/><path d="M20 3.6c.3 2.2 3.1 3 2.6 6.4-.2-1.2-1.2-2.3-2.6-2.8z"/></g>';
+  // domyślnie ostatnie n wartości z szeregu, więc ostatnia sekcja zawsze dostaje całą nutę
+  function noteFor(i, n, name) {
+    if (name && NOTE_NAMES[name]) return NOTE_NAMES[name];
+    return NOTE_SERIES[Math.max(0, NOTE_SERIES.length - n + i)];
+  }
+  rail.style.setProperty('--n', sections.length);
+  sections.forEach(function (s, i) {
     var li = document.createElement('li');
     var a = document.createElement('a');
+    var type = noteFor(i, sections.length, s.dataset.note);
     a.href = '#' + s.id;
+    a.className = 'note--' + type;
     a.setAttribute('data-nav', '');
     a.setAttribute('aria-label', s.dataset.label);
+    a.innerHTML = '<svg class="rail__note" viewBox="0 0 24 34" width="24" height="34" aria-hidden="true" focusable="false">' +
+      NOTE_SVG[type] + NOTE_FX + '</svg>';
     var span = document.createElement('span');
     span.textContent = s.dataset.label;
     a.appendChild(span);
+    a.addEventListener('click', function () {
+      a.classList.remove('is-hit');
+      void a.offsetWidth;          // animacja startuje od nowa także przy szybkim klikaniu
+      a.classList.add('is-hit');
+      clearTimeout(a._hitTimer);
+      a._hitTimer = setTimeout(function () { a.classList.remove('is-hit'); }, 1300);
+    });
     li.appendChild(a);
     dotsWrap.appendChild(li);
   });
@@ -205,14 +280,35 @@
   });
 
   /* ---------- SLIDESHOW (wartości) ---------- */
+  // Pierwszy slajd ma zdjęcie w atrybucie style, kolejne w data-bg: pobieramy je dopiero,
+  // gdy sekcja zbliża się do ekranu, i dopiero wtedy ruszają zmiany (od pierwszego zdjęcia).
   var slides = document.querySelectorAll('.values__slide');
+  var slidesBox = document.querySelector('.values__slides');
   var si = 0;
-  if (slides.length > 1 && !reduceMotion) {
+  function startSlides() {
+    Array.prototype.forEach.call(slides, function (s) {
+      if (s.dataset.bg) {
+        s.style.backgroundImage = 'url("' + s.dataset.bg + '")';
+        s.removeAttribute('data-bg');
+      }
+    });
     setInterval(function () {
       slides[si].classList.remove('is-active');
       si = (si + 1) % slides.length;
       slides[si].classList.add('is-active');
     }, 5200);
+  }
+  if (slides.length > 1 && slidesBox && !reduceMotion) {
+    if ('IntersectionObserver' in window) {
+      var slideIo = new IntersectionObserver(function (entries) {
+        if (!entries.some(function (e) { return e.isIntersecting; })) return;
+        slideIo.disconnect();
+        startSlides();
+      }, { rootMargin: '100% 0px' });
+      slideIo.observe(slidesBox);
+    } else {
+      startSlides();
+    }
   }
 
   /* ---------- PORTFOLIO: filtr + więcej ---------- */
@@ -229,11 +325,23 @@
      Wysokie kafelki (t) dostają zdjęcia pionowe, duże (b) i małe (s) poziome.
      Dla urozmaicenia: wysokie kafelki nigdy nie stoją obok siebie, nie ustawiają się
      jeden pod drugim w kolejnych klockach, a ten sam układ nie powtarza się pod rząd.
-     Kolejność zdjęć zmieniamy tylko lokalnie (w obrębie najbliższych kilkunastu). */
+     Kolejność zdjęć zmieniamy tylko lokalnie (w obrębie najbliższych kilkunastu).
+     Klocek wybieramy z wyprzedzeniem: jedno zdjęcie poziome „obsłuży” najwyżej dwa pionowe
+     (klocek t,b,t), więc nie zużywamy poziomych zdjęć tak, żeby dalej pionowe nie miały miejsca.
+     Gdy przewaga pionów jest nie do uniknięcia, zdjęcie w kafelku o innej orientacji
+     pokazujemy w całości (klasa is-fit), a wolne pola wypełnia jego rozmyta kopia. */
   var gallery = document.getElementById('gallery');
   var PORTRAIT = 0.9;
 
   function isPortrait(it) { return parseFloat(it.dataset.ar || '1.5') < PORTRAIT; }
+  function isTallSlot(slot) { return slot === 't' || slot === 'bt'; }
+  function isBigSlot(slot) { return slot === 'b' || slot === 'bt' || slot === 'w4'; }
+  function setFit(it, on) {
+    var btn = it.querySelector('button');
+    var img = it.querySelector('img');
+    it.classList.toggle('is-fit', on);
+    if (btn) btn.style.backgroundImage = on && img ? 'url("' + img.src + '")' : '';
+  }
 
   // p = kolejność kafelków w klocku, t = kolumny, w których stoją wysokie kafelki
   var VARIANTS_4 = [
@@ -269,35 +377,48 @@
     items.forEach(function (it) {
       it.classList.remove('bento-b', 'bento-w2', 'bento-t', 'bento-w4', 'bento-bt');
       it.style.order = '';
+      setFit(it, false);
     });
     var variants = cols >= 4 ? VARIANTS_4 : VARIANTS_2;
+    var wide = cols >= 4;
     var LOOK = 12;
     var order = 0;
     var chunkNo = 0;
     var lastT = [];
     var history = [];
+    // ile niedopasowań jest nie do uniknięcia przy p pionowych i l poziomych zdjęciach
+    // (na telefonie pion zawsze ma swój kafelek bt)
+    function unavoidable(p, l) { return wide ? Math.max(0, p - 2 * l) : 0; }
 
     while (queue.length) {
       var left = queue.length;
       var chunk;
-      if (cols >= 4 && left === 1) {
+      if (wide && left === 1) {
         chunk = { p: ['w4'], t: [] };
       } else {
         var look = queue.slice(0, LOOK);
         var pAvail = look.filter(isPortrait).length;
         var lAvail = look.length - pAvail;
         var pRatio = pAvail / look.length;
+        var lbNow = unavoidable(pAvail, lAvail);
         var best = null;
         var bestScore = Infinity;
         variants.forEach(function (v, vi) {
           var size = v.p.length;
           if (size > left) return;
-          if (cols >= 4 && left - size === 1) return; // nie zostawiamy pojedynczego zdjęcia
-          var tCount = v.p.filter(function (x) { return x === 't' || x === 'bt'; }).length;
-          var mismatch = Math.max(0, tCount - pAvail) + Math.max(0, size - tCount - lAvail);
+          if (wide && left - size === 1) return; // nie zostawiamy pojedynczego zdjęcia
+          var tCount = v.p.filter(isTallSlot).length;
+          var sCount = v.p.filter(function (x) { return x === 's'; }).length;
+          var pOver = Math.max(0, tCount - pAvail);          // wysokie kafelki bez pionowych zdjęć
+          var lOver = Math.max(0, size - tCount - lAvail);   // poziome kafelki bez poziomych zdjęć
+          var mismatch = pOver + lOver;
+          // niedopasowania ponad nieuniknione minimum (ten klocek + to, co zostanie w oknie)
+          var pUse = Math.min(tCount, pAvail) + lOver;
+          var future = unavoidable(pAvail - pUse, lAvail - (size - pUse));
+          var waste = Math.max(0, mismatch + future - lbNow);
+          var smallMis = Math.max(0, lOver - (size - tCount - sCount)); // pion w małym kafelku
           var stacked = v.t.some(function (c) { return lastT.indexOf(c) > -1; });
-          var wide = cols >= 4;
-          var score = mismatch * 100
+          var score = mismatch * 60 + waste * 100 + smallMis * 15
             + Math.abs(tCount / size - pRatio) * (wide ? 18 : 14)
             + (stacked ? 25 : 0)
             + (history[history.length - 1] === vi ? 30 : 0)
@@ -313,20 +434,26 @@
       lastT = chunk.t;
       chunkNo++;
 
-      // wysokie kafelki biorą najbliższe zdjęcia pionowe, pozostałe najbliższe poziome
+      // wysokie kafelki biorą najbliższe zdjęcia pionowe, pozostałe najbliższe poziome;
+      // gdy pasujących zabraknie, reszta trafia najpierw do dużych kafelków, potem do małych
       var window_ = queue.slice(0, LOOK);
-      chunk.p.forEach(function (slot) {
-        var want = slot === 't' || slot === 'bt';
-        var idx = -1;
+      var slots = chunk.p.map(function (slot) { return { slot: slot, it: null }; });
+      slots.forEach(function (s) {
+        var want = isTallSlot(s.slot);
         for (var k = 0; k < window_.length; k++) {
-          if (isPortrait(window_[k]) === want) { idx = k; break; }
+          if (isPortrait(window_[k]) === want) { s.it = window_.splice(k, 1)[0]; break; }
         }
-        if (idx < 0) idx = 0;
-        var it = window_.splice(idx, 1)[0];
+      });
+      slots.filter(function (s) { return !s.it; })
+        .sort(function (a, b) { return (isBigSlot(a.slot) ? 0 : 1) - (isBigSlot(b.slot) ? 0 : 1); })
+        .forEach(function (s) { s.it = window_.shift() || null; });
+      slots.forEach(function (s) {
+        var it = s.it;
         if (!it) return;
         queue.splice(queue.indexOf(it), 1);
-        if (slot !== 's') it.classList.add('bento-' + slot);
+        if (s.slot !== 's') it.classList.add('bento-' + s.slot);
         it.style.order = order++;
+        setFit(it, s.slot === 'w4' || isTallSlot(s.slot) !== isPortrait(it));
       });
     }
   }
