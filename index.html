@@ -51,7 +51,7 @@
       <ul class="menu__list">
         <li><a href="#home" data-nav>Home</a></li>
         <li><a href="#oferta" data-nav>O mnie</a></li>
-        <li><a href="#media" data-nav>Występy</a></li>
+        <li><a href="#media" data-nav>Media o&nbsp;mnie</a></li>
         <li><a href="#portfolio" data-nav>Portfolio</a></li>
         <li><a href="#kontakt" data-nav>Kontakt</a></li>
       </ul>
@@ -110,13 +110,13 @@
       </div>
     </section>
 
-    <!-- 02 WYSTĘPY (telewizja, prasa, wyróżnienia) -->
-    <section class="section media" id="media" data-snap data-label="Występy" data-theme="light">
+    <!-- 02 MEDIA O MNIE (telewizja, prasa, wyróżnienia) -->
+    <section class="section media" id="media" data-snap data-label="Media o mnie" data-theme="light">
       <div class="container">
         <div class="media__head">
           <header class="sec-head">
             <span class="sec-head__num" aria-hidden="true">02</span>
-            <h2 class="sec-head__title" data-reveal>Występy</h2>
+            <h2 class="sec-head__title" data-reveal>Media o&nbsp;mnie</h2>
             <span class="draw-line" data-reveal aria-hidden="true"></span>
           </header>
           <div class="media__text" data-reveal>
@@ -127,31 +127,34 @@
 
         <!-- Ściana kadrów: pierwszy rząd to telewizja (największe kadry), drugi to telewizja, prasa i wyróżnienie.
              Każdy kafelek ma proporcje swojego kadru (--ar), rzędy wyrównują się do szerokości, więc nic nie jest przycinane.
-             Kafelki są szare i po kolei zapalają się w kolorze (JS: .is-lit, kolejność z data-seq). -->
+             Kadry są zawsze w kolorze. Na komputerze JS rozkłada wokół ściany logotypy z paska na dole sekcji
+             (lista .media__logos w .media__stage); pasek zostaje tylko na telefonie i tablecie w pionie. -->
+        <div class="media__stage">
         <div class="media__wall" id="mediaBento" data-reveal>
-          <figure class="bento__tile wall__tile" style="--ar:.99" data-seq="0">
+          <figure class="bento__tile wall__tile" style="--ar:.99">
             <button data-lb="media" data-src="assets/media/tv1.jpg"><img src="assets/media/tv1.jpg" width="1069" height="1080" alt="Błażej Biurkowski w studiu TVN24 BiS" loading="lazy" decoding="async"></button>
             <span class="wall__badge wall__badge--round"><img src="assets/media/badge-tvn24bis.png" width="58" height="57" alt="TVN24 BiS"></span>
           </figure>
-          <figure class="bento__tile wall__tile wall__tile--lead" style="--ar:2.222" data-seq="1">
+          <figure class="bento__tile wall__tile wall__tile--lead" style="--ar:2.222">
             <button data-lb="media" data-src="assets/media/tv5.jpg"><img src="assets/media/tv5.jpg" width="1920" height="864" alt="Rozmowa w programie Pytanie na śniadanie w TVP2" loading="lazy" decoding="async"></button>
             <span class="wall__badge"><img src="assets/media/badge-pns.png" width="91" height="54" alt="Pytanie na śniadanie"></span>
           </figure>
-          <figure class="bento__tile wall__tile" style="--ar:1.352" data-seq="2">
+          <figure class="bento__tile wall__tile" style="--ar:1.352">
             <button data-lb="media" data-src="assets/media/tv6.jpg"><img src="assets/media/tv6.jpg" width="1080" height="799" alt="Rozmowa o ślubach i weselach w programie Pytanie na śniadanie" loading="lazy" decoding="async"></button>
             <span class="wall__badge"><img src="assets/media/badge-pns.png" width="91" height="54" alt="Pytanie na śniadanie"></span>
           </figure>
-          <figure class="bento__tile wall__tile" style="--ar:1.001" data-seq="3">
+          <figure class="bento__tile wall__tile" style="--ar:1.001">
             <button data-lb="media" data-src="assets/media/tv2.jpg"><img src="assets/media/tv2.jpg" width="1063" height="1062" alt="Artykuł w magazynie Claudia Ślub" loading="lazy" decoding="async"></button>
             <span class="wall__badge wall__badge--wide"><img src="assets/media/badge-claudia.png" width="108" height="28" alt="Claudia"></span>
           </figure>
-          <figure class="bento__tile wall__tile" style="--ar:.991" data-seq="4">
+          <figure class="bento__tile wall__tile" style="--ar:.991">
             <button data-lb="media" data-src="assets/media/tv3.jpg"><img src="assets/media/tv3.jpg" width="1060" height="1070" alt="Artykuł z cyklu Ślubne SOS" loading="lazy" decoding="async"></button>
           </figure>
-          <figure class="bento__tile wall__tile" style="--ar:.656" data-seq="5">
+          <figure class="bento__tile wall__tile" style="--ar:.656">
             <button data-lb="media" data-src="assets/media/tv4.jpg"><img src="assets/media/tv4.jpg" width="708" height="1080" alt="Laureat plebiscytu Orły" loading="lazy" decoding="async"></button>
             <span class="wall__badge"><img src="assets/media/badge-orly.png" width="82" height="54" alt="Orły"></span>
           </figure>
+        </div>
         </div>
       </div>
       <div class="marquee" aria-label="Media, w których występowałem">
@@ -204,15 +207,19 @@
       <!-- tło: ciemne smugi światła (motyw: Beams Background, KokonutUI, MIT) -->
       <canvas class="values__beams" aria-hidden="true"></canvas>
       <div class="container values__grid">
-        <div class="values__slides" data-reveal aria-hidden="true">
-          <div class="values__slide is-active" style="background-image:url('assets/slides/img-5179.webp')"></div>
-          <div class="values__slide" data-bg="assets/slides/img-2881.webp"></div>
-          <div class="values__slide" data-bg="assets/slides/img-6908.webp"></div>
-          <div class="values__slide" data-bg="assets/slides/mg-2827.webp"></div>
-          <div class="values__slide" data-bg="assets/slides/img-3605.webp"></div>
-          <div class="values__slide" data-bg="assets/slides/img-3487.webp"></div>
-          <div class="values__slide" data-bg="assets/slides/img-6697.webp"></div>
-          <span class="values__frame"></span>
+        <!-- Karuzela 3D: widać trzy zdjęcia (środkowe największe, boczne pod kątem i przygaszone).
+             Bez strzałek: przeciąganie myszą lub palcem, strzałki na klawiaturze, co kilka sekund przesuwa się sama.
+             Zdjęcia pionowe (3:4 albo 2:3); kolejność na liście = kolejność w karuzeli. -->
+        <div class="values__carousel" data-reveal data-carousel tabindex="0" role="group" aria-roledescription="karuzela" aria-label="Zdjęcia z wydarzeń. Przeciągnij albo użyj strzałek, żeby zobaczyć kolejne.">
+          <ul class="carousel__track">
+            <li class="carousel__item"><img src="assets/slides/img-5179.webp" width="1080" height="1440" alt="Goście pod dekoracjami sufitowymi w turkusowym świetle" decoding="async" draggable="false"></li>
+            <li class="carousel__item"><img src="assets/slides/img-2881.webp" width="1080" height="1440" alt="Saksofonistka i artystka w czerwonych sukniach przy konsolecie DJ, w tle nocna panorama miasta" loading="lazy" decoding="async" draggable="false"></li>
+            <li class="carousel__item"><img src="assets/slides/img-6908.webp" width="1080" height="1440" alt="Ogród oświetlony na zielono i fioletowo podczas wieczornego przyjęcia" loading="lazy" decoding="async" draggable="false"></li>
+            <li class="carousel__item"><img src="assets/slides/mg-2827.webp" width="960" height="1440" alt="Saksofonistka na scenie w czerwonych wiązkach światła i różowym dymie" loading="lazy" decoding="async" draggable="false"></li>
+            <li class="carousel__item"><img src="assets/slides/img-3605.webp" width="1080" height="1440" alt="Parkiet pod sufitem oświetlonym na fioletowo i zielono" loading="lazy" decoding="async" draggable="false"></li>
+            <li class="carousel__item"><img src="assets/slides/img-3487.webp" width="1080" height="1440" alt="Solo na saksofonie w żółtych wiązkach światła" loading="lazy" decoding="async" draggable="false"></li>
+            <li class="carousel__item"><img src="assets/slides/img-6697.webp" width="1080" height="1440" alt="Wokalistka na scenie w czerwonym świetle, w tle skrzypaczka" loading="lazy" decoding="async" draggable="false"></li>
+          </ul>
         </div>
         <ol class="values__list">
           <li class="value" data-reveal>

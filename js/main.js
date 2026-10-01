@@ -279,37 +279,248 @@
     burger.setAttribute('aria-label', 'Zamknij menu');
   });
 
-  /* ---------- SLIDESHOW (wartości) ---------- */
-  // Pierwszy slajd ma zdjęcie w atrybucie style, kolejne w data-bg: pobieramy je dopiero,
-  // gdy sekcja zbliża się do ekranu, i dopiero wtedy ruszają zmiany (od pierwszego zdjęcia).
-  var slides = document.querySelectorAll('.values__slide');
-  var slidesBox = document.querySelector('.values__slides');
-  var si = 0;
-  function startSlides() {
-    Array.prototype.forEach.call(slides, function (s) {
-      if (s.dataset.bg) {
-        s.style.backgroundImage = 'url("' + s.dataset.bg + '")';
-        s.removeAttribute('data-bg');
+  /* ---------- KARUZELA 3D (sekcja Styl) ----------
+     Zdjęcia są ścianami obracającego się graniastosłupa: środkowe stoi przodem, sąsiednie odchodzą
+     w głąb pod kątem THETA i stykają się z nim krawędzią, dalsze są po niewidocznej stronie.
+     Przy obrocie zdjęcie zwęża się i znika za krawędzią następnego, jakby całość kręciła się w kółko.
+     Bez strzałek: przeciąganie myszą lub palcem, strzałki na klawiaturze, klik w boczne zdjęcie,
+     a co kilka sekund karuzela obraca się sama. Pozycja jest ułamkowa (liczona w zdjęciach)
+     i dochodzi do celu sprężyną z tłumieniem krytycznym, więc niedociągnięte zdjęcie samo płynnie
+     ustawia się na środku, bez szarpnięcia i bez odbicia.
+     Na komputerze środkowe zdjęcie ma wysokość listy tekstów obok (najwyżej tyle, ile mieści ekran),
+     a karuzela może wyjść w lewo poza kolumnę, aż do toru paska nut. */
+  var carousel = document.querySelector('[data-carousel]');
+  if (carousel) (function () {
+    var track = carousel.querySelector('.carousel__track');
+    var tiles = Array.prototype.slice.call(track.children);
+    var n = tiles.length;
+    if (n < 3) return;
+    var valuesList = document.querySelector('.values__list');
+
+    var THETA = 68;            // kąt między sąsiednimi zdjęciami na obwodzie (stopnie); większy = węższe boki
+    var PERSP = 2.8;           // odległość „oka” liczona w szerokościach zdjęcia
+    var SIDE_DIM = .5;         // przygaszenie bocznych zdjęć (0 = bez zmian, 1 = czarne)
+    var SIZE = .86;            // wysokość środkowego zdjęcia względem listy tekstów obok (1 = równo z tekstem)
+    // Szerokość całej karuzeli w szerokościach środkowego zdjęcia: w spoczynku (środek + widoczne boki)
+    // i w połowie obrotu, kiedy bryła jest najszersza. Miejsce rezerwujemy pośrodku tych dwóch wartości,
+    // żeby obracające się zdjęcia nie wchodziły pod pasek nut ani w tekst.
+    var SPREAD = (function () {
+      var r = .5 / Math.tan(THETA * Math.PI / 360);
+      function span(deg) {
+        var t = deg * Math.PI / 180;
+        return 2 * (r * Math.sin(t) + .5 * Math.cos(t)) * PERSP / (PERSP + r - r * Math.cos(t) + .5 * Math.sin(t));
       }
-    });
-    setInterval(function () {
-      slides[si].classList.remove('is-active');
-      si = (si + 1) % slides.length;
-      slides[si].classList.add('is-active');
-    }, 5200);
-  }
-  if (slides.length > 1 && slidesBox && !reduceMotion) {
-    if ('IntersectionObserver' in window) {
-      var slideIo = new IntersectionObserver(function (entries) {
-        if (!entries.some(function (e) { return e.isIntersecting; })) return;
-        slideIo.disconnect();
-        startSlides();
-      }, { rootMargin: '100% 0px' });
-      slideIo.observe(slidesBox);
-    } else {
-      startSlides();
+      return (span(THETA) + span(THETA / 2)) / 2;
+    })();
+    var SNAP = 5;              // tempo dociągania po puszczeniu (mniej = wolniej i łagodniej)
+    var GLIDE = 3.4;           // tempo samoczynnego obrotu
+    var AUTO_EVERY = 5200;     // co ile ms karuzela obraca się sama
+    var AUTO_RESUME = 7000;    // ile ms po ruchu użytkownika wraca samoczynny obrót
+
+    var pos = 0;               // która pozycja jest na środku (ułamkowo)
+    var target = 0;            // pozycja docelowa (pełne zdjęcie)
+    var vel = 0;               // prędkość w zdjęciach na sekundę
+    var omega = GLIDE;
+    var dragging = false;
+    var raf = null;
+    var lastT = 0;
+    var tileW = 320;           // szerokość zdjęcia w px
+    var radius = 250;          // promień graniastosłupa: sąsiednie ściany stykają się krawędziami
+    var stepPx = 190;          // ile px przeciągnięcia obraca o jedno zdjęcie
+
+    function measure() {
+      var tall;
+      if (window.matchMedia('(min-width: 961px)').matches && valuesList) {
+        // karuzela może wyjść w lewo poza kolumnę, aż do toru paska nut (albo marginesu ekranu)
+        var grid = carousel.parentNode;
+        var colLeft = grid.getBoundingClientRect().left + parseFloat(getComputedStyle(grid).paddingLeft);
+        var lane = rail && getComputedStyle(rail).display !== 'none' ? rail.getBoundingClientRect().right + 38 : 24;
+        carousel.style.setProperty('--bleed', Math.max(0, colLeft - lane).toFixed(0) + 'px');
+        // z prawej boczne zdjęcie może wejść w odstęp między kolumnami (zostaje 44 px do tekstu)
+        var colGap = parseFloat(getComputedStyle(grid).columnGap) || 0;
+        carousel.style.setProperty('--bleed-r', Math.max(0, colGap - 44).toFixed(0) + 'px');
+        // wysokość jak lista tekstów obok, ale nie więcej, niż mieści ekran pod nagłówkiem
+        var cap = window.innerHeight - header.offsetHeight - 68;   // zapas: w obrocie krawędź bryły jest o kilka procent wyższa
+        tall = Math.max(320, Math.min(valuesList.offsetHeight, cap) * SIZE);
+        track.style.setProperty('--tile-h', tall.toFixed(0) + 'px');
+      } else {
+        carousel.style.removeProperty('--bleed');
+        carousel.style.removeProperty('--bleed-r');
+        track.style.removeProperty('--tile-h');
+        tall = parseFloat(getComputedStyle(tiles[0]).height) || 360;
+      }
+      // zdjęcie w proporcjach 3:4; gdy brakuje szerokości, kafelek jest smuklejszy (boki zdjęcia poza kadrem)
+      tileW = Math.min(tall * .75, carousel.clientWidth / SPREAD);
+      tiles.forEach(function (li) { li.style.setProperty('--ar', (tileW / tall).toFixed(4)); });
+      radius = tileW / 2 / Math.tan(THETA * Math.PI / 360);
+      stepPx = tileW * .6;
+      track.style.perspective = (tileW * PERSP).toFixed(0) + 'px';
     }
-  }
+
+    // odległość zdjęcia od środka z zawinięciem (karuzela nie ma końca)
+    function offsetOf(i) {
+      var d = ((i - pos) % n + n) % n;
+      return d > n / 2 ? d - n : d;
+    }
+
+    function layout() {
+      for (var i = 0; i < n; i++) {
+        var d = offsetOf(i);
+        var phi = d * THETA;                      // kąt zdjęcia na obwodzie
+        var aphi = Math.abs(phi);
+        var el = tiles[i];
+        if (aphi >= 90) { el.style.visibility = 'hidden'; continue; }   // niewidoczna strona bryły
+        var rad = phi * Math.PI / 180;
+        el.style.visibility = 'visible';
+        el.style.transform = 'translate3d(' + (radius * Math.sin(rad)).toFixed(1) + 'px,0,' +
+          (radius * Math.cos(rad) - radius).toFixed(1) + 'px) rotateY(' + phi.toFixed(2) + 'deg)';
+        el.style.opacity = Math.min(1, (90 - aphi) / 16).toFixed(3);   // gaśnie tuż przed ustawieniem się bokiem
+        el.style.zIndex = 100 - Math.round(Math.abs(d) * 20);
+        el.style.filter = aphi < .5 ? 'none' : 'brightness(' + (1 - Math.min(aphi / THETA, 1) * SIDE_DIM).toFixed(3) + ')';
+      }
+    }
+
+    function tick(now) {
+      var dt = Math.min(.05, (now - lastT) / 1000);
+      lastT = now;
+      if (!dragging) {
+        if (reduceMotion) {
+          pos = target; vel = 0;
+        } else {
+          // sprężyna z tłumieniem krytycznym: najszybsze dojście do celu, które nie przestrzeliwuje
+          vel += (-omega * omega * (pos - target) - 2 * omega * vel) * dt;
+          pos += vel * dt;
+          if (Math.abs(pos - target) < .0006 && Math.abs(vel) < .004) { pos = target; vel = 0; }
+        }
+      }
+      layout();
+      if (dragging || pos !== target) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        raf = null;
+        var turns = Math.floor(target / n) * n;   // liczby zostają w zakresie 0..n
+        pos -= turns; target -= turns;
+      }
+    }
+    function wake() {
+      if (raf) return;
+      lastT = performance.now();
+      raf = requestAnimationFrame(tick);
+    }
+
+    /* samoczynna zmiana: tylko gdy karuzela jest na ekranie i nikt jej nie dotyka */
+    var autoTimer = null;
+    var resumeTimer = null;
+    var inView = false;
+    var hovering = false;
+    function autoStep() {
+      if (dragging || hovering || !inView || document.hidden) return;
+      omega = GLIDE;
+      target = Math.round(target) + 1;
+      wake();
+    }
+    function startAuto() {
+      clearInterval(autoTimer);
+      if (!reduceMotion) autoTimer = setInterval(autoStep, AUTO_EVERY);
+    }
+    function pauseAuto() { clearInterval(autoTimer); clearTimeout(resumeTimer); autoTimer = null; }
+    function resumeAutoLater() { pauseAuto(); resumeTimer = setTimeout(startAuto, AUTO_RESUME); }
+    carousel.addEventListener('mouseenter', function () { hovering = true; });
+    carousel.addEventListener('mouseleave', function () { hovering = false; });
+
+    /* przeciąganie: zdjęcia jadą za ręką, po puszczeniu rozpęd przechodzi w dociąganie do środka */
+    var pid = null;
+    var startX = 0;
+    var startPos = 0;
+    var lastMove = 0;
+    var travelled = 0;
+    carousel.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      dragging = true;
+      pid = e.pointerId;
+      startX = e.clientX; startPos = pos; travelled = 0; vel = 0;
+      lastMove = performance.now();
+      carousel.classList.add('is-dragging');
+      try { carousel.setPointerCapture(pid); } catch (err) { /* brak wsparcia: przeciąganie działa nad karuzelą */ }
+      pauseAuto();
+      wake();
+    });
+    carousel.addEventListener('pointermove', function (e) {
+      if (!dragging || e.pointerId !== pid) return;
+      var now = performance.now();
+      var next = startPos - (e.clientX - startX) / stepPx;
+      var dtm = Math.max(.001, (now - lastMove) / 1000);
+      vel = vel * .6 + ((next - pos) / dtm) * .4;      // wygładzona prędkość ręki
+      travelled = Math.max(travelled, Math.abs(e.clientX - startX));
+      pos = next;
+      lastMove = now;
+    });
+    function endDrag(e) {
+      if (!dragging || (e && e.pointerId !== pid)) return;
+      dragging = false;
+      carousel.classList.remove('is-dragging');
+      if (performance.now() - lastMove > 140) vel = 0;  // ręka stała w miejscu przed puszczeniem
+      vel = Math.max(-5, Math.min(5, vel));
+      if (travelled < 6 && e && e.type === 'pointerup') {
+        // zwykłe kliknięcie w boczne zdjęcie przenosi je na środek
+        var hit = document.elementFromPoint(e.clientX, e.clientY);
+        var li = hit && hit.closest ? hit.closest('.carousel__item') : null;
+        var idx = tiles.indexOf(li);
+        target = idx > -1 ? Math.round(pos + offsetOf(idx)) : Math.round(pos);
+      } else {
+        // najbliższe zdjęcie; szybkie machnięcie przenosi o jedno dalej
+        target = Math.round(pos + Math.max(-.6, Math.min(.6, vel * .18)));
+      }
+      omega = SNAP;
+      wake();
+      resumeAutoLater();
+    }
+    carousel.addEventListener('pointerup', endDrag);
+    carousel.addEventListener('pointercancel', endDrag);
+    carousel.addEventListener('lostpointercapture', endDrag);
+
+    carousel.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      omega = SNAP;
+      target = Math.round(target) + (e.key === 'ArrowRight' ? 1 : -1);
+      wake();
+      resumeAutoLater();
+    });
+
+    // zdjęcia pobieramy, gdy sekcja zbliża się do ekranu; samoczynna zmiana działa tylko na ekranie
+    function loadAll() {
+      tiles.forEach(function (li) { li.querySelector('img').loading = 'eager'; });
+    }
+    if ('IntersectionObserver' in window) {
+      var loadIo = new IntersectionObserver(function (entries) {
+        if (!entries.some(function (en) { return en.isIntersecting; })) return;
+        loadIo.disconnect();
+        loadAll();
+      }, { rootMargin: '100% 0px' });
+      loadIo.observe(carousel);
+      new IntersectionObserver(function (entries) {
+        var now = entries[0].isIntersecting;
+        if (now && !inView && !dragging) startAuto();   // odliczanie od chwili, gdy karuzelę widać
+        inView = now;
+      }, { threshold: .3 }).observe(carousel);
+    } else {
+      inView = true;
+      loadAll();
+      startAuto();
+    }
+
+    var carouselResize = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(carouselResize);
+      carouselResize = setTimeout(function () { measure(); layout(); }, 120);
+    });
+
+    function refit() { measure(); layout(); }
+    refit();
+    window.addEventListener('load', refit);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
+  })();
 
   /* ---------- PORTFOLIO: filtr + więcej ---------- */
   var items = Array.prototype.slice.call(document.querySelectorAll('.gallery__item'));
@@ -690,47 +901,28 @@
     });
   }
 
-  /* ---------- MEDIA BENTO: kadry po kolei zapalają się w kolorze ---------- */
-  var bento = document.getElementById('mediaBento');
-  if (bento) {
-    var litTiles = Array.prototype.slice.call(bento.querySelectorAll('.bento__tile')).sort(function (a, b) {
-      return (+a.dataset.seq) - (+b.dataset.seq);
+  /* ---------- MEDIA: logotypy rozrzucone wokół ściany kadrów ----------
+     Źródłem jest pasek logotypów na dole sekcji (jedna lista do edycji). Na komputerze kopiujemy
+     z niego logotypy do listy .media__logos przy ścianie kadrów; rozmieszczenie i unoszenie są w CSS.
+     Pasek zostaje widoczny tylko na telefonie i tablecie w pionie (klasa has-logos na sekcji). */
+  var mediaSection = document.getElementById('media');
+  var mediaStage = mediaSection && mediaSection.querySelector('.media__stage');
+  var mediaMarquee = mediaSection && mediaSection.querySelector('.marquee');
+  if (mediaStage && mediaMarquee) {
+    var logoCloud = document.createElement('ul');
+    logoCloud.className = 'media__logos';
+    logoCloud.setAttribute('aria-label', mediaMarquee.getAttribute('aria-label') || 'Media');
+    Array.prototype.forEach.call(mediaMarquee.querySelectorAll('img:not([aria-hidden])'), function (img, i) {
+      var li = document.createElement('li');
+      li.className = 'media__logo';
+      li.style.setProperty('--i', i);
+      li.appendChild(img.cloneNode(false));
+      logoCloud.appendChild(li);
     });
-    var litIdx = -1;
-    var litTimer = null;
-    var bentoInView = false;
-    var bentoHover = false;
-    var LIT_EVERY = 3200;
-
-    var lightTile = function (i) {
-      litIdx = i;
-      litTiles.forEach(function (t, k) { t.classList.toggle('is-lit', k === i); });
-    };
-    var litStep = function () { lightTile((litIdx + 1) % litTiles.length); };
-    var litStart = function () {
-      if (litTimer || reduceMotion) return;
-      litStep();
-      litTimer = setInterval(litStep, LIT_EVERY);
-    };
-    var litStop = function () { clearInterval(litTimer); litTimer = null; };
-
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries) {
-        bentoInView = entries[0].isIntersecting;
-        if (bentoInView && !bentoHover) litStart(); else litStop();
-      }, { threshold: 0.3 }).observe(bento);
-    } else {
-      litStart();
+    if (logoCloud.children.length) {
+      mediaStage.appendChild(logoCloud);
+      mediaSection.classList.add('has-logos');
     }
-
-    litTiles.forEach(function (t, k) {
-      var focusTile = function () { bentoHover = true; litStop(); lightTile(k); };
-      t.addEventListener('mouseenter', focusTile);
-      t.addEventListener('focusin', focusTile);
-    });
-    var resumeLit = function () { bentoHover = false; if (bentoInView) litStart(); };
-    bento.addEventListener('mouseleave', resumeLit);
-    bento.addEventListener('focusout', function (e) { if (!bento.contains(e.relatedTarget)) resumeLit(); });
   }
 
   /* ---------- DRAWER KONTAKTOWY (motyw: Smooth Drawer, KokonutUI, MIT) ---------- */

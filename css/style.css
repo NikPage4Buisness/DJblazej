@@ -497,7 +497,7 @@ body.is-loaded .arrow-head { animation: drawHead .55s cubic-bezier(.45, 0, .25, 
   font-size: calc(var(--stage-h) * .36);
   line-height: .78; letter-spacing: .005em;
   text-align: right; white-space: nowrap;
-  color: rgba(255, 255, 255, .5);
+  color: rgba(255, 255, 255, .3);   /* niski kontrast z szarym tłem: napis ma być tłem, nie rzucać się w oczy */
   /* z lewej napis wyłania się z tła: kontrast rośnie płynnie od zera do pełnego na ok. 44% szerokości słowa */
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, .1) 6%, rgba(0, 0, 0, .32) 16%, rgba(0, 0, 0, .62) 26%, rgba(0, 0, 0, .88) 35%, #000 44%);
   mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, .1) 6%, rgba(0, 0, 0, .32) 16%, rgba(0, 0, 0, .62) 26%, rgba(0, 0, 0, .88) 35%, #000 44%);
@@ -515,8 +515,8 @@ body.is-loaded .hero__bg-word { opacity: 1; }
 body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 
 
-/* ---------- 02 WYSTĘPY ----------
-   Tytuł i tekst w jednym rzędzie, pod nimi szeroka ściana kadrów: najpierw telewizja
+/* ---------- 02 MEDIA O MNIE ----------
+   Duży tytuł, pod nim tekst, dalej szeroka ściana kadrów: najpierw telewizja
    (największe kadry), potem telewizja, prasa i wyróżnienie. Na dole pasek logotypów. */
 .media {
   background: var(--cream);
@@ -527,6 +527,16 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 /* duży tytuł na całą szerokość, pod nim oba akapity obok siebie */
 .media__head { margin-bottom: clamp(28px, 4.5vh, 52px); }
 .media__head .sec-head { margin-bottom: clamp(20px, 3vh, 32px); }
+/* Tytuł „Media o mnie” jest długi. Na komputerze i tablecie jego wielkość dopasowuje się do
+   szerokości treści, żeby zawsze mieścił się w jednej linii (napis ma ok. 7,6 em szerokości;
+   dzielnik 7,85 zostawia zapas na pasek przewijania). Na telefonie zostaje w standardowej
+   wielkości i łamie się na „MEDIA / O MNIE” (twarda spacja trzyma „o mnie” razem). */
+.media .sec-head__title {
+  font-size: clamp(40px, min(13.5vw, calc((min(100vw, var(--maxw)) - 2 * var(--gutter)) / 7.85)), 150px);
+}
+@media (max-width: 640px) {
+  .media .sec-head__title { font-size: clamp(40px, 13.5vw, 150px); }
+}
 .media__text {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: clamp(32px, 5vw, 80px);
@@ -548,21 +558,21 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   aspect-ratio: var(--ar);
   min-width: 0;
 }
+/* kadry są zawsze w kolorze; po najechaniu kadr lekko się przybliża i dostaje cień */
 .bento__tile {
   position: relative; margin: 0; overflow: hidden;
   border-radius: 14px; background: var(--grey);
   box-shadow: 0 0 0 rgba(11, 11, 11, 0);
-  transition: box-shadow 1.8s ease;
+  transition: box-shadow .7s ease;
 }
 .bento__tile button { display: block; width: 100%; height: 100%; }
 .bento__tile button img {
   width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(1) brightness(.97) contrast(1.02);
   transform: scale(1);
-  transition: filter 1.8s ease, transform 2.6s var(--ease);
+  transition: transform 1.6s var(--ease);
 }
-.bento__tile.is-lit { box-shadow: 0 22px 44px -22px rgba(11, 11, 11, .5); }
-.bento__tile.is-lit button img { filter: grayscale(0) brightness(1) contrast(1); transform: scale(1.035); }
+.bento__tile:hover, .bento__tile:focus-within { box-shadow: 0 22px 44px -22px rgba(11, 11, 11, .5); }
+.bento__tile:hover button img, .bento__tile:focus-within button img { transform: scale(1.035); }
 /* znak stacji / redakcji w rogu kadru (zawsze w kolorze, żeby od razu było widać, gdzie to było) */
 .wall__badge {
   position: absolute; left: clamp(8px, 1vw, 14px); top: clamp(8px, 1vw, 14px); z-index: 1;
@@ -590,6 +600,61 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 .marquee__track img { height: clamp(30px, 3.6vw, 48px); width: auto; mix-blend-mode: multiply; }
 .marquee:hover .marquee__track { animation-play-state: paused; }
 @keyframes marquee { to { transform: translateX(calc(-50% - clamp(16px, 2.5vw, 36px))); } }
+
+/* Logotypy rozrzucone wokół ściany kadrów (komputer i tablet w poziomie, od 1024 px).
+   JS kopiuje logotypy z paska do listy .media__logos i dodaje sekcji klasę has-logos; pasek zostaje
+   wtedy tylko na węższych ekranach. Ściana stoi na środku, a po obu jej stronach jest pas na logotypy:
+   na szerokich ekranach to wolne marginesy strony, na węższych ściana zwęża się, żeby pas miał
+   co najmniej --band-min. Logotyp leży w pasie między ścianą a krawędzią ekranu; --fx (0..1) przesuwa go
+   w wolnym miejscu pasa, --y to wysokość względem ściany, --r pochylenie. Z lewej zostaje wolny tor
+   dla paska nut (--lane). */
+.media__logos { display: none; }
+@media (min-width: 1024px) {
+  .media {
+    --band-min: clamp(170px, 15vw, 240px);
+    --wall-w: min(calc(min(100vw, var(--maxw)) - 2 * var(--gutter)), calc(100vw - 2 * var(--band-min)));
+    --band: calc((100vw - var(--wall-w)) / 2);
+    --logo-w: clamp(96px, 7.6vw, 150px);
+    --lane: calc(clamp(14px, 1.8vw, 30px) + 36px);
+    --room-l: min(230px, max(0px, calc(var(--band) - var(--lane) - 18px - var(--logo-w))));
+    --room-r: min(230px, max(0px, calc(var(--band) - 42px - var(--logo-w))));
+  }
+  .media.has-logos .marquee { display: none; }
+  .media.has-logos .media__stage { position: relative; width: var(--wall-w); max-width: 100%; margin-inline: auto; }
+  .media.has-logos .media__logos { display: block; position: absolute; inset: 0; pointer-events: none; }
+  .media__logo {
+    position: absolute; top: var(--y);
+    width: calc(var(--logo-w) * var(--s, 1));
+    rotate: var(--r, 0deg);
+    opacity: 0; scale: .7;
+    transition: opacity .9s ease, scale 1s cubic-bezier(.34, 1.56, .64, 1);
+    transition-delay: calc(var(--i, 0) * 90ms + .25s);
+    animation: logoFloat var(--dur, 7s) ease-in-out var(--wait, 0s) infinite;
+  }
+  .media__logo img { display: block; width: 100%; height: auto; mix-blend-mode: multiply; }
+  /* logotypy pojawiają się po kolei, gdy ściana wjeżdża na ekran */
+  .media__wall.is-in ~ .media__logos .media__logo { opacity: 1; scale: 1; }
+  /* lewa strona ściany */
+  .media__logo:nth-child(5) { right: calc(100% + 18px + var(--room-l) * .15); --y: 1%;  --r: -6deg; --s: 1;    --dur: 7.5s; --wait: -1s; }
+  .media__logo:nth-child(2) { right: calc(100% + 18px + var(--room-l) * .9);  --y: 27%; --r: 4deg;  --s: .94;  --dur: 6.4s; --wait: -3s; }
+  .media__logo:nth-child(4) { right: calc(100% + 18px + var(--room-l) * .3);  --y: 53%; --r: -3deg; --s: 1.04; --dur: 8.2s; --wait: -5s; }
+  .media__logo:nth-child(8) { right: calc(100% + 18px + var(--room-l) * .8);  --y: 79%; --r: 6deg;  --s: .96;  --dur: 6.9s; --wait: -2s; }
+  /* prawa strona ściany */
+  .media__logo:nth-child(1) { left: calc(100% + 18px + var(--room-r) * .7);   --y: 8%;  --r: 5deg;  --s: 1.04; --dur: 7.1s; --wait: -4s; }
+  .media__logo:nth-child(7) { left: calc(100% + 18px + var(--room-r) * .1);   --y: 34%; --r: -4deg; --s: .9;   --dur: 8s;   --wait: -1.5s; }
+  .media__logo:nth-child(6) { left: calc(100% + 18px + var(--room-r) * .85);  --y: 60%; --r: 3deg;  --s: 1;    --dur: 6.6s; --wait: -6s; }
+  .media__logo:nth-child(3) { left: calc(100% + 18px + var(--room-r) * .25);  --y: 84%; --r: -6deg; --s: 1;    --dur: 7.7s; --wait: -3.5s; }
+  /* rozkład przewiduje 8 logotypów; kolejne są widoczne w pasku na telefonie */
+  .media__logo:nth-child(n + 9) { display: none; }
+}
+/* lekkie unoszenie: kilka pikseli w górę i z powrotem, z delikatnym kołysaniem */
+@keyframes logoFloat {
+  0%, 100% { translate: 0 0; rotate: var(--r, 0deg); }
+  50% { translate: 0 -9px; rotate: calc(var(--r, 0deg) + 1.6deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .media__logo { animation: none; transition: none; }
+}
 
 /* ---------- 03 O MNIE ----------
    Po lewej nagłówek i cytat, po prawej Błażej na hokerze (wycięte tło, miękki cień na podłodze),
@@ -664,37 +729,46 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 @keyframes beamsBreath { 0%, 100% { opacity: .85; } 50% { opacity: 1; } }
 .values__grid { position: relative; z-index: 1; }
 .values strong { color: var(--cream); }
+/* karuzela dostaje szerszą kolumnę, żeby duże zdjęcie mieściło się prawie bez przycinania boków;
+   kolumna tekstu jest na tyle szeroka, że tytuł „DOBRY NASTRÓJ” zostaje w jednej linii */
 .values__grid {
-  display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
   gap: clamp(32px, 6vw, 96px); align-items: center;
 }
-.values__slides {
-  position: relative; aspect-ratio: 4 / 5; max-height: 76svh; width: 100%;
-  overflow: hidden; background: var(--ink-2);
+/* Karuzela 3D: zdjęcia jako ściany obracającego się graniastosłupa. Środkowe stoi przodem,
+   boczne odchodzą w głąb i są przygaszone. Położenie, kąt i przygaszenie każdego zdjęcia ustawia JS
+   (przeciąganie, dociąganie do środka, samoczynny obrót), tak samo wymiary na komputerze:
+   wysokość jak lista tekstów obok (--tile-h) i wyjście w lewo poza kolumnę (--bleed).
+   Wartości poniżej to wymiary dla telefonu i wersja bez JS. */
+.values__carousel {
+  container-type: inline-size;
+  position: relative;
+  width: calc(100% + var(--bleed, 0px) + var(--bleed-r, 0px)); margin-left: calc(var(--bleed, 0px) * -1);
+  cursor: grab; touch-action: pan-y;
+  -webkit-user-select: none; user-select: none;
 }
-/* Zdjęcia mają różne proporcje (pion i poziom), więc każde jest pokazane w całości (contain),
-   a wolne pola ramki wypełnia jego rozmyta, przyciemniona kopia. Obraz rysują ::before i ::after. */
-.values__slide {
-  position: absolute; inset: 0;
-  background-size: 0 0; background-repeat: no-repeat;
-  opacity: 0; transition: opacity 1.6s ease;
+.values__carousel.is-dragging { cursor: grabbing; }
+.values__carousel:focus { outline: none; }
+.values__carousel:focus-visible { outline: 1px solid rgba(236, 235, 232, .55); outline-offset: 10px; border-radius: 18px; }
+.carousel__track {
+  /* wysokość środkowego zdjęcia: mieści się w ekranie, a razem z wystającymi bokami w szerokości kolumny */
+  --tile-h: clamp(250px, min(62svh, 96cqw), 600px);
+  position: relative; height: calc(var(--tile-h) + 16px);
+  perspective: 1200px;
 }
-.values__slide::before, .values__slide::after {
-  content: ""; position: absolute;
-  background-image: inherit; background-repeat: no-repeat; background-position: center;
+.carousel__item {
+  position: absolute; left: 50%; top: 50%;
+  height: var(--tile-h); aspect-ratio: var(--ar, .75);
+  translate: -50% -50%;
+  border-radius: 16px; overflow: hidden; background: var(--ink-2);
+  box-shadow: 0 34px 60px -34px rgba(0, 0, 0, .9);
+  will-change: transform, opacity;
 }
-.values__slide::before {
-  inset: -48px; background-size: cover;
-  filter: blur(28px) brightness(.42) saturate(.9);
-  transform: scale(1.12); transition: transform 7s linear;
+.carousel__item:not(:first-child) { opacity: 0; }   /* bez JS widać pierwsze zdjęcie */
+.carousel__item img {
+  display: block; width: 100%; height: 100%; object-fit: cover;
+  pointer-events: none; -webkit-user-drag: none;
 }
-.values__slide::after {
-  inset: 0; background-size: contain;
-  filter: brightness(.85) saturate(.9); /* w tonacji ciemnej sekcji */
-}
-.values__slide.is-active { opacity: 1; }
-.values__slide.is-active::before { transform: scale(1); }
-.values__frame { position: absolute; inset: 14px; border: 1px solid rgba(236, 235, 232, .35); pointer-events: none; }
 .values__list { display: grid; gap: 0; counter-reset: v; }
 .value {
   position: relative;
@@ -712,7 +786,7 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 .value__num { grid-row: span 2; font-size: 12px; font-weight: 600; letter-spacing: .3em; font-variant-numeric: tabular-nums; color: rgba(236, 235, 232, .5); padding-top: .7em; }
 .value__title {
   font-family: var(--f-head); font-weight: 800; color: var(--cream);
-  font-size: clamp(26px, 3vw, 46px); line-height: 1.08; letter-spacing: .02em;
+  font-size: clamp(26px, 3vw, 44px); line-height: 1.08; letter-spacing: .02em;
 }
 .value p { margin-top: 8px; max-width: 54ch; }
 
@@ -865,7 +939,7 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   .gallery__item button { border-radius: 12px; }
 }
 
-/* Występy na telefonie: tekst pod tytułem, szeroki kadr z Pytania na śniadanie na górze,
+/* Media o mnie na telefonie: tekst pod tytułem, szeroki kadr z Pytania na śniadanie na górze,
    potem po dwa i po trzy kadry w rzędzie */
 @media (max-width: 767px) {
   .media__text { grid-template-columns: minmax(0, 1fr); }
@@ -919,7 +993,8 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
     width: 100%; max-width: 640px;
     margin: clamp(22px, 5vw, 40px) auto 0; padding-inline: var(--gutter);
   }
-  .values__slides { aspect-ratio: 4 / 5; max-height: 64svh; }
+  /* telefon i tablet w pionie: karuzela nad listą wartości, zdjęcie trochę niższe, żeby lista była blisko */
+  .carousel__track { --tile-h: clamp(250px, min(54svh, 96cqw), 520px); }
 }
 
 @media (max-width: 640px) {
