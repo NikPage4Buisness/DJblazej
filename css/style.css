@@ -403,6 +403,7 @@ h1[data-reveal].is-in, h2[data-reveal].is-in { filter: none; }
   --stage-h: min(84svh, 56vw);   /* wysokość postaci; napis w tle skaluje się razem z nią */
   --stage-w: calc(var(--stage-h) * 1024 / 924);
   --aw: clamp(165px, 14vw, 225px);   /* szerokość strzałki przy przycisku */
+  --title-fs: clamp(36px, 4.8vw, 96px);   /* wielkość nagłówka; opis pod nim jest jego proporcjonalną kopią */
   background: var(--gradient);
 }
 /* hero na całą szerokość: teksty zaczynają się przy lewej krawędzi (na wysokości logo), a nie w wąskim kontenerze */
@@ -414,23 +415,28 @@ h1[data-reveal].is-in, h2[data-reveal].is-in { filter: none; }
 .hero__title {
   font-family: var(--f-head); font-weight: 800; color: var(--ink);
   text-transform: uppercase;
-  font-size: clamp(36px, 4.8vw, 96px);
+  font-size: var(--title-fs);
   line-height: 1.04; letter-spacing: -.012em;
   max-width: 11em;           /* zawsze trzy linie: OD LAT TWORZĘ / HISTORIE / PISANE MUZYKĄ (łamane <br>) */
   text-wrap: balance;
 }
-.hero__title em { font-style: normal; color: var(--hero-accent); }
+.hero__title em, .hero__lead em { font-style: normal; color: var(--hero-accent); }
 /* Nagłówek + opis: ramka ma szerokość najdłuższej linii nagłówka (linie są łamane <br>),
    dzięki temu na telefonie opis stoi dokładnie na środku nagłówka (na komputerze i tablecie
    opis jest wyrównany do lewej). W WordPressie: blok Grupa z nagłówkiem i akapitem. */
 .hero__head { width: fit-content; max-width: 100%; }
+/* Opis pod nagłówkiem to pomniejszona kopia nagłówka: ten sam krój, grubość 800, wersaliki, kolor, odstępy
+   między literami i szare akcenty (<em>), wielkość = 32% wielkości nagłówka (--title-fs), więc skaluje się
+   razem z nim. Szerokość opisu wyznacza nagłówek (contain: inline-size), więc blok tekstu ma szerokość
+   nagłówka. Reguła „p = Lora” go nie dotyczy. */
 .hero__lead {
   margin-top: clamp(18px, 3vh, 28px);
-  max-width: 29ch;
+  contain: inline-size;
   text-wrap: balance;
-  font-family: var(--f-text); font-weight: 400;
-  font-size: clamp(17px, 1.3vw, 23px); line-height: 1.6;
-  color: var(--hero-text);
+  font-family: var(--f-head); font-weight: 800; text-transform: uppercase;
+  letter-spacing: -.012em;
+  font-size: calc(var(--title-fs) * .32); line-height: 1.14;
+  color: var(--ink);
   --d: .15s;
 }
 .hero__cta { position: relative; display: flex; width: fit-content; max-width: 100%; margin-top: clamp(28px, 5vh, 52px); --d: .3s; }
@@ -515,7 +521,7 @@ body.is-loaded .hero__bg-word { opacity: 1; }
 body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 
 
-/* ---------- 02 MEDIA O MNIE ----------
+/* ---------- 02 W ROLI EKSPERTA (klasy media__*, kotwica #media) ----------
    Duży tytuł, pod nim tekst, dalej szeroka ściana kadrów: najpierw telewizja
    (największe kadry), potem telewizja, prasa i wyróżnienie. Na dole pasek logotypów. */
 .media {
@@ -527,12 +533,12 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 /* duży tytuł na całą szerokość, pod nim oba akapity obok siebie */
 .media__head { margin-bottom: clamp(28px, 4.5vh, 52px); }
 .media__head .sec-head { margin-bottom: clamp(20px, 3vh, 32px); }
-/* Tytuł „Media o mnie” jest długi. Na komputerze i tablecie jego wielkość dopasowuje się do
-   szerokości treści, żeby zawsze mieścił się w jednej linii (napis ma ok. 7,6 em szerokości;
-   dzielnik 7,85 zostawia zapas na pasek przewijania). Na telefonie zostaje w standardowej
-   wielkości i łamie się na „MEDIA / O MNIE” (twarda spacja trzyma „o mnie” razem). */
+/* Tytuł „W roli Eksperta” jest długi. Na komputerze i tablecie jego wielkość dopasowuje się do
+   szerokości treści, żeby zawsze mieścił się w jednej linii (napis ma ok. 9,65 em szerokości;
+   dzielnik 10 zostawia zapas na pasek przewijania). Na telefonie zostaje w standardowej
+   wielkości i łamie się na „W ROLI / EKSPERTA” (twarda spacja trzyma „W roli” razem). */
 .media .sec-head__title {
-  font-size: clamp(40px, min(13.5vw, calc((min(100vw, var(--maxw)) - 2 * var(--gutter)) / 7.85)), 150px);
+  font-size: clamp(40px, min(13.5vw, calc((min(100vw, var(--maxw)) - 2 * var(--gutter)) / 10)), 150px);
 }
 @media (max-width: 640px) {
   .media .sec-head__title { font-size: clamp(40px, 13.5vw, 150px); }
@@ -932,6 +938,8 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
    ========================================================= */
 @media (min-width: 1200px) {
   .elegant-arrow { display: block; }
+  /* przycisk niżej, żeby strzałka (jej górny łuk sięga .414 swojej szerokości nad środek przycisku) zaczynała się pod opisem, a nie w nim */
+  .hero__cta { margin-top: calc(var(--aw) * .414 - 10px); }
 }
 
 @media (max-width: 1023px) {
@@ -939,7 +947,7 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   .gallery__item button { border-radius: 12px; }
 }
 
-/* Media o mnie na telefonie: tekst pod tytułem, szeroki kadr z Pytania na śniadanie na górze,
+/* W roli Eksperta na telefonie: tekst pod tytułem, szeroki kadr z Pytania na śniadanie na górze,
    potem po dwa i po trzy kadry w rzędzie */
 @media (max-width: 767px) {
   .media__text { grid-template-columns: minmax(0, 1fr); }
@@ -1020,10 +1028,9 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 /* Hero w pionie (tablet, telefon, wąskie okno): najpierw teksty, pod nimi scena
    dosunięta do prawej krawędzi i do dołu sekcji. */
 @media (orientation: portrait) and (max-width: 1199px), (max-width: 699px) and (min-height: 521px) {
-  .hero { justify-content: flex-start; padding-bottom: 0; --stage-w: min(100vw, 680px); }
+  .hero { justify-content: flex-start; padding-bottom: 0; --stage-w: min(100vw, 680px); --title-fs: min(8vw, 88px); }
   .hero__inner { margin-bottom: clamp(16px, 4vw, 32px); }
   .hero__copy { max-width: 700px; }
-  .hero__title { font-size: min(8vw, 88px); }
   .hero__stage {
     position: relative; right: auto; bottom: auto;
     align-self: flex-end;
@@ -1045,6 +1052,7 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
     /* wysokość zdjęcia dobrana tak, żeby brwi (34% kadru) wypadły tuż pod końcem mgły,
        a zdjęcie sięgało do dołu ekranu: 0,66 wysokości kadru = ekran minus koniec mgły */
     --hero-h: 100svh;
+    --title-fs: 9.8vw;
     --stage-h: min(calc((var(--hero-h) - var(--veil-top) - 64px) / .66), calc(var(--hero-h) - var(--header-h) - 40px));
     min-height: 100vh; min-height: var(--hero-h);
     padding-bottom: calc(24px + env(safe-area-inset-bottom));
@@ -1064,9 +1072,9 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   }
   .hero__inner { z-index: 3; flex: 1; display: flex; flex-direction: column; margin-bottom: 0; }
   .hero__copy { flex: 1; display: flex; flex-direction: column; }
-  .hero__title { font-size: 9.8vw; }
-  /* opis na środku nagłówka; contain: opis nie poszerza ramki, jej szerokość wyznacza tylko nagłówek */
-  .hero__lead { margin-bottom: 32px; margin-inline: auto; text-align: center; contain: inline-size; }
+  /* opis na środku nagłówka (contain: inline-size jest w regule bazowej, szerokość ramki wyznacza tylko nagłówek);
+     na telefonie 36% wielkości nagłówka, nie mniej niż 12 px */
+  .hero__lead { margin-bottom: 32px; margin-inline: auto; text-align: center; font-size: max(12px, calc(var(--title-fs) * .36)); }
   .hero__cta { margin-top: auto; }
   .hero .btn--dark { background: var(--cream); color: var(--ink); border-color: var(--cream); font-size: 12.5px; letter-spacing: .04em; }
   .hero .btn--dark::before { background: var(--ink); }
