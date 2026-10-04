@@ -1082,11 +1082,17 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   .hero__contact { color: var(--cream); }
   .hero__stage {
     position: absolute; top: auto; right: auto; bottom: 0;
-    height: var(--stage-h); width: calc(var(--stage-h) * 1024 / 924);
-    left: calc(50% - var(--stage-h) * 1024 / 924 * .56);
+    height: var(--stage-h); width: calc(var(--stage-h) * 1017 / 1162);
+    left: calc(50% - var(--stage-h) * 1017 / 1162 * .52);   /* kadr telefonu 1017:1162, oś twarzy na 52% szerokości */
     margin: 0;
   }
   .hero__bg-word { display: none; }
+  /* na szerszych ekranach w pionie (do 767 px) kadr jest węższy od okna: boki marynarki wygaszone, bez ostrej pionowej krawędzi
+     (na zwykłym telefonie te pasy leżą poza ekranem) */
+  .hero__portrait {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  }
 }
 
 /* Bardzo niski telefon (np. 320×568): hero trochę wyższe niż ekran, żeby tekst, twarz i przycisk się nie nakładały */
