@@ -79,84 +79,27 @@
     Array.prototype.forEach.call(els, function (el) { io.observe(el); });
   }
 
-  /* ---------- RAIL: skróty sekcji jako nuty ----------
-     Każda sekcja ma inną nutę, a wartości rosną w dół strony jak zwalniająca fraza:
-     trzydziestodwójka, szesnastka, ósemka, ćwierćnuta, półnuta i na końcu cała nuta
-     (każda trwa dwa razy dłużej od poprzedniej; trzydziestodwójki i szesnastki jako pary
-     połączone belkami). Nutę można też wybrać ręcznie atrybutem
-     data-note na sekcji: trzydziestodwojka, szesnastka, osemka, cwiercnuta, polnuta, calka.
-     Główka nuty (punkt 9,27 w viewBox 24x34) leży na linii paska. */
+  /* ---------- RAIL: skróty sekcji jako delikatne kropki ----------
+     Pionowy pasek po lewej stronie (od 1100 px szerokości). W sekcji głównej jest ukryty (skróty są wtedy
+     w pionowej sekcji po lewej stronie hero), pojawia się po przewinięciu do drugiej sekcji. */
   var dotsWrap = document.getElementById('railDots');
   var railFill = document.getElementById('railFill');
   var topProgress = document.getElementById('topProgress');
-  var NOTE_SERIES = ['thirtysecond', 'sixteenth', 'eighth', 'quarter', 'half', 'whole'];
-  var NOTE_NAMES = {
-    trzydziestodwojka: 'thirtysecond', szesnastka: 'sixteenth', osemka: 'eighth',
-    cwiercnuta: 'quarter', polnuta: 'half', calka: 'whole'
-  };
-  var NOTE_HEAD = '<ellipse cx="9" cy="27" rx="5" ry="3.6" transform="rotate(-22 9 27)"/>';
-  function noteStem(top) {
-    return '<rect x="12.35" y="' + top + '" width="1.5" height="' + (26.6 - top).toFixed(1) + '" rx=".75"/>';
-  }
-  // dwie nuty połączone belkami (2 belki = szesnastki, 3 belki = trzydziestodwójki);
-  // druga nuta stoi o stopień wyżej, belki lekko się wznoszą, para jest wyśrodkowana na linii paska
-  function beamedPair(beams) {
-    var thick = beams > 2 ? 2 : 2.4;
-    var step = beams > 2 ? 3.4 : 3.8;
-    var top = beams > 2 ? 4 : 5;
-    var s = '<ellipse cx="4.1" cy="27" rx="4.4" ry="3.2" transform="rotate(-22 4.1 27)"/>' +
-      '<ellipse cx="14.1" cy="25" rx="4.4" ry="3.2" transform="rotate(-22 14.1 25)"/>' +
-      '<rect x="6.85" y="' + top + '" width="1.5" height="' + (26.6 - top).toFixed(1) + '" rx=".75"/>' +
-      '<rect x="16.85" y="' + (top - 2) + '" width="1.5" height="' + (26.6 - top).toFixed(1) + '" rx=".75"/>';
-    for (var b = 0; b < beams; b++) {
-      var y = top + b * step;
-      s += '<path d="M6.85 ' + y.toFixed(1) + 'L18.35 ' + (y - 2).toFixed(1) + 'v' + thick + 'L6.85 ' + (y + thick).toFixed(1) + 'z"/>';
-    }
-    return s;
-  }
-  var NOTE_SVG = {
-    thirtysecond: beamedPair(3),
-    sixteenth: beamedPair(2),
-    eighth: NOTE_HEAD + noteStem(4) + '<path d="M13.85 4c.45 4.6 6.55 6.3 5.35 13.4-.3-2.5-2.3-4.9-5.35-5.8z"/>',
-    quarter: NOTE_HEAD + noteStem(4),
-    half: '<path fill-rule="evenodd" d="M13.636 25.127A5 3.6 -22 0 1 4.364 28.873 5 3.6 -22 0 1 13.636 25.127ZM11.867 24.992A3.5 1.55 -35 0 1 6.133 29.008 3.5 1.55 -35 0 1 11.867 24.992Z"/>' + noteStem(4),
-    whole: '<path fill-rule="evenodd" d="M2.8 27A6.2 4.1 0 0 1 15.2 27 6.2 4.1 0 0 1 2.8 27ZM10.95 29.785A3.4 1.9 55 0 1 7.05 24.215 3.4 1.9 55 0 1 10.95 29.785Z"/>'
-  };
-  // efekty kliknięcia: dwie fale dźwięku z główki i mała ósemka, która odlatuje w górę
-  var NOTE_FX = '<circle class="note__ring" cx="9" cy="27" r="6"/><circle class="note__ring" cx="9" cy="27" r="6"/>' +
-    '<g class="note__float"><ellipse cx="17.6" cy="11.4" rx="2.3" ry="1.65" transform="rotate(-22 17.6 11.4)"/>' +
-    '<rect x="19.1" y="3.6" width=".9" height="7.6" rx=".45"/><path d="M20 3.6c.3 2.2 3.1 3 2.6 6.4-.2-1.2-1.2-2.3-2.6-2.8z"/></g>';
-  // domyślnie ostatnie n wartości z szeregu, więc ostatnia sekcja zawsze dostaje całą nutę
-  function noteFor(i, n, name) {
-    if (name && NOTE_NAMES[name]) return NOTE_NAMES[name];
-    return NOTE_SERIES[Math.max(0, NOTE_SERIES.length - n + i)];
-  }
   rail.style.setProperty('--n', sections.length);
-  sections.forEach(function (s, i) {
+  sections.forEach(function (s) {
     var li = document.createElement('li');
     var a = document.createElement('a');
-    var type = noteFor(i, sections.length, s.dataset.note);
     a.href = '#' + s.id;
-    a.className = 'note--' + type;
     a.setAttribute('data-nav', '');
     a.setAttribute('aria-label', s.dataset.label);
-    a.innerHTML = '<svg class="rail__note" viewBox="0 0 24 34" width="24" height="34" aria-hidden="true" focusable="false">' +
-      NOTE_SVG[type] + NOTE_FX + '</svg>';
     var span = document.createElement('span');
     span.textContent = s.dataset.label;
     a.appendChild(span);
-    a.addEventListener('click', function () {
-      a.classList.remove('is-hit');
-      void a.offsetWidth;          // animacja startuje od nowa także przy szybkim klikaniu
-      a.classList.add('is-hit');
-      clearTimeout(a._hitTimer);
-      a._hitTimer = setTimeout(function () { a.classList.remove('is-hit'); }, 1300);
-    });
     li.appendChild(a);
     dotsWrap.appendChild(li);
   });
   var dots = dotsWrap.querySelectorAll('a');
-  var menuLinks = document.querySelectorAll('.menu__list a');
+  var menuLinks = document.querySelectorAll('.menu__list a, .hero__side a');
 
   function currentIndex(probeY) {
     var idx = 0;
@@ -177,10 +120,13 @@
     topProgress.style.transform = 'scaleX(' + p + ')';
 
     header.classList.toggle('is-scrolled', y > 10);
+    // komputer: pionowa sekcja ze skrótami w hero chowa się po przewinięciu, a skróty wracają na górny pasek (is-away)
+    body.classList.toggle('is-away', y > Math.min(140, vh * .16));
     var hIdx = currentIndex(y + header.offsetHeight / 2);
     header.classList.toggle('is-dark', sections[hIdx].dataset.theme === 'dark');
     var rIdx = currentIndex(y + vh / 2);
     rail.classList.toggle('is-dark', sections[rIdx].dataset.theme === 'dark');
+    rail.classList.toggle('is-visible', rIdx > 0);   // kropki dopiero od drugiej sekcji
     Array.prototype.forEach.call(dots, function (d, i) { d.classList.toggle('is-current', i === rIdx); });
     Array.prototype.forEach.call(menuLinks, function (a) {
       a.classList.toggle('is-current', a.getAttribute('href') === '#' + sections[rIdx].id);
@@ -283,10 +229,11 @@
      Zdjęcia są ścianami obracającego się graniastosłupa: środkowe stoi przodem, sąsiednie odchodzą
      w głąb pod kątem THETA i stykają się z nim krawędzią, dalsze są po niewidocznej stronie.
      Przy obrocie zdjęcie zwęża się i znika za krawędzią następnego, jakby całość kręciła się w kółko.
-     Bez strzałek: przeciąganie myszą lub palcem, strzałki na klawiaturze, klik w boczne zdjęcie,
-     a co kilka sekund karuzela obraca się sama. Pozycja jest ułamkowa (liczona w zdjęciach)
-     i dochodzi do celu sprężyną z tłumieniem krytycznym, więc niedociągnięte zdjęcie samo płynnie
-     ustawia się na środku, bez szarpnięcia i bez odbicia.
+     Bez strzałek: przeciąganie myszą lub palcem, strzałki na klawiaturze, klik w boczne zdjęcie.
+     Karuzela cały czas lekko się obraca (stała, wolna prędkość). Gdy ktoś ją przesunie, po puszczeniu
+     dociąga do najbliższego zdjęcia, zatrzymuje się na nim na 1,5 s i dopiero wtedy łagodnie się rozpędza
+     do dalszego kręcenia. Pozycja jest ułamkowa (liczona w zdjęciach), a dociąganie to sprężyna
+     z tłumieniem krytycznym, więc bez szarpnięcia i bez odbicia.
      Na komputerze środkowe zdjęcie ma wysokość listy tekstów obok (najwyżej tyle, ile mieści ekran),
      a karuzela może wyjść w lewo poza kolumnę, aż do toru paska nut. */
   var carousel = document.querySelector('[data-carousel]');
@@ -295,7 +242,7 @@
     var tiles = Array.prototype.slice.call(track.children);
     var n = tiles.length;
     if (n < 3) return;
-    var valuesList = document.querySelector('.values__list');
+    var valuesList = document.querySelector('.values__copy') || document.querySelector('.values__list');
 
     var THETA = 68;            // kąt między sąsiednimi zdjęciami na obwodzie (stopnie); większy = węższe boki
     var PERSP = 2.8;           // odległość „oka” liczona w szerokościach zdjęcia
@@ -312,15 +259,18 @@
       }
       return (span(THETA) + span(THETA / 2)) / 2;
     })();
-    var SNAP = 5;              // tempo dociągania po puszczeniu (mniej = wolniej i łagodniej)
-    var GLIDE = 3.4;           // tempo samoczynnego obrotu
-    var AUTO_EVERY = 5200;     // co ile ms karuzela obraca się sama
-    var AUTO_RESUME = 7000;    // ile ms po ruchu użytkownika wraca samoczynny obrót
+    var SNAP = 5.75;           // tempo dociągania po puszczeniu (mniej = wolniej i łagodniej); +15% względem 5
+    var DRIFT = .1265;         // ciągły, lekki obrót: tyle zdjęć na sekundę (ok. 8,6° na sekundę, zdjęcie przesuwa się co ~8 s); +15% względem .11
+    var HOLD = 1500;           // ms postoju na zdjęciu po dociągnięciu przeciągniętej karuzeli
+    var RAMP = 1.2;            // s łagodnego rozpędzania do pełnej prędkości po postoju (o 15% krócej)
 
     var pos = 0;               // która pozycja jest na środku (ułamkowo)
     var target = 0;            // pozycja docelowa (pełne zdjęcie)
     var vel = 0;               // prędkość w zdjęciach na sekundę
-    var omega = GLIDE;
+    var omega = SNAP;
+    var mode = 'drift';        // drift = ciągły obrót, settle = dociąganie do zdjęcia, hold = postój
+    var gain = 0;              // 0..1: rozpęd ciągłego obrotu po starcie i po postoju
+    var holdUntil = 0;
     var dragging = false;
     var raf = null;
     var lastT = 0;
@@ -380,26 +330,39 @@
       }
     }
 
+    var inView = false;
+    function active() { return inView && !document.hidden; }
     function tick(now) {
       var dt = Math.min(.05, (now - lastT) / 1000);
       lastT = now;
       if (!dragging) {
         if (reduceMotion) {
           pos = target; vel = 0;
-        } else {
+        } else if (mode === 'drift') {
+          // ciągły, lekki obrót: stała prędkość, rozpędzana łagodnie po starcie i po postoju
+          gain = Math.min(1, gain + dt / RAMP);
+          vel = DRIFT * gain * gain * (3 - 2 * gain);
+          pos += vel * dt;
+          target = pos;
+        } else if (mode === 'settle') {
           // sprężyna z tłumieniem krytycznym: najszybsze dojście do celu, które nie przestrzeliwuje
           vel += (-omega * omega * (pos - target) - 2 * omega * vel) * dt;
           pos += vel * dt;
-          if (Math.abs(pos - target) < .0006 && Math.abs(vel) < .004) { pos = target; vel = 0; }
+          if (Math.abs(pos - target) < .0006 && Math.abs(vel) < .004) {
+            pos = target; vel = 0;
+            mode = 'hold'; holdUntil = now + HOLD;
+          }
+        } else if (now >= holdUntil) {
+          mode = 'drift'; gain = 0;
         }
+        if (pos >= n) { pos -= n; target -= n; } else if (pos < 0) { pos += n; target += n; }   // liczby zostają w zakresie 0..n
       }
       layout();
-      if (dragging || pos !== target) {
+      // pętla chodzi, gdy karuzela się rusza albo czeka na koniec postoju; poza ekranem odpoczywa
+      if (dragging || (!reduceMotion && active()) || pos !== target) {
         raf = requestAnimationFrame(tick);
       } else {
         raf = null;
-        var turns = Math.floor(target / n) * n;   // liczby zostają w zakresie 0..n
-        pos -= turns; target -= turns;
       }
     }
     function wake() {
@@ -407,26 +370,8 @@
       lastT = performance.now();
       raf = requestAnimationFrame(tick);
     }
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) wake(); });
 
-    /* samoczynna zmiana: tylko gdy karuzela jest na ekranie i nikt jej nie dotyka */
-    var autoTimer = null;
-    var resumeTimer = null;
-    var inView = false;
-    var hovering = false;
-    function autoStep() {
-      if (dragging || hovering || !inView || document.hidden) return;
-      omega = GLIDE;
-      target = Math.round(target) + 1;
-      wake();
-    }
-    function startAuto() {
-      clearInterval(autoTimer);
-      if (!reduceMotion) autoTimer = setInterval(autoStep, AUTO_EVERY);
-    }
-    function pauseAuto() { clearInterval(autoTimer); clearTimeout(resumeTimer); autoTimer = null; }
-    function resumeAutoLater() { pauseAuto(); resumeTimer = setTimeout(startAuto, AUTO_RESUME); }
-    carousel.addEventListener('mouseenter', function () { hovering = true; });
-    carousel.addEventListener('mouseleave', function () { hovering = false; });
 
     /* przeciąganie: zdjęcia jadą za ręką, po puszczeniu rozpęd przechodzi w dociąganie do środka */
     var pid = null;
@@ -442,7 +387,7 @@
       lastMove = performance.now();
       carousel.classList.add('is-dragging');
       try { carousel.setPointerCapture(pid); } catch (err) { /* brak wsparcia: przeciąganie działa nad karuzelą */ }
-      pauseAuto();
+      mode = 'settle'; gain = 0;   // po puszczeniu: dociągnięcie do zdjęcia, postój, dopiero potem dalszy obrót
       wake();
     });
     carousel.addEventListener('pointermove', function (e) {
@@ -471,9 +416,8 @@
         // najbliższe zdjęcie; szybkie machnięcie przenosi o jedno dalej
         target = Math.round(pos + Math.max(-.6, Math.min(.6, vel * .18)));
       }
-      omega = SNAP;
+      omega = SNAP; mode = 'settle'; gain = 0;
       wake();
-      resumeAutoLater();
     }
     carousel.addEventListener('pointerup', endDrag);
     carousel.addEventListener('pointercancel', endDrag);
@@ -482,13 +426,12 @@
     carousel.addEventListener('keydown', function (e) {
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       e.preventDefault();
-      omega = SNAP;
+      omega = SNAP; mode = 'settle'; gain = 0;
       target = Math.round(target) + (e.key === 'ArrowRight' ? 1 : -1);
       wake();
-      resumeAutoLater();
     });
 
-    // zdjęcia pobieramy, gdy sekcja zbliża się do ekranu; samoczynna zmiana działa tylko na ekranie
+    // zdjęcia pobieramy, gdy sekcja zbliża się do ekranu; obrót działa tylko, gdy karuzelę widać
     function loadAll() {
       tiles.forEach(function (li) { li.querySelector('img').loading = 'eager'; });
     }
@@ -500,14 +443,13 @@
       }, { rootMargin: '100% 0px' });
       loadIo.observe(carousel);
       new IntersectionObserver(function (entries) {
-        var now = entries[0].isIntersecting;
-        if (now && !inView && !dragging) startAuto();   // odliczanie od chwili, gdy karuzelę widać
-        inView = now;
+        inView = entries[0].isIntersecting;
+        if (inView) wake();
       }, { threshold: .3 }).observe(carousel);
     } else {
       inView = true;
       loadAll();
-      startAuto();
+      wake();
     }
 
     var carouselResize = null;
@@ -1003,6 +945,34 @@
   }
   drawerPanel.addEventListener('pointerup', endDrag);
   drawerPanel.addEventListener('pointercancel', endDrag);
+
+
+  /* ---------- OFERTA: KARTY SPOTLIGHT ----------
+     Tylko dla myszy (hover + precyzyjny wskaźnik) i bez ograniczonego ruchu: karta lekko się przechyla
+     w stronę kursora, a poświata podąża za nim. Zdarzenia łapie nieruchomy <li>, żeby przechył karty
+     nie zmieniał obszaru najechania. Styl i reszta efektu (połysk, linia, przygaszenie sąsiadów) jest w CSS. */
+  (function () {
+    var cards = document.querySelectorAll('.value');
+    if (!cards.length || reduceMotion || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    var TILT = 6;   // maksymalny przechył w stopniach
+    Array.prototype.forEach.call(cards, function (li) {
+      var card = li.querySelector('.value__card');
+      if (!card) return;
+      li.addEventListener('pointermove', function (e) {
+        var r = li.getBoundingClientRect();
+        var x = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+        var y = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+        card.style.setProperty('--ry', ((x - .5) * 2 * TILT).toFixed(2) + 'deg');
+        card.style.setProperty('--rx', ((.5 - y) * 2 * TILT).toFixed(2) + 'deg');
+        card.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
+        card.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+      });
+      li.addEventListener('pointerleave', function () {
+        card.style.removeProperty('--rx'); card.style.removeProperty('--ry');
+        card.style.removeProperty('--mx'); card.style.removeProperty('--my');
+      });
+    });
+  })();
 
   onScrollUI();
 })();

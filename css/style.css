@@ -17,10 +17,9 @@
   --gradient: linear-gradient(90deg, var(--cream) 0%, var(--grey) 64%);
 
   /* Typografia: Montserrat = nagłówki i elementy interfejsu (menu, przyciski, etykiety),
-     Lora = teksty opisowe (akapity, cytat). Cormorant tylko w dekoracyjnym napisie w tle hero. */
+     Lora = teksty opisowe (akapity, cytat). Cormorant został usunięty razem z dużym napisem w tle hero. */
   --f-head: "Montserrat", "Helvetica Neue", Arial, sans-serif;
   --f-text: "Lora", Georgia, "Times New Roman", serif;
-  --f-display: "Cormorant Garamond", "Times New Roman", serif;
 
   --gutter: clamp(16px, 5vw, 72px);
   --maxw: 1320px;
@@ -47,7 +46,7 @@ img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration: none; }
 ul, ol { list-style: none; margin: 0; padding: 0; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
-h1, h2, h3, p, figure, blockquote { margin: 0; }
+h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
 /* akapity i cytaty (także nowe bloki dodane w WordPressie) dostają krój opisowy */
 p, blockquote { font-family: var(--f-text); }
 strong { font-weight: 600; color: var(--ink); }
@@ -175,7 +174,10 @@ body.is-ready .loader { display: none; }
 .header__logo img { width: clamp(34px, 3.2vw, 44px); height: auto; transition: filter .4s; }
 
 .menu { display: flex; align-items: center; gap: clamp(20px, 3vw, 48px); }
+.menu__links { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 40px); }
 .menu__list { display: flex; gap: clamp(16px, 2.4vw, 40px); }
+.menu__logo { display: none; }   /* logo w środku paska tylko na komputerze (blok KOMPUTER na końcu pliku) */
+.hero__side { display: none; }   /* pionowa sekcja ze skrótami tylko na komputerze */
 .menu__list a {
   position: relative;
   font-size: 13px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase;
@@ -209,77 +211,41 @@ body.is-ready .loader { display: none; }
 .burger[aria-expanded="true"] span:first-child { top: 21px; transform: rotate(45deg); }
 .burger[aria-expanded="true"] span:last-child { top: 21px; transform: rotate(-45deg); }
 
-/* ---------- ATTENTION RAIL ---------- */
+/* ---------- ATTENTION RAIL ----------
+   Delikatne kropki po lewej stronie ekranu: jedna na sekcję, linia postępu między nimi.
+   W sekcji głównej pasek jest ukryty (skróty są tam w pionowej sekcji po lewej stronie hero),
+   pojawia się dopiero po przewinięciu do drugiej sekcji (klasa is-visible dodawana w JS). */
 .rail {
   position: fixed; left: clamp(14px, 1.8vw, 30px); top: 50%; z-index: 400;
   transform: translateY(-50%);
   height: min(52vh, 420px);
   width: 20px;
   color: var(--ink);
-  transition: color .4s;
+  opacity: 0; pointer-events: none;
+  transition: color .4s, opacity .6s ease;
 }
+.rail.is-visible { opacity: 1; pointer-events: auto; }
 .rail.is-dark { color: var(--cream); }
-/* Skróty sekcji to nuty (JS wstawia je z sekcji [data-snap]; --n = liczba sekcji).
-   Linia biegnie tylko w przerwach między nutami: maska wycina pas na wysokości każdej nuty,
-   bo pionowa linia przechodząca przez nutę wyglądałaby jak druga laska. */
-.rail { --n: 6; --note-h: 34px; }
-.rail__track {
-  --note-gaps: repeating-linear-gradient(to bottom,
-    transparent 0, transparent calc(var(--note-h) + 4px),
-    #000 calc(var(--note-h) + 4px), #000 calc((100% - var(--note-h)) / (var(--n) - 1) - 4px),
-    transparent calc((100% - var(--note-h)) / (var(--n) - 1) - 4px), transparent calc((100% - var(--note-h)) / (var(--n) - 1)));
-  position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; transform: translateX(-50%);
-  -webkit-mask-image: var(--note-gaps); mask-image: var(--note-gaps);
-}
-.rail__track::before { content: ""; position: absolute; inset: 0; background: currentColor; opacity: .18; }
-/* postęp strony: ciemniejsza linia wypełnia kolejne przerwy między nutami */
-.rail__fill {
-  position: absolute; left: 50%; top: 0; width: 1px; height: 100%;
-  background: currentColor; opacity: .55;
-  transform-origin: top; transform: translateX(-50%) scaleY(0);
-}
-.rail__dots { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; }
-/* główka nuty (9,27) wypada na linii paska (10 px od lewej) */
-.rail__dots a { position: relative; display: block; width: 24px; height: var(--note-h); margin-left: 1px; }
-.rail__note {
-  position: absolute; left: 0; top: 0; width: 24px; height: 34px; overflow: visible;
-  fill: currentColor; opacity: .5;
-  transform-origin: 9px 27px;
-  transition: opacity .35s, scale .55s cubic-bezier(.34, 1.56, .64, 1);
-}
-.rail__dots a.is-current .rail__note { opacity: 1; scale: 1.22; }
-/* najechanie: nuta kołysze się jak wahadło metronomu */
-.rail__dots a:hover .rail__note, .rail__dots a:focus-visible .rail__note {
-  opacity: 1; animation: noteSwing .9s cubic-bezier(.36, .07, .19, .97);
-}
-/* kliknięcie: nuta podskakuje, z główki rozchodzą się dwie fale, w górę odlatuje mała ósemka */
-.rail__dots a.is-hit .rail__note { opacity: 1; animation: noteHop .7s cubic-bezier(.3, 1.5, .5, 1), noteSwing .9s cubic-bezier(.36, .07, .19, .97); }
-.note__ring { fill: none; stroke: currentColor; stroke-width: 1.1; opacity: 0; transform-box: fill-box; transform-origin: center; }
-.note__float { opacity: 0; transform-box: fill-box; transform-origin: center; }
-.rail__dots a.is-hit .note__ring { animation: noteRing .85s ease-out; }
-.rail__dots a.is-hit .note__ring + .note__ring { animation-delay: .15s; }
-.rail__dots a.is-hit .note__float { animation: noteFloat 1.1s ease-out .08s; }
-@keyframes noteSwing {
-  0% { rotate: 0deg; } 20% { rotate: -16deg; } 45% { rotate: 11deg; }
-  70% { rotate: -5deg; } 88% { rotate: 2deg; } 100% { rotate: 0deg; }
-}
-@keyframes noteHop { 0% { translate: 0 0; } 30% { translate: 0 -8px; } 62% { translate: 0 1px; } 100% { translate: 0 0; } }
-@keyframes noteRing { 0% { opacity: .75; transform: scale(.6); } 100% { opacity: 0; transform: scale(2.9); } }
-@keyframes noteFloat {
-  0% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
-  25% { opacity: .9; }
-  100% { opacity: 0; transform: translate(10px, -22px) rotate(16deg); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .rail__note, .note__ring, .note__float,
-  .rail__dots a:hover .rail__note, .rail__dots a.is-hit .rail__note,
-  .rail__dots a.is-hit .note__ring, .rail__dots a.is-hit .note__float { animation: none; transition: none; }
-}
-/* nazwa sekcji po najechaniu: na pastylce w kolorze tła, żeby była czytelna także nad dużym nagłówkiem */
 .rail { --rail-bg: var(--cream); }
 .rail.is-dark { --rail-bg: var(--ink); }
+.rail__track { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: currentColor; opacity: .18; transform: translateX(-50%); }
+.rail__fill {
+  position: absolute; left: 50%; top: 0; width: 1px; height: 100%;
+  background: currentColor; transform-origin: top; transform: translateX(-50%) scaleY(0);
+}
+.rail__dots { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
+.rail__dots a {
+  position: relative; display: block; width: 20px; height: 20px;
+}
+.rail__dots a::before {
+  content: ""; position: absolute; inset: 6px; border-radius: 50%;
+  border: 1px solid currentColor; background: var(--rail-bg);
+  transition: transform .4s var(--ease), background-color .4s;
+}
+.rail__dots a.is-current::before { background: currentColor; transform: scale(1.35); }
+/* nazwa sekcji po najechaniu: na pastylce w kolorze tła, żeby była czytelna także nad dużym nagłówkiem */
 .rail__dots a span {
-  position: absolute; left: 27px; top: 27px; transform: translate(-6px, -50%);
+  position: absolute; left: 28px; top: 50%; transform: translate(-6px, -50%);
   padding: 5px 11px 5px 12px; border-radius: 999px;
   background: var(--rail-bg); box-shadow: 0 0 0 1px rgba(128, 128, 128, .22);
   font-size: 11px; line-height: 1.4; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap;
@@ -318,6 +284,48 @@ body.is-ready .loader { display: none; }
   font-size: clamp(40px, 13.5vw, 150px);
   line-height: .95; letter-spacing: -.015em; color: var(--ink);
 }
+
+/* ---------- MEDIA SPOŁECZNOŚCIOWE W HERO ----------
+   Duże okrągłe ikony. Po najechaniu wypełniają się kolorem marki, a co kilka sekund po kolei, od lewej do prawej,
+   przebiega po nich delikatny połysk w kolorze danej marki. Na komputerze lista stoi na dole ekranu, w centrum
+   (blok KOMPUTER na końcu pliku); na telefonie i tablecie w pionie leży w przepływie pod kontaktem. */
+.hero__social { display: flex; justify-content: center; gap: clamp(12px, 1.2vw, 20px); margin-top: clamp(18px, 3vh, 28px); --d: .6s; }
+.soc {
+  position: relative; isolation: isolate; overflow: hidden;
+  width: var(--soc, 52px); height: var(--soc, 52px);
+  display: grid; place-items: center;
+  border: 1px solid currentColor; border-radius: 50%;
+  color: var(--ink);
+  transition: color .35s, border-color .35s, background-color .35s, transform .45s var(--ease), box-shadow .45s;
+}
+.soc svg { position: relative; z-index: 1; width: 44%; height: 44%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: filter .35s; }
+.soc svg .fill { fill: currentColor; stroke: none; }
+.soc--tiktok { --bg: #010101; --shine: rgba(37, 244, 238, .75); --glow: rgba(254, 44, 85, .55); }
+.soc--instagram { --bg: linear-gradient(45deg, #F9CE34 0%, #EE2A7B 48%, #6228D7 100%); --shine: rgba(238, 42, 123, .7); --glow: rgba(238, 42, 123, .5); }
+.soc--youtube { --bg: #FF0000; --shine: rgba(255, 0, 0, .65); --glow: rgba(255, 0, 0, .5); }
+.soc--facebook { --bg: #1877F2; --shine: rgba(24, 119, 242, .7); --glow: rgba(24, 119, 242, .5); }
+.soc:hover, .soc:focus-visible {
+  color: #fff; border-color: transparent; background: var(--bg);
+  transform: translateY(-4px) scale(1.07); box-shadow: 0 14px 26px -12px var(--glow);
+}
+.soc--tiktok:hover svg, .soc--tiktok:focus-visible svg { filter: drop-shadow(-1.6px -1px 0 #25F4EE) drop-shadow(1.6px 1px 0 #FE2C55); }
+/* połysk: ukośny pas koloru marki przesuwa się przez ikonę, każda ikona o chwilę później niż poprzednia */
+.soc::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(115deg, transparent 36%, var(--shine) 50%, transparent 64%);
+  transform: translateX(-130%);
+  animation: socShine 7s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * .3s + 2.2s);
+}
+.hero__social li:nth-child(1) .soc { --i: 0; }
+.hero__social li:nth-child(2) .soc { --i: 1; }
+.hero__social li:nth-child(3) .soc { --i: 2; }
+.hero__social li:nth-child(4) .soc { --i: 3; }
+@keyframes socShine {
+  0%, 62% { transform: translateX(-130%); }
+  76%, 100% { transform: translateX(130%); }
+}
+@media (prefers-reduced-motion: reduce) { .soc::after { animation: none; display: none; } }
 
 /* Draw Attention Line: linia, która „rysuje się” i prowadzi wzrok do treści */
 .draw-line {
@@ -396,14 +404,13 @@ h1[data-reveal].is-in, h2[data-reveal].is-in { filter: none; }
 
 /* ---------- 01 HERO ----------
    Szary gradient strony, teksty po lewej w Montserrat, po prawej postać z wyciętym tłem,
-   która częściowo zasłania duży napis „Music / Artist” w tle. */
+   z połową twarzy przy prawej krawędzi ekranu. */
 .hero {
   --hero-accent: #6B6B6B;    /* szary akcent w nagłówku: kontrast ≥ 3,4:1 w każdym miejscu gradientu */
   --hero-text: #3A3A3A;
   --stage-h: min(92.4svh, 61.6vw);   /* wysokość postaci (twarz powiększona o 10% względem 84svh / 56vw); napis w tle skaluje się razem z nią */
   --stage-w: calc(var(--stage-h) * 1024 / 924);
   --stage-out: calc(var(--stage-w) * .485);   /* o tyle scena wystaje za prawą krawędź ekranu: oś twarzy (51,5% szerokości kadru) leży dokładnie na krawędzi, widać tylko lewą połowę twarzy */
-  --aw: clamp(165px, 14vw, 225px);   /* szerokość strzałki przy przycisku */
   --title-fs: clamp(36px, 4.8vw, 96px);   /* wielkość nagłówka; opis pod nim jest jego proporcjonalną kopią */
   background: var(--gradient);
 }
@@ -422,6 +429,52 @@ h1[data-reveal].is-in, h2[data-reveal].is-in { filter: none; }
   text-wrap: balance;
 }
 .hero__title em, .hero__lead em { font-style: normal; color: var(--hero-accent); }
+
+/* Wypełnienie liter: wnętrze liter nagłówka i opisu wypełnia powoli poruszająca się gradientowa „powierzchnia” w tym samym
+   kolorze (czarny nagłówek zostaje czarny, szare akcenty szare), a odblaski w jasnym złocie (zamiast bieli) i cienie wędrują po literach.
+   Cztery warstwy: ostry, wąski połysk, szeroki miękki odblask, ukośny pas światła i pionowy spadek (światło z góry, które
+   powoli wędruje w dół). Każda warstwa jedzie w innym kierunku i na innym odcinku (paralaksa), a ruch jest wolny i płynny
+   (animacje 15 s i 21 s, na przemian tam i z powrotem, bez skoków), więc litery wyglądają jak wypukła, lekko obracana
+   bryła, a nie płaska plama. Pozycje X i Y animowane osobno (background-position-x/y), żeby animacje się nie zastępowały.
+   To nadal zwykły tekst (bez dzielenia na litery), efekt to background-clip: text. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero__title, .hero__lead, .hero__title em, .hero__lead em {
+    --c-lo: #000; --c-base: var(--ink); --c-top: #171613; --c-hi: #28251f; --c-spec: #766c52;
+    background-image:
+      linear-gradient(112deg, transparent 45.5%, var(--c-spec) 50%, transparent 54.5%),
+      radial-gradient(ellipse 34% 58% at 50% 45%, var(--c-hi), transparent 72%),
+      linear-gradient(112deg, transparent 37%, var(--c-hi) 50%, transparent 63%),
+      linear-gradient(180deg, var(--c-top) -40%, var(--c-base) 34%, var(--c-lo) 140%);
+    background-repeat: no-repeat;
+    background-size: 320% 100%, 250% 160%, 270% 100%, 100% 200%;
+    background-position-x: 100%, 0%, 85%, 0%;
+    background-position-y: 0%, 20%, 0%, 0%;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; -webkit-text-fill-color: transparent;
+    animation: letterGlow 15s ease-in-out infinite alternate, letterDepth 21s ease-in-out infinite alternate;
+  }
+  .hero__title em, .hero__lead em { --c-lo: #4a4a4a; --c-base: var(--hero-accent); --c-top: #767573; --c-hi: #807d74; --c-spec: #a39d8c; }
+  /* opis jest mały, więc jego połysk jest łagodniejszy, żeby nie psuć czytelności */
+  .hero__lead { --c-top: #1c1a17; --c-hi: #2b2822; --c-spec: #564e3a; }
+  .hero__lead em { --c-lo: #555; --c-top: #797773; --c-hi: #827e75; --c-spec: #99937f; }
+  .hero__title em:nth-of-type(1) { animation-delay: -5s, -7s; }
+  .hero__title em:nth-of-type(2) { animation-delay: -11s, -3s; }
+  .hero__lead { animation-delay: -6s, -10s; }
+  .hero__lead em:nth-of-type(1) { animation-delay: -2s, -14s; }
+  .hero__lead em:nth-of-type(2) { animation-delay: -9s, -5s; }
+  .hero__title ::selection, .hero__lead ::selection, .hero__title::selection, .hero__lead::selection { -webkit-text-fill-color: var(--cream); color: var(--cream); background: var(--ink); }
+  @keyframes letterGlow {
+    from { background-position-x: 100%, 0%, 85%, 0%; }
+    to { background-position-x: 0%, 100%, 15%, 0%; }
+  }
+  @keyframes letterDepth {
+    from { background-position-y: 0%, 15%, 0%, 0%; }
+    to { background-position-y: 0%, 85%, 0%, 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__title, .hero__lead, .hero__title em, .hero__lead em { animation: none; }
+  }
+}
 /* Nagłówek + opis: ramka ma szerokość najdłuższej linii nagłówka (linie są łamane <br>),
    dzięki temu na telefonie opis stoi dokładnie na środku nagłówka (na komputerze i tablecie
    opis jest wyrównany do lewej). W WordPressie: blok Grupa z nagłówkiem i akapitem. */
@@ -441,41 +494,6 @@ h1[data-reveal].is-in, h2[data-reveal].is-in { filter: none; }
   --d: .15s;
 }
 .hero__cta { position: relative; display: flex; width: fit-content; max-width: 100%; margin-top: clamp(28px, 5vh, 52px); --d: .3s; }
-/* Strzałka prowadząca wzrok do przycisku: po zniknięciu loadera rysuje się raz,
-   na końcu pojawia się grot i strzałka zostaje na miejscu (bez kołysania, bez znikania).
-   Grot (punkt 72,93 w viewBox 180x120) celuje w prawą krawędź przycisku. */
-.elegant-arrow {
-  position: absolute;
-  left: calc(100% + 18px - var(--aw) * .4);
-  top: calc(50% - var(--aw) * .517);
-  width: var(--aw);
-  pointer-events: none;
-  display: none;
-}
-.elegant-arrow svg { display: block; width: 100%; height: auto; overflow: visible; }
-.arrow-line, .arrow-head {
-  fill: none; stroke: var(--ink); stroke-width: 2.2;
-  stroke-linecap: round; stroke-linejoin: round;
-}
-.arrow-line { stroke-dasharray: 260; stroke-dashoffset: 260; opacity: 0; }
-.arrow-head { stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; }
-body.is-loaded .arrow-line { animation: drawArrow 1.6s cubic-bezier(.65, 0, .35, 1) .9s both; }
-/* grot rysowany jedną linią: prawe ramię → czubek → zagięcie w dół do drugiego ramienia */
-body.is-loaded .arrow-head { animation: drawHead .55s cubic-bezier(.45, 0, .25, 1) 2.45s both; }
-@keyframes drawArrow {
-  0% { stroke-dashoffset: 260; opacity: 0; }
-  15% { opacity: 1; }
-  100% { stroke-dashoffset: 0; opacity: 1; }
-}
-@keyframes drawHead {
-  0% { stroke-dashoffset: 1; opacity: 0; }
-  1% { opacity: 1; }
-  100% { stroke-dashoffset: 0; opacity: 1; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .arrow-line, body.is-loaded .arrow-line { animation: none; stroke-dashoffset: 0; opacity: 1; }
-  .arrow-head, body.is-loaded .arrow-head { animation: none; stroke-dashoffset: 0; opacity: 1; }
-}
 
 .hero__contact {
   display: flex; flex-wrap: wrap; gap: 8px 28px;
@@ -495,23 +513,6 @@ body.is-loaded .arrow-head { animation: drawHead .55s cubic-bezier(.45, 0, .25, 
   aspect-ratio: 1024 / 924;
   pointer-events: none;
 }
-/* Napis w tle: dwie linie, z lewej wyłania się z tła (maska), koniec każdej chowa się za lewą muszlą słuchawek */
-.hero__bg-word {
-  position: absolute; z-index: 0;
-  right: 76%; top: 7%;   /* prawa krawędź słowa na 24% szerokości kadru, czyli 4% za lewą muszlą słuchawek (20%) */
-  margin: 0;
-  font-family: var(--f-display); font-weight: 500;
-  font-size: calc(var(--stage-h) * .36);
-  line-height: .78; letter-spacing: .005em;
-  text-align: right; white-space: nowrap;
-  color: rgba(255, 255, 255, .3);   /* niski kontrast z szarym tłem: napis ma być tłem, nie rzucać się w oczy */
-  /* z lewej napis wyłania się z tła: kontrast rośnie płynnie od zera do pełnego na ok. 44% szerokości słowa */
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, .1) 6%, rgba(0, 0, 0, .32) 16%, rgba(0, 0, 0, .62) 26%, rgba(0, 0, 0, .88) 35%, #000 44%);
-  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, .1) 6%, rgba(0, 0, 0, .32) 16%, rgba(0, 0, 0, .62) 26%, rgba(0, 0, 0, .88) 35%, #000 44%);
-  user-select: none;
-  opacity: 0; transition: opacity 1.6s ease .1s;
-}
-body.is-loaded .hero__bg-word { opacity: 1; }
 .hero__portrait { position: absolute; inset: 0; z-index: 1; margin: 0; }
 .hero__portrait img {
   width: 100%; height: 100%;
@@ -544,11 +545,58 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 @media (max-width: 640px) {
   .media .sec-head__title { font-size: clamp(40px, 13.5vw, 150px); }
 }
+/* Teksty sekcji: podziękowanie Błażeja na kremowej planszy w złotej ramce. Krój jak w menu i przyciskach serwisu:
+   Montserrat, wersaliki z rozstawem liter (wersaliki robi CSS, w WordPressie tekst piszemy normalnie). Na telefonie i tablecie plansza leży nad
+   ścianą kadrów (stage jest wtedy kolumną, tekst ma order: 0, ściana order: 1), na komputerze pośrodku ściany (blok niżej).
+   Ramka: złota obwódka planszy, wewnątrz cienka złota ramka z jasnym światłem, które powoli okrąża ją dookoła (::before, wymaga
+   @property, bez niego ramka stoi), złote narożniki z delikatnym pulsowaniem (::after) i złoty ornament między akapitami. */
+.media__stage { display: flex; flex-direction: column; }
+.media__wall { order: 1; }
+@property --gold-a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes goldRing { to { --gold-a: 360deg; } }
+@keyframes goldCorner { from { opacity: .6; } to { opacity: 1; } }
 .media__text {
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: clamp(32px, 5vw, 80px);
-  font-size: clamp(16px, 1.15vw, 18px); line-height: 1.75;
+  --gold: 178, 150, 84;          /* złoto ramki (rgb) */
+  --plate-bg: #F4F2EE;
+  --pr: .9em;                    /* promień rogów planszy */
+  position: relative; isolation: isolate;
+  order: 0; width: 100%; max-width: 46em; margin: 0 auto clamp(28px, 4.5vh, 52px);
+  padding: 2.5em 2.2em;
+  background: var(--plate-bg); border: 1px solid rgba(var(--gold), .62); border-radius: var(--pr);
+  box-shadow: 0 .9em 2.4em -1.2em rgba(11, 11, 11, .28);
+  text-align: center;
+  font-family: var(--f-head); font-weight: 600; text-transform: uppercase; letter-spacing: .07em;
+  font-size: clamp(11px, 2.7vw, 14px); line-height: 1.85; color: var(--ink);
 }
+.media__text p { font-family: inherit; text-wrap: balance; } /* globalne p ma Lorę, tutaj ma zostać Montserrat; balance wyrównuje długość wierszy, bez osieroconych słów */
+.media__text p + p { position: relative; margin-top: 2.2em; }
+/* ornament między akapitami: złota linia z rombem pośrodku */
+.media__text p + p::before, .media__text p + p::after { content: ""; position: absolute; left: 50%; top: -1.1em; translate: -50% -50%; }
+.media__text p + p::before { width: 5.5em; height: 1px; background: linear-gradient(90deg, transparent, rgba(var(--gold), .9), transparent); }
+.media__text p + p::after { width: .46em; height: .46em; rotate: 45deg; background: rgb(var(--gold)); box-shadow: 0 0 0 .3em var(--plate-bg); }
+/* wewnętrzna ramka ze światłem krążącym po obwodzie */
+.media__text::before {
+  content: ""; position: absolute; inset: .72em; z-index: -1; pointer-events: none;
+  padding: 1px; border-radius: max(2px, calc(var(--pr) - .72em));
+  background: conic-gradient(from var(--gold-a), rgba(var(--gold), .38) 0deg, rgba(var(--gold), .38) 230deg, rgba(var(--gold), .9) 300deg, #f1e2ae 330deg, rgba(var(--gold), .9) 352deg, rgba(var(--gold), .38) 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  animation: goldRing 9s linear infinite;
+}
+/* złote narożniki */
+.media__text::after {
+  --g: linear-gradient(rgb(var(--gold)), rgb(var(--gold)));
+  content: ""; position: absolute; inset: .34em; z-index: -1; pointer-events: none;
+  background:
+    var(--g) 0 0 / 1.9em 2px, var(--g) 0 0 / 2px 1.9em,
+    var(--g) 100% 0 / 1.9em 2px, var(--g) 100% 0 / 2px 1.9em,
+    var(--g) 0 100% / 1.9em 2px, var(--g) 0 100% / 2px 1.9em,
+    var(--g) 100% 100% / 1.9em 2px, var(--g) 100% 100% / 2px 1.9em;
+  background-repeat: no-repeat;
+  animation: goldCorner 4.5s ease-in-out infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) { .media__text::before, .media__text::after { animation: none; } }
 
 /* Ściana kadrów: kafelek ma proporcje swojego kadru (--ar). Podstawa = --ar × docelowa wysokość rzędu,
    wolne miejsce dzielone proporcjonalnie do --ar, więc każdy rząd ma równą wysokość, wypełnia szerokość
@@ -604,7 +652,7 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
 }
 .marquee__track { display: flex; align-items: center; gap: clamp(32px, 5vw, 72px); width: max-content; animation: marquee 38s linear infinite; }
-.marquee__track img { height: clamp(30px, 3.6vw, 48px); width: auto; mix-blend-mode: multiply; }
+.marquee__track img { height: clamp(27px, 2.7vw, 36px); width: auto; mix-blend-mode: multiply; }
 .marquee:hover .marquee__track { animation-play-state: paused; }
 @keyframes marquee { to { transform: translateX(calc(-50% - clamp(16px, 2.5vw, 36px))); } }
 
@@ -618,20 +666,39 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 .media__logos { display: none; }
 @media (min-width: 1024px) {
   .media {
-    --band-min: clamp(170px, 15vw, 240px);
+    --band-min: clamp(215px, 18.6vw, 330px);
     --wall-w: min(calc(min(100vw, var(--maxw)) - 2 * var(--gutter)), calc(100vw - 2 * var(--band-min)));
     --band: calc((100vw - var(--wall-w)) / 2);
-    --logo-w: clamp(96px, 7.6vw, 150px);
+    /* Logotypy to teraz pliki przycięte do samego znaku (wysokiej rozdzielczości, z oryginałów klienta), więc --logo-w
+       to rozmiar odniesienia, a szerokość każdego logotypu = --logo-w * --k (udział znaku w dawnym kadrze 16:9).
+       Rozmiar zależy od miejsca w pasie obok ściany: najszerszy znak (Polskie Radio, k = .734) musi się w nim zmieścić. */
+    --logo-w: min(clamp(180px, 17vw, 300px), calc((var(--band) - var(--lane) - 26px) / .74));
     --lane: calc(clamp(14px, 1.8vw, 30px) + 36px);
-    --room-l: min(230px, max(0px, calc(var(--band) - var(--lane) - 18px - var(--logo-w))));
-    --room-r: min(230px, max(0px, calc(var(--band) - 42px - var(--logo-w))));
+    --room-l: min(345px, max(0px, calc(var(--band) - var(--lane) - 18px - var(--logo-w) * .74)));
+    --room-r: min(345px, max(0px, calc(var(--band) - 42px - var(--logo-w) * .74)));
   }
+  .media.has-logos { padding-bottom: calc(clamp(28px, 5vh, 64px) + 28px); }
   .media.has-logos .marquee { display: none; }
-  .media.has-logos .media__stage { position: relative; width: var(--wall-w); max-width: 100%; margin-inline: auto; }
+  .media.has-logos .media__stage { width: var(--wall-w); max-width: 100%; margin-inline: auto; }
+  /* teksty pośrodku ściany: kremowa plansza wycina w zdjęciach miejsce na tekst; rozmiar czcionki i planszy liczony
+     z szerokości ściany (cqw), więc tekst zawsze zajmuje to samo miejsce w kadrze */
+  .media__stage { display: block; position: relative; container-type: inline-size; }
+  .media__wall { order: 0; }
+  .media__text {
+    --plate-bg: var(--cream);
+    --pr: 1.3cqw;
+    position: absolute; left: 50%; top: 50%; translate: -50% -50%; z-index: 3;
+    width: 50cqw; max-width: none; margin: 0; padding: 2.3cqw 2.8cqw;
+    /* cremowy „passe-partout” wokół złotej obwódki oddziela planszę od zdjęć pod spodem */
+    box-shadow: 0 0 0 .4cqw var(--cream), 0 1.4cqw 3cqw -1cqw rgba(11, 11, 11, .35);
+    font-size: max(9.5px, 1.12cqw); line-height: 1.75; letter-spacing: .065em;
+  }
+  .media__text p + p { margin-top: 1.9em; }
+  .media__text p + p::before, .media__text p + p::after { top: -.95em; }
   .media.has-logos .media__logos { display: block; position: absolute; inset: 0; pointer-events: none; }
   .media__logo {
     position: absolute; top: var(--y);
-    width: calc(var(--logo-w) * var(--s, 1));
+    width: calc(var(--logo-w) * var(--s, 1) * var(--k, 1));
     rotate: var(--r, 0deg);
     opacity: 0; scale: .7;
     transition: opacity .9s ease, scale 1s cubic-bezier(.34, 1.56, .64, 1);
@@ -642,15 +709,15 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   /* logotypy pojawiają się po kolei, gdy ściana wjeżdża na ekran */
   .media__wall.is-in ~ .media__logos .media__logo { opacity: 1; scale: 1; }
   /* lewa strona ściany */
-  .media__logo:nth-child(5) { right: calc(100% + 18px + var(--room-l) * .15); --y: 1%;  --r: -6deg; --s: 1;    --dur: 7.5s; --wait: -1s; }
-  .media__logo:nth-child(2) { right: calc(100% + 18px + var(--room-l) * .9);  --y: 27%; --r: 4deg;  --s: .94;  --dur: 6.4s; --wait: -3s; }
-  .media__logo:nth-child(4) { right: calc(100% + 18px + var(--room-l) * .3);  --y: 53%; --r: -3deg; --s: 1.04; --dur: 8.2s; --wait: -5s; }
-  .media__logo:nth-child(8) { right: calc(100% + 18px + var(--room-l) * .8);  --y: 79%; --r: 6deg;  --s: .96;  --dur: 6.9s; --wait: -2s; }
+  .media__logo:nth-child(5) { --k: 0.556; right: calc(100% + 18px + var(--room-l) * .15); --y: 1%;  --r: -6deg; --s: 1;    --dur: 7.5s; --wait: -1s; }
+  .media__logo:nth-child(2) { --k: 0.716; right: calc(100% + 18px + var(--room-l) * .9);  --y: 28%; --r: 4deg;  --s: .94;  --dur: 6.4s; --wait: -3s; }
+  .media__logo:nth-child(4) { --k: 0.734; right: calc(100% + 18px + var(--room-l) * .3);  --y: 55%; --r: -3deg; --s: 1; --dur: 8.2s; --wait: -5s; }
+  .media__logo:nth-child(8) { --k: 0.386; right: calc(100% + 18px + var(--room-l) * .8);  --y: 82%; --r: 6deg;  --s: .96;  --dur: 6.9s; --wait: -2s; }
   /* prawa strona ściany */
-  .media__logo:nth-child(1) { left: calc(100% + 18px + var(--room-r) * .7);   --y: 8%;  --r: 5deg;  --s: 1.04; --dur: 7.1s; --wait: -4s; }
-  .media__logo:nth-child(7) { left: calc(100% + 18px + var(--room-r) * .1);   --y: 34%; --r: -4deg; --s: .9;   --dur: 8s;   --wait: -1.5s; }
-  .media__logo:nth-child(6) { left: calc(100% + 18px + var(--room-r) * .85);  --y: 60%; --r: 3deg;  --s: 1;    --dur: 6.6s; --wait: -6s; }
-  .media__logo:nth-child(3) { left: calc(100% + 18px + var(--room-r) * .25);  --y: 84%; --r: -6deg; --s: 1;    --dur: 7.7s; --wait: -3.5s; }
+  .media__logo:nth-child(1) { --k: 0.599; left: calc(100% + 18px + var(--room-r) * .7);   --y: 6%;  --r: 5deg;  --s: 1; --dur: 7.1s; --wait: -4s; }
+  .media__logo:nth-child(7) { --k: 0.435; left: calc(100% + 18px + var(--room-r) * .1);   --y: 33%; --r: -4deg; --s: .94;   --dur: 8s;   --wait: -1.5s; }
+  .media__logo:nth-child(6) { --k: 0.547; left: calc(100% + 18px + var(--room-r) * .85);  --y: 60%; --r: 3deg;  --s: .98;    --dur: 6.6s; --wait: -6s; }
+  .media__logo:nth-child(3) { --k: 0.682; left: calc(100% + 18px + var(--room-r) * .25);  --y: 86%; --r: -6deg; --s: .96;    --dur: 7.7s; --wait: -3.5s; }
   /* rozkład przewiduje 8 logotypów; kolejne są widoczne w pasku na telefonie */
   .media__logo:nth-child(n + 9) { display: none; }
 }
@@ -739,8 +806,8 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 /* karuzela dostaje szerszą kolumnę, żeby duże zdjęcie mieściło się prawie bez przycinania boków;
    kolumna tekstu jest na tyle szeroka, że tytuł „DOBRY NASTRÓJ” zostaje w jednej linii */
 .values__grid {
-  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
-  gap: clamp(32px, 6vw, 96px); align-items: center;
+  display: grid; grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr);
+  gap: clamp(32px, 4.5vw, 72px); align-items: center;
 }
 /* Karuzela 3D: zdjęcia jako ściany obracającego się graniastosłupa. Środkowe stoi przodem,
    boczne odchodzą w głąb i są przygaszone. Położenie, kąt i przygaszenie każdego zdjęcia ustawia JS
@@ -776,26 +843,81 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   display: block; width: 100%; height: 100%; object-fit: cover;
   pointer-events: none; -webkit-user-drag: none;
 }
-.values__list { display: grid; gap: 0; counter-reset: v; }
-.value {
-  position: relative;
-  display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: clamp(16px, 2vw, 32px);
-  padding-block: clamp(16px, 2.8vh, 30px);
-  border-top: 1px solid var(--line-light);
+/* Oferta: karty „spotlight” (motyw: Spotlight Cards, KokonutUI, MIT) w fiolecie (jeden kolor dla wszystkich kart: --accent-rgb i --icon w .value__card).
+   Karta ma ledwo widoczną poświatę w swoim kolorze (--accent-rgb), a po najechaniu: poświata podąża za kursorem,
+   karta lekko się przechyla (JS ustawia --rx, --ry, --mx, --my), przesuwa się połysk, rośnie linia u dołu,
+   a pozostałe karty przygasają. Na telefonie i bez myszy zostaje sama poświata. Tytuły i napisy jak w całym serwisie:
+   Montserrat ExtraBold wersalikami (tytuły), Lora (opisy). */
+.values__copy { display: grid; gap: clamp(14px, 2.4vh, 24px); }
+.values__intro { max-width: 66ch; }
+.values__intro-title {
+  font-family: var(--f-head); font-weight: 800; color: var(--cream); text-transform: uppercase;
+  font-size: clamp(22px, 2.6vw, 42px); line-height: 1.1; letter-spacing: .02em; text-wrap: balance;
 }
-.value:last-child { border-bottom: 1px solid var(--line-light); }
-.value::before {
-  content: ""; position: absolute; left: 0; top: -1px; height: 1px; width: 100%;
-  background: var(--cream); transform: scaleX(0); transform-origin: left;
-  transition: transform 1.2s var(--ease) .2s;
+.values__intro p { margin-top: 10px; font-size: clamp(14.5px, .98vw, 16px); line-height: 1.65; }
+
+.values__list {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(8px, .9vw, 14px);
+  list-style: none; margin: 0; padding: 0;
 }
-.value.is-in::before { transform: scaleX(1); }
-.value__num { grid-row: span 2; font-size: 12px; font-weight: 600; letter-spacing: .3em; font-variant-numeric: tabular-nums; color: rgba(236, 235, 232, .5); padding-top: .7em; }
+.value { position: relative; min-width: 0; }
+.value--wide { grid-column: 1 / -1; }
+.value__card {
+  --accent-rgb: 118, 78, 222; --icon: #b29cf6; --mx: 20%; --my: 20%;
+  position: relative; isolation: isolate; overflow: hidden; height: 100%;
+  display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start;
+  column-gap: clamp(12px, 1.1vw, 18px);
+  padding: clamp(14px, 1.25vw, 22px);
+  border: 1px solid rgba(236, 235, 232, .09); border-radius: clamp(14px, 1.2vw, 20px);
+  background:
+    linear-gradient(to right, rgba(var(--accent-rgb), .55), transparent) left bottom / 0 2px no-repeat,
+    radial-gradient(ellipse at 20% 20%, rgba(var(--accent-rgb), .2), transparent 68%),
+    rgba(236, 235, 232, .035);
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .22s ease-out, border-color .3s, background-size .5s ease, opacity .3s, scale .3s;
+}
+/* poświata za kursorem */
+.value__card::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(280px circle at var(--mx) var(--my), rgba(var(--accent-rgb), .22), transparent 65%);
+  opacity: 0; transition: opacity .3s;
+}
+/* połysk przesuwający się po najechaniu */
+.value__card::after {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 55%; z-index: 2; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .06), transparent);
+  transform: translateX(-100%) skewX(-12deg); transition: transform .7s ease-out;
+}
+.value__icon, .value__text { position: relative; z-index: 1; }
+.value__icon {
+  display: grid; place-items: center; flex: none;
+  width: clamp(34px, 2.8vw, 42px); aspect-ratio: 1; border-radius: 12px; color: var(--icon);
+  background: rgba(var(--accent-rgb), .16); box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), .3);
+}
+.value__icon svg { width: 46%; height: 46%; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
 .value__title {
-  font-family: var(--f-head); font-weight: 800; color: var(--cream);
-  font-size: clamp(26px, 3vw, 44px); line-height: 1.08; letter-spacing: .02em;
+  font-family: var(--f-head); font-weight: 800; color: var(--cream); text-transform: uppercase;
+  font-size: clamp(13px, 1vw, 17px); line-height: 1.2; letter-spacing: .02em;
 }
-.value p { margin-top: 8px; max-width: 54ch; }
+.value p { margin-top: 6px; font-size: clamp(13px, .86vw, 14.5px); line-height: 1.55; color: rgba(236, 235, 232, .66); }
+@media (hover: hover) and (pointer: fine) {
+  .value__card:hover { border-color: rgba(236, 235, 232, .22); background-size: 100% 2px, 100% 100%, auto; }
+  .value__card:hover::before { opacity: 1; }
+  .value__card:hover::after { transform: translateX(280%) skewX(-12deg); }
+  .values__list:has(.value:hover) .value:not(:hover) .value__card { opacity: .5; scale: .96; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .value__card, .value__card::before, .value__card::after { transition: none; }
+}
+/* niski ekran komputera (do 800 px wysokości): ciaśniejsze odstępy, żeby sekcja z powiększonym nagłówkiem nadal mieściła się na ekranie */
+@media (min-width: 961px) and (max-height: 800px) {
+  .values__copy { gap: 12px; }
+  .values__intro p { margin-top: 7px; }
+  .value__card { padding: 12px 16px; }
+}
+.values__more { font-size: clamp(13.5px, .9vw, 15px); line-height: 1.65; color: rgba(236, 235, 232, .6); }
+.values__more a { color: var(--cream); border-bottom: 1px solid rgba(236, 235, 232, .4); transition: border-color .3s; white-space: nowrap; }
+.values__more a:hover { border-color: var(--cream); }
 
 /* ---------- 05 PORTFOLIO ---------- */
 .portfolio { background: var(--paper); justify-content: flex-start; }
@@ -943,9 +1065,6 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 }
 
 @media (min-width: 1200px) {
-  .elegant-arrow { display: block; }
-  /* przycisk niżej, żeby strzałka (jej górny łuk sięga .414 swojej szerokości nad środek przycisku) zaczynała się pod opisem, a nie w nim */
-  .hero__cta { margin-top: calc(var(--aw) * .414 - 10px); }
 }
 
 @media (max-width: 1023px) {
@@ -956,8 +1075,6 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 /* W roli Eksperta na telefonie: tekst pod tytułem, szeroki kadr z Pytania na śniadanie na górze,
    potem po dwa i po trzy kadry w rzędzie */
 @media (max-width: 767px) {
-  .media__text { grid-template-columns: minmax(0, 1fr); }
-  .media__text p + p { margin-top: .8em; }
   .media__wall { --row: .34; }
   .wall__tile--lead { order: -1; }
   .wall__badge { height: 28px; padding-inline: 9px; left: 8px; top: 8px; }
@@ -980,6 +1097,7 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
     transition: clip-path .8s var(--ease-io), visibility 0s .8s;
   }
   .menu.is-open { clip-path: circle(150% at calc(100% - 44px) 32px); visibility: visible; transition: clip-path .8s var(--ease-io); }
+  .menu__links { flex-direction: column; gap: 4px; }
   .menu__list { flex-direction: column; align-items: center; gap: 4px; }
   .menu__list a {
     font-size: clamp(26px, 7vw, 40px); font-weight: 800;
@@ -1022,8 +1140,7 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   .lightbox__nav { position: absolute; bottom: max(16px, env(safe-area-inset-bottom)); }
   .lightbox__nav--prev { left: calc(50% - 60px); }
   .lightbox__nav--next { right: calc(50% - 60px); }
-  .value { grid-template-columns: minmax(0, 1fr); }
-  .value__num { grid-row: auto; padding-top: 0; margin-bottom: 4px; }
+  .values__list { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 380px) {
@@ -1031,28 +1148,14 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   .social a { width: 34px; height: 34px; }
 }
 
-/* Hero w pionie (tablet, telefon, wąskie okno): najpierw teksty, pod nimi scena
-   dosunięta do prawej krawędzi i do dołu sekcji. */
-@media (max-aspect-ratio: 9/10) and (max-width: 1199px), (max-width: 699px) and (min-height: 521px) {
-  .hero { justify-content: flex-start; padding-bottom: 0; --stage-w: min(110vw, 748px); --title-fs: min(8vw, 88px); }   /* scena +10% (było 100vw / 680px) */
-  .hero__inner { margin-bottom: clamp(16px, 4vw, 32px); }
-  .hero__copy { max-width: none; }   /* ramka obejmuje zawartość (hug content): nagłówek zawsze trzy linie, bez zawijania na szerokich oknach w pionie */
-  .hero__stage {
-    position: relative; right: auto; bottom: auto;
-    align-self: flex-end;
-    width: var(--stage-w); height: auto;
-    margin-top: auto; margin-right: calc(var(--stage-out) * -1);
-  }
-  /* tablet: napis jak na komputerze, końcówki chowają się za muszlą */
-  .hero__bg-word { right: 76%; font-size: calc(var(--stage-w) * .18); }
-}
-
-/* Telefon: połowa twarzy Błażeja przy prawej krawędzi ekranu, na całą wysokość od nagłówka strony do dołu (głowa w całości, bez maski u góry).
+/* Telefon i każde wysokie okno poniżej 1200 px (tablet w pionie, wąskie okno przeglądarki): twarz zawsze po prawej, obok tekstu, nigdy pod nim.
+   Połowa twarzy Błażeja przy prawej krawędzi ekranu, na całą wysokość od nagłówka strony do dołu (głowa w całości, bez maski u góry).
    Po lewej stronie twarzy kolumna tekstu: nagłówek i opis, wyrównane do lewej. Szerokość kolumny to ekran minus zasłonięta
    twarz, a nagłówek skaluje się płynnie razem z nią (--title-fs), więc nigdy nie zachodzi na zdjęcie.
-   U dołu ciemny gradient na marynarce niesie jasny przycisk i jasny kontakt. Bez napisu „Music / Artist”. */
-@media (orientation: portrait) and (max-width: 767px), (max-width: 699px) and (min-height: 521px) {
+   U dołu ciemny gradient na marynarce niesie jasny przycisk i jasny kontakt. */
+@media (orientation: portrait) and (max-width: 767px), (max-width: 699px) and (min-height: 521px), (max-aspect-ratio: 9/10) and (max-width: 1199px) {
   .hero {
+    justify-content: flex-start;
     --hero-h: 100svh;
     /* wysokość zdjęcia: twarz +10% (192,5% szerokości ekranu zamiast 175%), ale najwyżej od nagłówka strony do dołu ekranu,
        żeby głowa zawsze była widoczna w całości (na niskich telefonach powiększenie jest przez to mniejsze niż 10%) */
@@ -1075,11 +1178,13 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   /* nagłówek i opis w jednej kolumnie po lewej stronie twarzy (grupa ma szerokość kolumny, tytuł zawija się w niej na słowach) */
   .hero__head { width: var(--col-w); max-width: none; }
   .hero__lead { margin-top: clamp(14px, 2.4vh, 22px); text-align: left; font-size: max(10.5px, calc(var(--title-fs) * .36)); }
-  .hero__cta { margin-top: auto; }
-  .hero .btn--dark { background: var(--cream); color: var(--ink); border-color: var(--cream); font-size: 12.5px; letter-spacing: .04em; }
-  .hero .btn--dark::before { background: var(--ink); }
-  .hero .btn--dark:hover { color: var(--cream); }
-  .hero__contact { color: var(--cream); }
+  /* przycisk stoi tuż pod opisem, w kolumnie tekstu po lewej stronie twarzy (napis zawija się w kilku liniach); kontakt i ikony zostają na dole */
+  .hero__cta { width: var(--col-w); max-width: 100%; margin-top: clamp(16px, 2.6vh, 26px); }
+  .hero .btn { width: 100%; min-height: 0; gap: 8px; padding: 12px 14px 12px 18px; line-height: 1.25; white-space: normal; border-radius: 28px; }
+  .hero .btn--dark { font-size: clamp(9.5px, calc(var(--col-w) * .075), 12.5px); letter-spacing: .04em; }   /* ciemny przycisk: leży na jasnym tle obok twarzy */
+  .hero__contact { color: var(--cream); margin-top: auto; }
+  .hero .hero__social { margin-top: 18px; --soc: clamp(52px, 15vw, 64px); gap: clamp(12px, 3.6vw, 18px); justify-content: center; }
+  .hero .soc { color: var(--cream); }
   .hero__stage {
     position: absolute; top: auto; right: auto; bottom: 0;
     height: var(--stage-h); width: calc(var(--stage-h) * 1017 / 1162);
@@ -1087,12 +1192,27 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
     left: calc(100% - var(--stage-h) * 1017 / 1162 * .515);
     margin: 0;
   }
-  .hero__bg-word { display: none; }
   /* lewy brzeg kadru (ucięta krawędzią zdjęcia marynarka) wygaszany, bez ostrej pionowej krawędzi; głowa jest widoczna w całości */
   .hero__portrait {
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%, #000 100%);
     mask-image: linear-gradient(90deg, transparent 0, #000 22%, #000 100%);
   }
+}
+
+/* Wysokie okno od 700 do 1199 px (tablet w pionie, wąskie okno przeglądarki): wysokość hero jest stała względem szerokości
+   (ekran wyższy niż kompozycja nie rozciąga hero, więc twarz nie ucieka w dół), a przycisk, kontakt i ikony stoją
+   pod opisem w kolumnie po lewej, ciemne (bez ciemnego gradientu u dołu, bo nic nie leży na marynarce). */
+@media (max-aspect-ratio: 9/10) and (min-width: 700px) and (max-width: 1199px) {
+  .hero {
+    --hero-h: min(100svh, calc(125vw + var(--header-h) + 12px));
+    --stage-h: min(calc(var(--hero-h) - var(--header-h) - 12px), 125vw);
+  }
+  .hero::after { display: none; }
+  .hero__cta { width: fit-content; margin-top: clamp(22px, 3.4vw, 34px); }
+  .hero .btn { width: auto; min-height: 54px; padding: 14px 26px; gap: 14px; border-radius: 999px; font-size: clamp(12.5px, 1.6vw, 15px); }
+  .hero__contact { color: var(--hero-text); margin-top: clamp(20px, 3vw, 30px); font-size: clamp(14px, 1.8vw, 17px); }
+  .hero .hero__social { justify-content: flex-start; margin-top: clamp(18px, 2.6vw, 26px); --soc: clamp(52px, 7vw, 64px); }
+  .hero .soc { color: var(--ink); }
 }
 
 /* Bardzo niski telefon (np. 320×568): hero trochę wyższe niż ekran, żeby tekst, twarz i przycisk się nie nakładały */
@@ -1103,6 +1223,88 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 /* Niski ekran poziomy (telefon w poziomie) */
 @media (max-height: 520px) and (orientation: landscape) {
   .section { min-height: auto; }
+}
+
+/* =========================================================
+   KOMPUTER: układ w czterech pionowych częściach
+   (od 1200 px szerokości albo od 961 px, gdy okno nie jest wyraźnie wyższe niż szerokie, jak w układzie piętrowym)
+   1. część: pionowa sekcja ze skrótami i powiększonym logo na środku
+   2. część: nagłówek, opis, przycisk i kontakt
+   3. i 4. część: zdjęcie z połową twarzy przy prawej krawędzi
+   Na dole w centrum ikony mediów społecznościowych.
+   Po przewinięciu (body.is-away) pionowa sekcja znika, a skróty wracają na górny pasek, wyśrodkowany,
+   z logo na samym środku między skrótami.
+   ========================================================= */
+@media (min-width: 1200px), (min-width: 961px) and (min-aspect-ratio: 91/100) {
+  /* górny pasek: skróty po obu stronach logo, logo dokładnie na środku; w sekcji głównej pasek jest ukryty */
+  .header { transition: color .4s, transform .6s var(--ease), opacity .5s ease, visibility 0s; }
+  body:not(.is-away) .header { transform: translateY(-100%); opacity: 0; visibility: hidden; pointer-events: none; transition: color .4s, transform .6s var(--ease), opacity .4s ease, visibility 0s .6s; }
+  .header__logo, .menu .social { display: none; }
+  .menu { flex: 1; justify-content: center; }
+  .menu__links { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; width: 100%; }
+  .menu__list--l { justify-self: end; margin-right: clamp(28px, 3.4vw, 64px); }
+  .menu__list--r { justify-self: start; margin-left: clamp(28px, 3.4vw, 64px); }
+  .menu__logo { display: block; }
+  .menu__logo img { display: block; height: clamp(40px, 5vh, 50px); width: auto; transition: filter .4s; }
+  .header.is-dark .menu__logo img { filter: invert(1); }
+
+  /* 1. część: pionowa sekcja: powiększone logo, pod nim skróty; całość wyśrodkowana w pionie */
+  .hero__side {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 25vw; z-index: 3;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(28px, 7vh, 76px);
+    border-right: 1px solid var(--line);
+    transition: opacity .5s ease, transform .7s var(--ease), visibility 0s;
+  }
+  body.is-away .hero__side { opacity: 0; transform: translateX(-28px); visibility: hidden; pointer-events: none; transition: opacity .4s ease, transform .6s var(--ease), visibility 0s .6s; }
+  .hero__side-list { display: grid; gap: clamp(10px, 1.9vh, 18px); text-align: center; }
+  .hero__side-list a {
+    position: relative; display: inline-block;
+    font-size: clamp(11px, .9vw, 13px); font-weight: 500; letter-spacing: .16em; text-transform: uppercase;
+    padding-block: 6px;
+  }
+  .hero__side-list a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 1px;
+    background: currentColor; transform: scaleX(0); transform-origin: right;
+    transition: transform .5s var(--ease);
+  }
+  .hero__side-list a:hover::after, .hero__side-list a.is-current::after { transform: scaleX(1); transform-origin: left; }
+  .hero__side-logo { display: block; }
+  .hero__side-logo img { display: block; width: clamp(76px, 8vw, 132px); height: auto; transition: transform .8s var(--ease); }
+  .hero__side-logo:hover img { transform: scale(1.06) rotate(-3deg); }
+
+  /* 2. część: teksty. Szerokość kolumny wyznacza wielkość nagłówka (najszersze słowo HISTORIE ma ok. 4,9 em),
+     ale też wysokość okna, żeby pięć linii nagłówka, opis, przycisk i kontakt zmieściły się nad ikonami */
+  .hero {
+    /* stała wysokość hero: pełny ekran, ale nie więcej niż wynika z szerokości (kompozycja ma proporcje ok. 3:2). W oknie wyższym niż to hero nie rozciąga się,
+       więc twarz zostaje na wysokości tekstu i nagłówka, a nie ląduje na dole pustego ekranu */
+    --hero-h: min(100svh, 66.7vw);
+    --hv: calc(var(--hero-h) / 100);   /* 1% wysokości hero (zamiast vh: odstępy liczone z hero, a nie z okna) */
+    --stage-h: min(calc(var(--hero-h) * .924), 61.6vw);
+    min-height: var(--hero-h);
+    --ts: 1.25;   /* nagłówek, opis, przycisk i kontakt są o 25% większe (tylko komputer) */
+    --col-pad: clamp(14px, 2vw, 40px);
+    --col-shift: 4vw;   /* teksty przesunięte w prawo od linii dzielącej 1. część (nie przy samej kresce) */
+    --col-w: calc((25vw - 2 * var(--col-pad)) * var(--ts));
+    --reserve: clamp(104px, calc(var(--hv) * 12), 140px);   /* miejsce pod tekstami na ikony mediów społecznościowych */
+    /* wielkość nagłówka: najwyżej tyle, ile mieści kolumna (najszersze słowo HISTORIE ma ok. 4,9 em),
+       i najwyżej tyle, żeby cały blok tekstów (pięć linii nagłówka, opis, przycisk, kontakt) zmieścił się nad ikonami */
+    --title-fs: min(calc(96px * var(--ts)), calc(var(--col-w) / 4.95), calc((var(--hero-h) - var(--header-h) - clamp(12px, calc(var(--hv) * 3), 36px) - var(--reserve) - 205px) / 7.02));
+    padding-block: calc(var(--header-h) + clamp(12px, calc(var(--hv) * 3), 36px)) var(--reserve);
+  }
+  /* na niższym hero powiększenie jest mniejsze, bo zabrakłoby miejsca nad ikonami (pełne +25% od 1000 px wysokości hero;
+     wysokość hero to mniejsza z wysokości okna i 66,7% jego szerokości, stąd warunki na szerokość: 1499, 1349 i 1199 px) */
+  @media (max-height: 999px), (max-width: 1499px) { .hero { --ts: 1.18; } }
+  @media (max-height: 899px), (max-width: 1349px) { .hero { --ts: 1.1; } }
+  @media (max-height: 799px), (max-width: 1199px) { .hero { --ts: 1; } }
+  .hero__inner { position: static; padding-left: calc(25vw + var(--col-pad) + var(--col-shift)); padding-right: 0; }
+  .hero__copy { width: var(--col-w); max-width: none; }
+  .hero__cta { width: 100%; margin-top: clamp(28px, calc(var(--hv) * 5), 52px); }
+  .hero__lead { margin-top: clamp(18px, calc(var(--hv) * 3), 28px); }
+  .hero .btn { font-size: calc(clamp(10px, .76vw, 13px) * var(--ts)); padding-inline: calc(clamp(14px, 1.3vw, 26px) * var(--ts)); min-height: calc(54px * var(--ts)); letter-spacing: .05em; white-space: normal; text-align: left; justify-content: space-between; }
+  .hero__contact { font-size: calc(14px * var(--ts)); margin-top: clamp(20px, calc(var(--hv) * 3), 32px); }
+
+  /* media społecznościowe: na dole, wyśrodkowane względem szerokości tekstu nagłówka (najszersze słowo HISTORIE ma ok. 4,9 em) */
+  .hero__social { position: absolute; left: calc(25vw + var(--col-pad) + var(--col-shift)); width: calc(var(--title-fs) * 4.9); right: auto; bottom: clamp(20px, calc(var(--hv) * 4.5), 48px); margin-top: 0; z-index: 3; --soc: clamp(48px, 3.4vw, 64px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
