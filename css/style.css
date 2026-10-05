@@ -402,15 +402,16 @@ h1[data-reveal].is-in, h2[data-reveal].is-in { filter: none; }
   --hero-text: #3A3A3A;
   --stage-h: min(84svh, 56vw);   /* wysokość postaci; napis w tle skaluje się razem z nią */
   --stage-w: calc(var(--stage-h) * 1024 / 924);
+  --stage-out: calc(var(--stage-w) * .485);   /* o tyle scena wystaje za prawą krawędź ekranu: oś twarzy (51,5% szerokości kadru) leży dokładnie na krawędzi, widać tylko lewą połowę twarzy */
   --aw: clamp(165px, 14vw, 225px);   /* szerokość strzałki przy przycisku */
   --title-fs: clamp(36px, 4.8vw, 96px);   /* wielkość nagłówka; opis pod nim jest jego proporcjonalną kopią */
   background: var(--gradient);
 }
 /* hero na całą szerokość: teksty zaczynają się przy lewej krawędzi (na wysokości logo), a nie w wąskim kontenerze */
 .hero__inner { position: relative; z-index: 2; max-width: none; }
-/* teksty kończą się przed twarzą: lewy policzek leży na 34,6% szerokości sceny */
+/* teksty kończą się przed słuchawkami: lewa muszla leży na 20% szerokości sceny, a scena wystaje za krawędź o --stage-out */
 .hero__copy {
-  max-width: min(900px, calc(100vw - var(--stage-w) * .654 - var(--gutter) - 48px));
+  max-width: min(900px, calc(100vw - var(--stage-w) * .315 - var(--gutter) - 48px));
 }
 .hero__title {
   font-family: var(--f-head); font-weight: 800; color: var(--ink);
@@ -486,18 +487,18 @@ body.is-loaded .arrow-head { animation: drawHead .55s cubic-bezier(.45, 0, .25, 
 .hero__contact a { border-bottom: 1px solid transparent; transition: border-color .3s; }
 .hero__contact a:hover { border-color: currentColor; }
 
-/* Scena: dosunięta do prawej krawędzi ekranu i do dołu sekcji, więc ucięte ramię i tułów
-   kończą się na krawędziach okna. Proporcje = wycinek 1024x924. */
+/* Scena: dosunięta do dołu sekcji i przesunięta w prawo tak, że połowa twarzy chowa się za prawą krawędzią ekranu
+   (sekcja ma overflow: hidden). Proporcje = wycinek 1024x924. */
 .hero__stage {
-  position: absolute; right: 0; bottom: 0; z-index: 1;
+  position: absolute; right: calc(var(--stage-out) * -1); bottom: 0; z-index: 1;
   height: var(--stage-h);
   aspect-ratio: 1024 / 924;
   pointer-events: none;
 }
-/* Napis w tle: dwie linie, koniec każdej chowa się za lewym policzkiem */
+/* Napis w tle: dwie linie, z lewej wyłania się z tła (maska), koniec każdej chowa się za lewą muszlą słuchawek */
 .hero__bg-word {
   position: absolute; z-index: 0;
-  right: 61%; top: 7%;
+  right: 76%; top: 7%;   /* prawa krawędź słowa na 24% szerokości kadru, czyli 4% za lewą muszlą słuchawek (20%) */
   margin: 0;
   font-family: var(--f-display); font-weight: 500;
   font-size: calc(var(--stage-h) * .36);
@@ -936,6 +937,11 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 /* =========================================================
    RESPONSYWNOŚĆ
    ========================================================= */
+@media (min-width: 768px) {
+  /* ramka tekstów obejmuje tylko swoją zawartość (hug content), nie rozciąga się nad zdjęciem */
+  .hero__copy { width: fit-content; }
+}
+
 @media (min-width: 1200px) {
   .elegant-arrow { display: block; }
   /* przycisk niżej, żeby strzałka (jej górny łuk sięga .414 swojej szerokości nad środek przycisku) zaczynała się pod opisem, a nie w nim */
@@ -1027,54 +1033,47 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 
 /* Hero w pionie (tablet, telefon, wąskie okno): najpierw teksty, pod nimi scena
    dosunięta do prawej krawędzi i do dołu sekcji. */
-@media (orientation: portrait) and (max-width: 1199px), (max-width: 699px) and (min-height: 521px) {
+@media (max-aspect-ratio: 9/10) and (max-width: 1199px), (max-width: 699px) and (min-height: 521px) {
   .hero { justify-content: flex-start; padding-bottom: 0; --stage-w: min(100vw, 680px); --title-fs: min(8vw, 88px); }
   .hero__inner { margin-bottom: clamp(16px, 4vw, 32px); }
-  .hero__copy { max-width: 700px; }
+  .hero__copy { max-width: none; }   /* ramka obejmuje zawartość (hug content): nagłówek zawsze trzy linie, bez zawijania na szerokich oknach w pionie */
   .hero__stage {
     position: relative; right: auto; bottom: auto;
     align-self: flex-end;
     width: var(--stage-w); height: auto;
-    margin-top: auto;
+    margin-top: auto; margin-right: calc(var(--stage-out) * -1);
   }
-  /* tablet: napis po lewej, końcówki chowają się za policzkiem jak na komputerze */
-  .hero__bg-word { right: 62%; font-size: calc(var(--stage-w) * .18); }
+  /* tablet: napis jak na komputerze, końcówki chowają się za muszlą */
+  .hero__bg-word { right: 76%; font-size: calc(var(--stage-w) * .18); }
 }
 
-/* Telefon: twarz Błażeja jest tłem tekstu, jak na okładce magazynu. Zdjęcie wypełnia ekran od nagłówka do dołu.
-   U góry zdjęcie łagodnie przechodzi w szare tło hero (tytuł i opis leżą na czystym tle, głowa wyłania się spod nich),
-   u dołu ciemny gradient na marynarce niesie jasny przycisk i jasny kontakt, twarz w środku zostaje czysta.
-   Bez napisu „Music / Artist”. */
+/* Telefon: połowa twarzy Błażeja przy prawej krawędzi ekranu, na całą wysokość od nagłówka strony do dołu (głowa w całości, bez maski u góry).
+   Po lewej stronie twarzy kolumna tekstu: nagłówek i opis, wyrównane do lewej. Szerokość kolumny to ekran minus zasłonięta
+   twarz, a nagłówek skaluje się płynnie razem z nią (--title-fs), więc nigdy nie zachodzi na zdjęcie.
+   U dołu ciemny gradient na marynarce niesie jasny przycisk i jasny kontakt. Bez napisu „Music / Artist”. */
 @media (orientation: portrait) and (max-width: 767px), (max-width: 699px) and (min-height: 521px) {
   .hero {
-    /* dół opisu: nagłówek strony + odstęp sekcji + trzy linie tytułu (9,8vw) + trzy linie opisu */
-    --veil-top: calc(var(--header-h) + 7vh + 31vw + 90px);
-    /* wysokość zdjęcia dobrana tak, żeby brwi (34% kadru) wypadły tuż pod końcem mgły,
-       a zdjęcie sięgało do dołu ekranu: 0,66 wysokości kadru = ekran minus koniec mgły */
     --hero-h: 100svh;
-    --title-fs: 9.8vw;
-    --stage-h: min(calc((var(--hero-h) - var(--veil-top) - 64px) / .66), calc(var(--hero-h) - var(--header-h) - 40px));
+    /* wysokość zdjęcia: od nagłówka strony do dołu ekranu, ale nie więcej niż 175% szerokości ekranu (żeby zostało miejsce na tekst) */
+    --stage-h: min(calc(var(--hero-h) - var(--header-h) - 40px), 175vw);
+    /* kolumna tekstu: od lewego marginesu do lewej muszli słuchawek (20% kadru telefonu 1017:1162, którego oś twarzy leży na prawej krawędzi) */
+    --col-w: calc(100vw - var(--gutter) - var(--stage-h) * 1017 / 1162 * .315 - 14px);
+    /* najszersze słowo nagłówka (HISTORIE) ma ok. 4,9 em: nagłówek jest tak duży, żeby się w kolumnie mieścił, najwyżej 9,8vw */
+    --title-fs: min(9.8vw, calc(var(--col-w) / 4.95));
     min-height: 100vh; min-height: var(--hero-h);
     padding-bottom: calc(24px + env(safe-area-inset-bottom));
   }
-  .hero::before, .hero::after {
-    content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
-  }
-  /* jasna mgła w kolorze tła hero pod tytułem i opisem */
-  .hero::before {
-    background: var(--gradient);
-    -webkit-mask-image: linear-gradient(to bottom, #000 0, rgba(0, 0, 0, .9) var(--veil-top), transparent calc(var(--veil-top) + 64px));
-    mask-image: linear-gradient(to bottom, #000 0, rgba(0, 0, 0, .9) var(--veil-top), transparent calc(var(--veil-top) + 64px));
-  }
+  /* bez jasnej mgły pod tytułem: zdjęcie samo zaczyna się pod tytułem (maska na .hero__portrait), nic nie leży za tekstem */
   /* ciemny gradient na marynarce pod przyciskiem i kontaktem */
   .hero::after {
+    content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
     background: linear-gradient(to top, rgba(11, 11, 11, .9) 0, rgba(11, 11, 11, .6) 120px, rgba(11, 11, 11, 0) 240px);
   }
   .hero__inner { z-index: 3; flex: 1; display: flex; flex-direction: column; margin-bottom: 0; }
-  .hero__copy { flex: 1; display: flex; flex-direction: column; }
-  /* opis na środku nagłówka (contain: inline-size jest w regule bazowej, szerokość ramki wyznacza tylko nagłówek);
-     na telefonie 36% wielkości nagłówka, nie mniej niż 12 px */
-  .hero__lead { margin-bottom: 32px; margin-inline: auto; text-align: center; font-size: max(12px, calc(var(--title-fs) * .36)); }
+  .hero__copy { flex: 1; display: flex; flex-direction: column; max-width: none; }
+  /* nagłówek i opis w jednej kolumnie po lewej stronie twarzy (grupa ma szerokość kolumny, tytuł zawija się w niej na słowach) */
+  .hero__head { width: var(--col-w); max-width: none; }
+  .hero__lead { margin-top: clamp(14px, 2.4vh, 22px); text-align: left; font-size: max(10.5px, calc(var(--title-fs) * .36)); }
   .hero__cta { margin-top: auto; }
   .hero .btn--dark { background: var(--cream); color: var(--ink); border-color: var(--cream); font-size: 12.5px; letter-spacing: .04em; }
   .hero .btn--dark::before { background: var(--ink); }
@@ -1083,15 +1082,15 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   .hero__stage {
     position: absolute; top: auto; right: auto; bottom: 0;
     height: var(--stage-h); width: calc(var(--stage-h) * 1017 / 1162);
-    left: calc(50% - var(--stage-h) * 1017 / 1162 * .52);   /* kadr telefonu 1017:1162, oś twarzy na 52% szerokości */
+    /* kadr telefonu 1017:1162, oś twarzy na 51,5% jego szerokości leży na prawej krawędzi ekranu: widać lewą połowę twarzy */
+    left: calc(100% - var(--stage-h) * 1017 / 1162 * .515);
     margin: 0;
   }
   .hero__bg-word { display: none; }
-  /* na szerszych ekranach w pionie (do 767 px) kadr jest węższy od okna: boki marynarki wygaszone, bez ostrej pionowej krawędzi
-     (na zwykłym telefonie te pasy leżą poza ekranem) */
+  /* lewy brzeg kadru (ucięta krawędzią zdjęcia marynarka) wygaszany, bez ostrej pionowej krawędzi; głowa jest widoczna w całości */
   .hero__portrait {
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%, #000 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 22%, #000 100%);
   }
 }
 
