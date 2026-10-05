@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Stopka mailowa | Biurkowski Events</title>
+  <style>
+    :root { --bg: #F4F2EE; --ink: #0A0A0A; --text-2: #4A4A4A; --line: rgba(10, 10, 10, .15); }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; font-size: 16px; line-height: 1.55; }
+    main { max-width: 760px; margin: 0 auto; padding: 48px 20px 80px; }
+    h1 { margin: 0 0 8px; font-size: clamp(1.75rem, 1.3rem + 2vw, 2.5rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.15; }
+    h2 { margin: 48px 0 6px; font-size: 1.125rem; font-weight: 600; }
+    p { margin: 0 0 16px; color: var(--text-2); }
+    .card { margin-top: 16px; padding: 28px 24px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 2px; overflow-x: auto; }
+    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 16px; }
+    button { padding: 14px 22px; background: var(--ink); color: #FFFFFF; border: 0; border-radius: 2px; font: 600 15px/1.2 inherit; font-family: inherit; cursor: pointer; }
+    button:hover { background: #1C1C1C; }
+    button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .actions a { color: var(--ink); font-size: 14px; text-underline-offset: 4px; }
+    .status { min-height: 1.5em; margin: 10px 0 0; font-size: 14px; color: var(--ink); }
+    details { border-top: 1px solid var(--line); }
+    details:last-of-type { border-bottom: 1px solid var(--line); }
+    summary { padding: 16px 0; font-weight: 600; cursor: pointer; }
+    ol { margin: 0 0 20px; padding-left: 22px; color: var(--text-2); }
+    li { margin-bottom: 6px; }
+    .note { margin-top: 40px; padding: 16px 20px; border-left: 2px solid var(--ink); background: rgba(10, 10, 10, .04); font-size: 15px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Stopka mailowa</h1>
+    <p>Błażej Biurkowski, Biurkowski Events. Kliknij „Kopiuj stopkę”, a potem wklej ją w ustawieniach poczty (instrukcja poniżej).</p>
+
+    <h2>Wersja z czarnym polem (zalecana)</h2>
+    <p>Logo jest dobrze widoczne także u odbiorców, którzy mają pocztę w ciemnym motywie.</p>
+    <div class="card" id="sig-dark"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#0a0a0a;padding:0 0 16px 0;">Pozdrawiam</td></tr><tr><td><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td valign="top" style="vertical-align:top;padding:0 18px 0 0;"><a href="https://www.djblazej.pl" target="_blank" style="color:#0a0a0a;text-decoration:none;"><img src="https://djblazej.vercel.app/stopka/img/logo-biurkowski-events.png" width="136" height="188" alt="Biurkowski Events" style="display:block;border:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:16px;color:#0a0a0a;"></a></td><td valign="top" style="vertical-align:top;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="font-family:Georgia,'Times New Roman',serif;font-size:19px;line-height:24px;color:#0a0a0a;">Błażej Biurkowski</td></tr><tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;letter-spacing:2px;text-transform:uppercase;color:#666666;padding:2px 0 10px 0;">Biurkowski Events</td></tr><tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:20px;color:#0a0a0a;"><a href="tel:+48502169499" target="_blank" style="color:#0a0a0a;text-decoration:none;">+48 502 169 499</a></td></tr><tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:20px;color:#0a0a0a;"><a href="mailto:info@biurkowski.pl" target="_blank" style="color:#0a0a0a;text-decoration:none;">info@biurkowski.pl</a></td></tr><tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:20px;color:#0a0a0a;"><a href="https://www.djladysax.pl" target="_blank" style="color:#0a0a0a;text-decoration:none;">www.djladysax.pl</a></td></tr><tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:20px;color:#0a0a0a;"><a href="https://www.djblazej.pl" target="_blank" style="color:#0a0a0a;text-decoration:none;">www.djblazej.pl</a></td></tr><tr><td style="padding:10px 0 0 0;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:22px;color:#666666;padding:0 10px 0 0;white-space:nowrap;">Biurkowski Events</td><td style="padding:0 6px 0 0;"><a href="https://www.tiktok.com/@biurkowskievents" target="_blank" style="color:#0a0a0a;text-decoration:none;"><img src="https://djblazej.vercel.app/stopka/img/tiktok.png" width="22" height="22" alt="TikTok Biurkowski Events" style="display:block;border:0;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:11px;color:#0a0a0a;"></a></td><td style="padding:0 6px 0 0;"><a href="https://www.instagram.com/biurkowskievents/" target="_blank" style="color:#0a0a0a;text-decoration:none;"><img src="https://djblazej.vercel.app/stopka/img/instagram.png" width="22" height="22" alt="Instagram Biurkowski Events" style="display:block;border:0;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:11px;color:#0a0a0a;"></a></td><td style="padding:0 0px 0 0;"><a href="https://www.facebook.com/BiurkowskiEvents/" target="_blank" style="color:#0a0a0a;text-decoration:none;"><img src="https://djblazej.vercel.app/stopka/img/facebook.png" width="22" height="22" alt="Facebook Biurkowski Events" style="display:block;border:0;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:11px;color:#0a0a0a;"></a></td></tr><tr><td colspan="4" style="font-size:6px;line-height:6px;height:6px;">&nbsp;</td></tr><tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:22px;color:#666666;padding:0 10px 0 0;white-space:nowrap;">DJ Lady Sax</td><td style="padding:0 6px 0 0;"><a href="https://www.instagram.com/djladysax/" target="_blank" style="color:#0a0a0a;text-decoration:none;"><img src="https://djblazej.vercel.app/stopka/img/instagram.png" width="22" height="22" alt="Instagram DJ Lady Sax" style="display:block;border:0;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:11px;color:#0a0a0a;"></a></td><td style="padding:0 0px 0 0;"><a href="https://www.facebook.com/pg/Dj-Lady-Sax-249844401868178/about/" target="_blank" style="color:#0a0a0a;text-decoration:none;"><img src="https://djblazej.vercel.app/stopka/img/facebook.png" width="22" height="22" alt="Facebook DJ Lady Sax" style="display:block;border:0;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:11px;color:#0a0a0a;"></a></td><td></td></tr></table></td></tr></table></td></tr></table></td></tr></table></div>
+    <div class="actions">
+      <button type="button" data-copy="sig-dark">Kopiuj stopkę</button>
+      <a href="stopka.html" download>Pobierz jako plik HTML</a>
+    </div>
+    <p class="status" role="status" data-status="sig-dark"></p>
+
+    <h2>Wersja jasna</h2>
+    <p>Czarne logo na białym tle z cienką linią. Najważniejsze dane są pogrubione, a adresy stron i profile społecznościowe zapisane kursywą.</p>
+    <div class="card" id="sig-light"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#0a0a0a;padding:0 0 16px 0;">Pozdrawiam</td></tr><tr><td><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td valign="middle" style="vertical-align:middle;padding:0 18px 0 0;"><a href="https://www.djblazej.pl" target="_blank" style="color:#0a0a0a;text-decoration:none;"><img src="https://djblazej.vercel.app/stopka/img/logo-biurkowski-events-jasne.png" width="136" height="76" alt="Biurkowski Events" style="display:block;border:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:16px;color:#0a0a0a;"></a></td><td valign="top" style="vertical-align:top;border-left:1px solid #0a0a0a;padding:0 0 0 18px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="font-family:Georgia,'Times New Roman',serif;font-size:19px;line-height:24px;color:#0a0a0a;font-weight:bold;">Błażej Biurkowski</td></tr><tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;letter-spacing:2px;text-transform:uppercase;color:#666666;padding:2px 0 10px 0;font-weight:bold;">Biurkowski Events</td></tr><tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;line-height:20px;color:#0a0a0a;"><a href="tel:+48502169499" target="_blank" style="color:#0a0a0a;text-decoration:none;font-weight:bold;">+48 502 169 499</a></td></tr><tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;line-height:20px;color:#0a0a0a;"><a href="mailto:info@biurkowski.pl" target="_blank" style="color:#0a0a0a;text-decoration:none;font-weight:bold;">info@biurkowski.pl</a></td></tr><tr><td style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:14px;line-height:20px;color:#0a0a0a;"><a href="https://www.djladysax.pl" target="_blank" style="color:#0a0a0a;text-decoration:none;">www.djladysax.pl</a></td></tr><tr><td style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:14px;line-height:20px;color:#0a0a0a;"><a href="https://www.djblazej.pl" target="_blank" style="color:#0a0a0a;text-decoration:none;">www.djblazej.pl</a></td></tr><tr><td style="padding:10px 0 0 0;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:13px;line-height:22px;color:#666666;padding:0 10px 0 0;white-space:nowrap;">Biurkowski Events</td><td style="padding:0 6px 0 0;"><a href="https://www.tiktok.com/@biurkowskievents" target="_blank" style="color:#0a0a0a;text-decoration:none;"><img src="https://djblazej.vercel.app/stopka/img/tiktok.png" width="22" height="22" alt="TikTok Biurkowski Events" style="display:block;border:0;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:11px;color:#0a0a0a;"></a></td><td style="padding:0 6px 0 0;"><a href="https://www.instagram.com/biurkowskievents/" target="_blank" style="color:#0a0a0a;text-decoration:none;"><img src="https://djblazej.vercel.app/stopka/img/instagram.png" width="22" height="22" alt="Instagram Biurkowski Events" style="display:block;border:0;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:11px;color:#0a0a0a;"></a></td><td style="padding:0 0px 0 0;"><a href="https://www.facebook.com/BiurkowskiEvents/" target="_blank" style="color:#0a0a0a;text-decoration:none;"><img src="https://djblazej.vercel.app/stopka/img/facebook.png" width="22" height="22" alt="Facebook Biurkowski Events" style="display:block;border:0;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:11px;color:#0a0a0a;"></a></td></tr><tr><td colspan="4" style="font-size:6px;line-height:6px;height:6px;">&nbsp;</td></tr><tr><td style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:13px;line-height:22px;color:#666666;padding:0 10px 0 0;white-space:nowrap;">DJ Lady Sax</td><td style="padding:0 6px 0 0;"><a href="https://www.instagram.com/djladysax/" target="_blank" style="color:#0a0a0a;text-decoration:none;"><img src="https://djblazej.vercel.app/stopka/img/instagram.png" width="22" height="22" alt="Instagram DJ Lady Sax" style="display:block;border:0;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:11px;color:#0a0a0a;"></a></td><td style="padding:0 0px 0 0;"><a href="https://www.facebook.com/pg/Dj-Lady-Sax-249844401868178/about/" target="_blank" style="color:#0a0a0a;text-decoration:none;"><img src="https://djblazej.vercel.app/stopka/img/facebook.png" width="22" height="22" alt="Facebook DJ Lady Sax" style="display:block;border:0;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:11px;color:#0a0a0a;"></a></td><td></td></tr></table></td></tr></table></td></tr></table></td></tr></table></div>
+    <div class="actions">
+      <button type="button" data-copy="sig-light">Kopiuj stopkę</button>
+      <a href="stopka-jasna.html" download>Pobierz jako plik HTML</a>
+    </div>
+    <p class="status" role="status" data-status="sig-light"></p>
+
+    <h2>Jak ustawić stopkę</h2>
+    <details>
+      <summary>Gmail (na komputerze)</summary>
+      <ol>
+        <li>Kliknij „Kopiuj stopkę” powyżej.</li>
+        <li>W Gmailu otwórz Ustawienia (koło zębate) → „Zobacz wszystkie ustawienia”.</li>
+        <li>Na karcie „Ogólne” znajdź sekcję „Podpis” i kliknij „Utwórz nowy”.</li>
+        <li>Wklej stopkę (Ctrl+V) w pole podpisu i ustaw ją jako domyślną dla nowych wiadomości i odpowiedzi.</li>
+        <li>Na dole strony kliknij „Zapisz zmiany”.</li>
+      </ol>
+    </details>
+    <details>
+      <summary>Outlook (nowy Outlook i Outlook w przeglądarce)</summary>
+      <ol>
+        <li>Kliknij „Kopiuj stopkę” powyżej.</li>
+        <li>Otwórz Ustawienia (koło zębate) → Konta → Podpisy (w starszym układzie: Poczta → Redagowanie i odpowiadanie).</li>
+        <li>Utwórz nowy podpis, wklej stopkę (Ctrl+V) i zapisz.</li>
+        <li>Wybierz ten podpis jako domyślny dla nowych wiadomości i odpowiedzi.</li>
+      </ol>
+    </details>
+    <details>
+      <summary>Outlook klasyczny (Windows)</summary>
+      <ol>
+        <li>Kliknij „Kopiuj stopkę” powyżej.</li>
+        <li>W Outlooku wybierz Plik → Opcje → Poczta → Podpisy.</li>
+        <li>Kliknij „Nowy”, nadaj nazwę, wklej stopkę (Ctrl+V) w pole edycji i zatwierdź „OK”.</li>
+      </ol>
+    </details>
+    <details>
+      <summary>Apple Mail (Mac)</summary>
+      <ol>
+        <li>Kliknij „Kopiuj stopkę” powyżej.</li>
+        <li>W programie Mail wybierz Mail → Ustawienia → Podpisy i dodaj nowy podpis przyciskiem „+”.</li>
+        <li>Wklej stopkę (Cmd+V) i odznacz opcję „Zawsze dopasowuj do domyślnej czcionki wiadomości”.</li>
+      </ol>
+    </details>
+    <details>
+      <summary>iPhone i iPad (aplikacja Mail)</summary>
+      <ol>
+        <li>Otwórz tę stronę na telefonie i dotknij „Kopiuj stopkę”.</li>
+        <li>Wejdź w Ustawienia → Aplikacje → Mail → Podpis i wklej stopkę.</li>
+        <li>Jeśli po wklejeniu zniknie formatowanie, potrząśnij telefonem i wybierz „Cofnij zmianę atrybutów”.</li>
+      </ol>
+    </details>
+
+    <p class="note">Grafiki w stopce (logo i ikony) wczytują się z internetu. Niektóre programy pocztowe pokazują je odbiorcy dopiero po kliknięciu „Pokaż obrazy”, a do tego czasu widać tekst zastępczy.</p>
+  </main>
+
+  <script>
+    // kod do skopiowania zapamiętany z docelowymi adresami grafik
+    var originals = {};
+    document.querySelectorAll('.card').forEach(function (card) { originals[card.id] = card.innerHTML; });
+    // podgląd lokalny (przed publikacją): grafiki z folderu img/ obok tej strony
+    if (/^(localhost|127.0.0.1)$/.test(location.hostname) || location.protocol === 'file:') {
+      document.querySelectorAll('.card img').forEach(function (img) { img.src = 'img/' + img.src.split('/').pop(); });
+    }
+    document.querySelectorAll('[data-copy]').forEach(function (btn) {
+      btn.addEventListener('click', async function () {
+        var box = document.getElementById(btn.dataset.copy);
+        var status = document.querySelector('[data-status="' + btn.dataset.copy + '"]');
+        var ok = false;
+        try {
+          await navigator.clipboard.write([new ClipboardItem({
+            'text/html': new Blob([originals[box.id]], { type: 'text/html' }),
+            'text/plain': new Blob([box.innerText], { type: 'text/plain' })
+          })]);
+          ok = true;
+        } catch (e) {
+          // starsze przeglądarki: zaznaczenie + polecenie kopiowania
+          var range = document.createRange();
+          range.selectNodeContents(box);
+          var sel = getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          try { ok = document.execCommand('copy'); } catch (e2) { ok = false; }
+          sel.removeAllRanges();
+        }
+        status.textContent = ok ? 'Skopiowano. Wklej stopkę w ustawieniach poczty.' : 'Nie udało się skopiować automatycznie. Zaznacz stopkę myszą i skopiuj (Ctrl+C).';
+      });
+    });
+  </script>
+</body>
+</html>
