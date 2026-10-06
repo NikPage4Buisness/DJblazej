@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Wedding | DJ Błażej Biurkowski</title>
+  <meta name="description" content="Muzyka na wesele: DJ, wodzirej i muzycy na żywo. DJ & Lady Sax, zespoły, oprawa ceremonii i kolacji. Dobry nastrój gości do końca imprezy.">
+  <!-- SZKIC: treść podstrony czeka na akceptację klienta. Po akceptacji usunąć poniższą linię (noindex), żeby strona trafiła do wyszukiwarek. -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#ECEBE8">
+  <link rel="icon" href="../assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="subpage">
+  <a class="skip" href="#tresc">Przejdź do treści</a>
+
+  <header class="subhead">
+    <a class="subhead__logo" href="../" aria-label="DJ Błażej Biurkowski, strona główna"><img src="../assets/logo.png" alt="" width="44" height="43"></a>
+    <nav class="subhead__nav" aria-label="Menu podstrony">
+      <a href="../">Strona główna</a>
+      <span class="subhead__offer">
+        <a href="../eventy/">Eventy</a>
+        <a href="../studniowki/">Studniówki</a>
+        <a href="../wedding/" aria-current="page">Wedding</a>
+      </span>
+      <a class="subhead__contact" href="../#kontakt">Kontakt</a>
+    </nav>
+  </header>
+
+  <main id="tresc">
+    <!-- mini hero podstrony -->
+    <section class="subhero">
+      <!-- tło: trzy zdjęcia dobrane do tematu podstrony, płynnie przenikają jedno w drugie (CSS), bez JS -->
+      <div class="subhero__bg" aria-hidden="true">
+      <img src="../assets/hero-sub/wedding-1-1920.webp" srcset="../assets/hero-sub/wedding-1-960.webp 960w, ../assets/hero-sub/wedding-1-1920.webp 1920w" sizes="100vw" width="1920" height="1280" alt="" style="object-position:50% 35%" decoding="async" fetchpriority="high">
+      <img src="../assets/hero-sub/wedding-2-1920.webp" srcset="../assets/hero-sub/wedding-2-960.webp 960w, ../assets/hero-sub/wedding-2-1920.webp 1920w" sizes="100vw" width="1920" height="1280" alt="" style="object-position:50% 45%" decoding="async">
+      <img src="../assets/hero-sub/wedding-3-1920.webp" srcset="../assets/hero-sub/wedding-3-960.webp 960w, ../assets/hero-sub/wedding-3-1920.webp 1920w" sizes="100vw" width="1920" height="1280" alt="" style="object-position:50% 50%" decoding="async">
+      </div>
+      <div class="subhero__inner">
+        <div class="subhero__head">
+          <nav class="subhero__crumbs" aria-label="Okruszki"><a href="../">Strona główna</a><span aria-hidden="true">/</span><span>Oferta</span><span aria-hidden="true">/</span><span aria-current="page">Wedding</span></nav>
+          <header class="sec-head">
+            <h1 class="sec-head__title" style="--fit:6" data-reveal>Wedding</h1>
+            <span class="draw-line" data-reveal aria-hidden="true"></span>
+          </header>
+        </div>
+        <div class="subhero__copy">
+          <p class="subhero__lead" data-reveal>Muzyka na Twoje wesele: DJ, wodzirej i muzycy na żywo. Dbamy o dobry nastrój gości do końca imprezy, a playlistę układamy razem z Wami.</p>
+          <ul class="subhero__chips" data-reveal>
+            <li>DJ i wodzirej</li>
+            <li>DJ & Lady Sax</li>
+            <li>Zespoły na żywo</li>
+            <li>Ceremonia i kolacja</li>
+          </ul>
+          <div class="subhero__cta" data-reveal>
+            <a class="btn btn--light" href="mailto:info@biurkowski.pl?subject=Zapytanie%20o%20wesele"><span>Zapytaj o dostępność terminu</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <ul class="subhero__contact">
+              <li><a href="mailto:info@biurkowski.pl">info@biurkowski.pl</a></li>
+              <li><a href="tel:+48502169499">+48 502 169 499</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- sekcja „W roli Eksperta” przeniesiona ze strony głównej (druga sekcja podstrony) -->
+    <section class="section media" id="media">
+      <div class="container">
+        <div class="media__head">
+          <header class="sec-head">
+            <h2 class="sec-head__title" data-reveal>W&nbsp;roli Eksperta</h2>
+            <span class="draw-line" data-reveal aria-hidden="true"></span>
+          </header>
+        </div>
+
+        <!-- Ściana kadrów: pierwszy rząd to telewizja (największe kadry), drugi to telewizja, prasa i wyróżnienie.
+             Każdy kafelek ma proporcje swojego kadru (--ar), rzędy wyrównują się do szerokości, więc nic nie jest przycinane.
+             Kadry są zawsze w kolorze. Na komputerze JS rozkłada wokół ściany logotypy z paska na dole sekcji
+             (lista .media__logos w .media__stage); pasek zostaje tylko na telefonie i tablecie w pionie. -->
+        <div class="media__stage">
+        <div class="media__wall" id="mediaBento" data-reveal>
+          <figure class="bento__tile wall__tile" style="--ar:.99">
+            <button data-lb="media" data-src="../assets/media/tv1.jpg"><img src="../assets/media/tv1.jpg" width="1069" height="1080" alt="Błażej Biurkowski w studiu TVN24 BiS" loading="lazy" decoding="async"></button>
+            <span class="wall__badge wall__badge--round"><img src="../assets/media/badge-tvn24bis.png" width="58" height="57" alt="TVN24 BiS"></span>
+          </figure>
+          <figure class="bento__tile wall__tile wall__tile--lead" style="--ar:2.222">
+            <button data-lb="media" data-src="../assets/media/tv5.jpg"><img src="../assets/media/tv5.jpg" width="1920" height="864" alt="Rozmowa w programie Pytanie na śniadanie w TVP2" loading="lazy" decoding="async"></button>
+            <span class="wall__badge"><img src="../assets/media/badge-pns.png" width="91" height="54" alt="Pytanie na śniadanie"></span>
+          </figure>
+          <figure class="bento__tile wall__tile" style="--ar:1.352">
+            <button data-lb="media" data-src="../assets/media/tv6.jpg"><img src="../assets/media/tv6.jpg" width="1080" height="799" alt="Rozmowa o ślubach i weselach w programie Pytanie na śniadanie" loading="lazy" decoding="async"></button>
+            <span class="wall__badge"><img src="../assets/media/badge-pns.png" width="91" height="54" alt="Pytanie na śniadanie"></span>
+          </figure>
+          <figure class="bento__tile wall__tile" style="--ar:1.001">
+            <button data-lb="media" data-src="../assets/media/tv2.jpg"><img src="../assets/media/tv2.jpg" width="1063" height="1062" alt="Artykuł w magazynie Claudia Ślub" loading="lazy" decoding="async"></button>
+            <span class="wall__badge wall__badge--wide"><img src="../assets/media/badge-claudia.png" width="108" height="28" alt="Claudia"></span>
+          </figure>
+          <figure class="bento__tile wall__tile" style="--ar:.991">
+            <button data-lb="media" data-src="../assets/media/tv3.jpg"><img src="../assets/media/tv3.jpg" width="1060" height="1070" alt="Artykuł z cyklu Ślubne SOS" loading="lazy" decoding="async"></button>
+          </figure>
+          <figure class="bento__tile wall__tile" style="--ar:.656">
+            <button data-lb="media" data-src="../assets/media/tv4.jpg"><img src="../assets/media/tv4.jpg" width="708" height="1080" alt="Laureat plebiscytu Orły" loading="lazy" decoding="async"></button>
+            <span class="wall__badge"><img src="../assets/media/badge-orly.png" width="82" height="54" alt="Orły"></span>
+          </figure>
+        </div>
+        <!-- Teksty stoją pośrodku ściany kadrów: na komputerze to kremowa „wycięta” plansza nad zdjęciami (zdjęcia pod nią są
+             przycięte), na telefonie i tablecie tekst leży nad ścianą -->
+        <div class="media__text" data-reveal>
+          <p>Dziękuję mediom za zaufanie i zaproszenie do podzielenia się moją wiedzą o muzycznej stronie przyjęć weselnych.</p>
+          <p>Obecność w mediach to dla mnie ogromne wyróżnienie i jasny sygnał, że kierunek, w którym idę, jest właściwy. Dbanie o idealny klimat Waszych najważniejszych dni to moja misja – cieszę się, że moje doświadczenie zostało docenione na szerszym forum.</p>
+        </div>
+        </div>
+      </div>
+      <div class="marquee" aria-label="Media, w których występowałem">
+        <div class="marquee__track">
+          <img src="../assets/media/pns.png" alt="Pytanie na śniadanie" loading="lazy">
+          <img src="../assets/media/claudia.png" alt="Claudia" loading="lazy">
+          <img src="../assets/media/targi.png" alt="Targi Ślubne" loading="lazy">
+          <img src="../assets/media/pr.png" alt="Polskie Radio" loading="lazy">
+          <img src="../assets/media/tvp.png" alt="TVP" loading="lazy">
+          <img src="../assets/media/orly.png" alt="Orły" loading="lazy">
+          <img src="../assets/media/tvn.png" alt="TVN" loading="lazy">
+          <img src="../assets/media/bis0.png" alt="TVN24 BiS" loading="lazy">
+          <img src="../assets/media/pns.png" alt="" aria-hidden="true" loading="lazy">
+          <img src="../assets/media/claudia.png" alt="" aria-hidden="true" loading="lazy">
+          <img src="../assets/media/targi.png" alt="" aria-hidden="true" loading="lazy">
+          <img src="../assets/media/pr.png" alt="" aria-hidden="true" loading="lazy">
+          <img src="../assets/media/tvp.png" alt="" aria-hidden="true" loading="lazy">
+          <img src="../assets/media/orly.png" alt="" aria-hidden="true" loading="lazy">
+          <img src="../assets/media/tvn.png" alt="" aria-hidden="true" loading="lazy">
+          <img src="../assets/media/bis0.png" alt="" aria-hidden="true" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+
+    <section class="sub-sec" aria-labelledby="values-title">
+      <div class="sub-sec__inner">
+        <header class="sec-head"><h2 class="sec-head__title" id="values-title" style="--fit:10" data-reveal>Dlaczego my</h2><span class="draw-line" data-reveal aria-hidden="true"></span></header>
+        <ol class="wed-values">
+          <li class="wed-value" data-reveal>
+            <figure class="wed-value__photo"><img src="../assets/portfolio/thumb/033.webp" width="1082" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></figure>
+            <div class="wed-value__body">
+              <span class="wed-value__num" aria-hidden="true">01</span>
+              <h3 class="wed-value__title">Prestiż</h3>
+              <p>Mój Team składa się z zawodowych muzyków, uczestników programów rozrywkowych tj. <span class="hl">„Jaka to Melodia”</span>, <span class="hl">„Mam Talent”</span>, <span class="hl">„The Voice of Poland”</span>, <span class="hl">„Must be the music”</span></p>
+            </div>
+          </li>
+          <li class="wed-value" data-reveal>
+            <figure class="wed-value__photo"><img src="../assets/portfolio/thumb/088.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></figure>
+            <div class="wed-value__body">
+              <span class="wed-value__num" aria-hidden="true">02</span>
+              <h3 class="wed-value__title">Elegancja</h3>
+              <p>Nienaganny <strong>wygląd</strong>, wysoka <strong>kultura osobista</strong>, <strong>pozytywna energia</strong> – to nasze domeny!</p>
+            </div>
+          </li>
+          <li class="wed-value" data-reveal>
+            <figure class="wed-value__photo"><img src="../assets/portfolio/thumb/075.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></figure>
+            <div class="wed-value__body">
+              <span class="wed-value__num" aria-hidden="true">03</span>
+              <h3 class="wed-value__title">Dobry nastrój</h3>
+              <p>Dbam o <strong>dobry nastrój</strong> gości do końca trwania imprezy. Wieczór spędzony z nami zapada w pamięci na stałe.</p>
+            </div>
+          </li>
+          <li class="wed-value" data-reveal>
+            <figure class="wed-value__photo"><img src="../assets/portfolio/thumb/097.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></figure>
+            <div class="wed-value__body">
+              <span class="wed-value__num" aria-hidden="true">04</span>
+              <h3 class="wed-value__title">Idealne dopasowanie</h3>
+              <p>Posiadam szeroki repertuar muzyczny. Mam na uwadze sugestie Młodej Pary dotyczące playlisty i na bieżąco reaguję na gusta publiczności.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sub-sec sub-dark" aria-labelledby="choose-title">
+      <div class="sub-sec__inner">
+        <header class="sec-head"><h2 class="sec-head__title" id="choose-title" style="--fit:12" data-reveal>DJ czy zespół?</h2><span class="draw-line" data-reveal aria-hidden="true"></span></header>
+        <p class="sub-sec__lead" data-reveal>Nie musisz wybierać jednego: zagramy jako DJ, połączymy DJ-a z saksofonem albo zaproponujemy zespół na żywo.</p>
+        <ol class="wed-choose">
+          <li class="wed-choose__item" data-reveal>
+            <figure class="wed-choose__photo"><img src="../assets/portfolio/thumb/086.webp" width="1080" height="720" alt="Błażej Biurkowski z mikrofonem prowadzi wesele przy stole gości" loading="lazy" decoding="async"></figure>
+            <div class="wed-choose__body"><span class="wed-choose__no" aria-hidden="true">I</span><h3 class="wed-choose__title">DJ i wodzirej</h3><p>Szeroki repertuar, płynne prowadzenie wieczoru i muzyka dopasowana do gości.</p></div>
+          </li>
+          <li class="wed-choose__item" data-reveal>
+            <figure class="wed-choose__photo"><img src="../assets/portfolio/thumb/038.webp" width="746" height="720" alt="DJ Błażej Biurkowski w towarzystwie dwóch saksofonistek projektu DJ & Lady Sax" loading="lazy" decoding="async"></figure>
+            <div class="wed-choose__body"><span class="wed-choose__no" aria-hidden="true">II</span><h3 class="wed-choose__title">DJ & Lady Sax</h3><p>DJ z saksofonem na żywo: więcej energii na parkiecie i efektowny występ.</p></div>
+          </li>
+          <li class="wed-choose__item" data-reveal>
+            <figure class="wed-choose__photo"><img src="../assets/portfolio/thumb/041.webp" width="1078" height="720" alt="Trzech muzyków w smokingach z trąbką i saksofonami" loading="lazy" decoding="async"></figure>
+            <div class="wed-choose__body"><span class="wed-choose__no" aria-hidden="true">III</span><h3 class="wed-choose__title">Zespoły na żywo</h3><p>The Gentlemen, Manhattan Band z klasykami jazzu, a na ceremonię i uroczystą kolację Tercet Klasyczny.</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+
+    <section class="sub-sec sub-sec--tint" aria-labelledby="portfolio-title" data-portfolio>
+      <div class="sub-sec__inner">
+        <header class="sec-head"><h2 class="sec-head__title" id="portfolio-title" style="--fit:8" data-reveal>Portfolio</h2><span class="draw-line" data-reveal aria-hidden="true"></span></header>
+        <div class="sub-filters" role="tablist" aria-label="Filtr zdjęć">
+          <button type="button" role="tab" aria-selected="true" data-filter="all">Wszystko</button>
+          <button type="button" role="tab" aria-selected="false" data-filter="oswietlenie">Oświetlenie</button>
+        </div>
+        <ul class="sub-gallery">
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/031.webp" data-lb><img src="../assets/portfolio/thumb/031.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/035.webp" data-lb><img src="../assets/portfolio/thumb/035.webp" width="720" height="1080" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/032.webp" data-lb><img src="../assets/portfolio/thumb/032.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie wesela"><a href="../assets/portfolio/full/067.webp" data-lb><img src="../assets/portfolio/thumb/067.webp" width="640" height="960" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/033.webp" data-lb><img src="../assets/portfolio/thumb/033.webp" width="1082" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/113.webp" data-lb><img src="../assets/portfolio/thumb/113.webp" width="720" height="1086" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela oswietlenie"><a href="../assets/portfolio/full/034.webp" data-lb><img src="../assets/portfolio/thumb/034.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/125.webp" data-lb><img src="../assets/portfolio/thumb/125.webp" width="716" height="1080" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie wesela"><a href="../assets/portfolio/full/036.webp" data-lb><img src="../assets/portfolio/thumb/036.webp" width="1080" height="720" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/050.webp" data-lb><img src="../assets/portfolio/thumb/050.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela oswietlenie"><a href="../assets/portfolio/full/054.webp" data-lb><img src="../assets/portfolio/thumb/054.webp" width="1082" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/075.webp" data-lb><img src="../assets/portfolio/thumb/075.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/077.webp" data-lb><img src="../assets/portfolio/thumb/077.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela oswietlenie"><a href="../assets/portfolio/full/081.webp" data-lb><img src="../assets/portfolio/thumb/081.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie wesela"><a href="../assets/portfolio/full/085.webp" data-lb><img src="../assets/portfolio/thumb/085.webp" width="1080" height="720" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/086.webp" data-lb><img src="../assets/portfolio/thumb/086.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela oswietlenie"><a href="../assets/portfolio/full/088.webp" data-lb><img src="../assets/portfolio/thumb/088.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela oswietlenie"><a href="../assets/portfolio/full/090.webp" data-lb><img src="../assets/portfolio/thumb/090.webp" width="1082" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela oswietlenie"><a href="../assets/portfolio/full/093.webp" data-lb><img src="../assets/portfolio/thumb/093.webp" width="1082" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie wesela"><a href="../assets/portfolio/full/094.webp" data-lb><img src="../assets/portfolio/thumb/094.webp" width="1084" height="720" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/095.webp" data-lb><img src="../assets/portfolio/thumb/095.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/097.webp" data-lb><img src="../assets/portfolio/thumb/097.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/098.webp" data-lb><img src="../assets/portfolio/thumb/098.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/104.webp" data-lb><img src="../assets/portfolio/thumb/104.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/105.webp" data-lb><img src="../assets/portfolio/thumb/105.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/107.webp" data-lb><img src="../assets/portfolio/thumb/107.webp" width="1296" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie wesela"><a href="../assets/portfolio/full/108.webp" data-lb><img src="../assets/portfolio/thumb/108.webp" width="1084" height="720" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/109.webp" data-lb><img src="../assets/portfolio/thumb/109.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/111.webp" data-lb><img src="../assets/portfolio/thumb/111.webp" width="720" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/116.webp" data-lb><img src="../assets/portfolio/thumb/116.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/118.webp" data-lb><img src="../assets/portfolio/thumb/118.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/124.webp" data-lb><img src="../assets/portfolio/thumb/124.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela"><a href="../assets/portfolio/full/132.webp" data-lb><img src="../assets/portfolio/thumb/132.webp" width="1080" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="wesela oswietlenie"><a href="../assets/portfolio/full/135.webp" data-lb><img src="../assets/portfolio/thumb/135.webp" width="1082" height="720" alt="Wesela, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie wesela"><a href="../assets/portfolio/full/140.webp" data-lb><img src="../assets/portfolio/thumb/140.webp" width="960" height="720" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie wesela"><a href="../assets/portfolio/full/156.webp" data-lb><img src="../assets/portfolio/thumb/156.webp" width="960" height="640" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+        </ul>
+        <p class="sub-more"><button type="button" class="sub-more__btn" data-more hidden>Pokaż więcej zdjęć</button><a href="../#portfolio">Zobacz całe portfolio</a></p>
+      </div>
+    </section>
+
+
+    <section class="sub-cta" aria-labelledby="cta-title">
+      <div class="sub-cta__inner">
+        <header class="sec-head"><h2 class="sec-head__title" id="cta-title" style="--fit:24" data-reveal>Zapytaj o dostępność terminu</h2><span class="draw-line" data-reveal aria-hidden="true"></span></header>
+        <p data-reveal>Napisz lub zadzwoń, a sprawdzimy, czy Twój termin jest wolny.</p>
+        <div class="sub-cta__actions" data-reveal>
+          <a class="btn btn--light" href="mailto:info@biurkowski.pl?subject=Zapytanie%20o%20wesele"><span>info@biurkowski.pl</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="sub-cta__phone" href="tel:+48502169499">+48 502 169 499</a>
+        </div>
+        <div class="sub-cta__also">
+          <span>Zobacz też</span>
+          <ul>
+          <li><a class="btn btn--line" href="../eventy/"><span>Eventy</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          <li><a class="btn btn--line" href="../studniowki/"><span>Studniówki</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="subfoot">
+    <p>ⓒ Błażej Biurkowski 2026. Wszelkie prawa zastrzeżone.</p>
+    <a class="footer__credit" href="https://www.nikpage.pl/" target="_blank" rel="noopener">
+      <span class="footer__credit-label">Projekt i realizacja</span>
+      <img src="../assets/nikpage-n.webp" width="24" height="24" alt="" loading="lazy" decoding="async">
+      <span class="footer__credit-name"><b>Nik</b>Page</span>
+    </a>
+  </footer>
+
+  <script src="../js/sub.js" defer></script>
+  <script src="../js/media.js" defer></script>
+</body>
+</html>

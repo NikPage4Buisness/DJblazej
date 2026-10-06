@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Eventy | DJ Błażej Biurkowski</title>
+  <meta name="description" content="Oprawa muzyczna i techniczna eventów: bankiety, konferencje, imprezy firmowe i prywatne. DJ, muzycy na żywo, nagłośnienie, światło i obsługa techniczna z jednego miejsca.">
+  <!-- SZKIC: treść podstrony czeka na akceptację klienta. Po akceptacji usunąć poniższą linię (noindex), żeby strona trafiła do wyszukiwarek. -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#ECEBE8">
+  <link rel="icon" href="../assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="subpage">
+  <a class="skip" href="#tresc">Przejdź do treści</a>
+
+  <header class="subhead">
+    <a class="subhead__logo" href="../" aria-label="DJ Błażej Biurkowski, strona główna"><img src="../assets/logo.png" alt="" width="44" height="43"></a>
+    <nav class="subhead__nav" aria-label="Menu podstrony">
+      <a href="../">Strona główna</a>
+      <span class="subhead__offer">
+        <a href="../eventy/" aria-current="page">Eventy</a>
+        <a href="../studniowki/">Studniówki</a>
+        <a href="../wedding/">Wedding</a>
+      </span>
+      <a class="subhead__contact" href="../#kontakt">Kontakt</a>
+    </nav>
+  </header>
+
+  <main id="tresc">
+    <!-- mini hero podstrony -->
+    <section class="subhero">
+      <!-- tło: trzy zdjęcia dobrane do tematu podstrony, płynnie przenikają jedno w drugie (CSS), bez JS -->
+      <div class="subhero__bg" aria-hidden="true">
+      <img src="../assets/hero-sub/eventy-1-1920.webp" srcset="../assets/hero-sub/eventy-1-960.webp 960w, ../assets/hero-sub/eventy-1-1920.webp 1920w, ../assets/hero-sub/eventy-1-2560.webp 2560w" sizes="100vw" width="1920" height="1280" alt="" style="object-position:50% 50%" decoding="async" fetchpriority="high">
+      <img src="../assets/hero-sub/eventy-2-1920.webp" srcset="../assets/hero-sub/eventy-2-960.webp 960w, ../assets/hero-sub/eventy-2-1920.webp 1920w" sizes="100vw" width="1920" height="1280" alt="" style="object-position:50% 62%" decoding="async">
+      <img src="../assets/hero-sub/eventy-3-1920.webp" srcset="../assets/hero-sub/eventy-3-960.webp 960w, ../assets/hero-sub/eventy-3-1920.webp 1920w" sizes="100vw" width="1920" height="1280" alt="" style="object-position:50% 60%" decoding="async">
+      </div>
+      <div class="subhero__inner">
+        <div class="subhero__head">
+          <nav class="subhero__crumbs" aria-label="Okruszki"><a href="../">Strona główna</a><span aria-hidden="true">/</span><span>Oferta</span><span aria-hidden="true">/</span><span aria-current="page">Eventy</span></nav>
+          <header class="sec-head">
+            <h1 class="sec-head__title" style="--fit:6" data-reveal>Eventy</h1>
+            <span class="draw-line" data-reveal aria-hidden="true"></span>
+          </header>
+        </div>
+        <div class="subhero__copy">
+          <p class="subhero__lead" data-reveal>Bankiety, konferencje, imprezy firmowe i prywatne. Muzyka, nagłośnienie, światło i obsługa techniczna z jednego miejsca, dopasowane do charakteru Twojego wydarzenia.</p>
+          <ul class="subhero__chips" data-reveal>
+            <li>Bankiety</li>
+            <li>Konferencje</li>
+            <li>Imprezy firmowe</li>
+            <li>Imprezy prywatne</li>
+            <li>Wydarzenia plenerowe</li>
+          </ul>
+          <div class="subhero__cta" data-reveal>
+            <a class="btn btn--light" href="mailto:info@biurkowski.pl?subject=Zapytanie%20o%20event"><span>Zapytaj o dostępność terminu</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <ul class="subhero__contact">
+              <li><a href="mailto:info@biurkowski.pl">info@biurkowski.pl</a></li>
+              <li><a href="tel:+48502169499">+48 502 169 499</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- cała sekcja „Pełna oprawa Twojego wydarzenia” przeniesiona ze strony głównej -->
+    <section class="section values" id="pelna-oprawa">
+      <!-- tło: ciemne smugi światła (motyw: Beams Background, KokonutUI, MIT) -->
+      <canvas class="values__beams" aria-hidden="true"></canvas>
+      <div class="container values__top">
+        <header class="values__intro" data-reveal>
+          <h2 class="values__intro-title">Tu znajdziesz wszystko co jest potrzebne do organizacji Twojego Wydarzenia</h2>
+          <p>DJ to dopiero początek. Przez jeden kontakt zamówisz też muzyków na żywo, nagłośnienie, światło i obsługę techniczną, a my dopasujemy każdy element do charakteru wieczoru.</p>
+        </header>
+      </div>
+      <div class="container values__grid">
+        <!-- Karuzela 3D: widać trzy zdjęcia (środkowe największe, boczne pod kątem i przygaszone).
+             Bez strzałek: przeciąganie myszą lub palcem, strzałki na klawiaturze; karuzela cały czas lekko się obraca.
+             Zdjęcia pionowe (3:4 albo 2:3); kolejność na liście = kolejność w karuzeli. -->
+        <div class="values__carousel" data-reveal data-carousel tabindex="0" role="group" aria-roledescription="karuzela" aria-label="Zdjęcia z wydarzeń. Przeciągnij albo użyj strzałek, żeby zobaczyć kolejne.">
+          <ul class="carousel__track">
+            <li class="carousel__item"><img src="../assets/slides/img-5179.webp" width="1080" height="1440" alt="Goście pod dekoracjami sufitowymi w turkusowym świetle" decoding="async" draggable="false"></li>
+            <li class="carousel__item"><img src="../assets/slides/img-2881.webp" width="1080" height="1440" alt="Saksofonistka i artystka w czerwonych sukniach przy konsolecie DJ, w tle nocna panorama miasta" loading="lazy" decoding="async" draggable="false"></li>
+            <li class="carousel__item"><img src="../assets/slides/img-6908.webp" width="1080" height="1440" alt="Ogród oświetlony na zielono i fioletowo podczas wieczornego przyjęcia" loading="lazy" decoding="async" draggable="false"></li>
+            <li class="carousel__item"><img src="../assets/slides/mg-2827.webp" width="960" height="1440" alt="Saksofonistka na scenie w czerwonych wiązkach światła i różowym dymie" loading="lazy" decoding="async" draggable="false"></li>
+            <li class="carousel__item"><img src="../assets/slides/img-3605.webp" width="1080" height="1440" alt="Parkiet pod sufitem oświetlonym na fioletowo i zielono" loading="lazy" decoding="async" draggable="false"></li>
+            <li class="carousel__item"><img src="../assets/slides/img-3487.webp" width="1080" height="1440" alt="Solo na saksofonie w żółtych wiązkach światła" loading="lazy" decoding="async" draggable="false"></li>
+            <li class="carousel__item"><img src="../assets/slides/img-6697.webp" width="1080" height="1440" alt="Wokalistka na scenie w czerwonym świetle, w tle skrzypaczka" loading="lazy" decoding="async" draggable="false"></li>
+          </ul>
+        </div>
+        <!-- Oferta dodatkowa (poza DJ-em), na podstawie oferty eventowej Biurkowski Events 2026. Spokojny nagłówek,
+             krótkie wprowadzenie i pięć pozycji. Teksty w WordPressie: blok Grupa z nagłówkiem, akapitem i listą. -->
+        <div class="values__copy">
+          <!-- Karty „spotlight”: ikona (inline SVG), tytuł i opis. Wszystkie karty są fioletowe (CSS: .value__card, zmienne --accent-rgb i --icon). -->
+          <ul class="values__list">
+            <li class="value value--wide" data-reveal>
+              <div class="value__card">
+                <span class="value__icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg></span>
+                <div class="value__text">
+                  <h4 class="value__title">Muzycy i zespoły na żywo</h4>
+                  <p>Saksofon, skrzypce, trąbka i wokal, solo albo w składzie: DJ &amp; Lady Sax, The Gentlemen, Manhattan Band, Tercet Klasyczny.</p>
+                  <p class="value__shows">Artyści znani z programów <strong class="value__hl">„The Voice of Poland”</strong> czy <strong class="value__hl">„Mam Talent”</strong>.</p>
+                </div>
+              </div>
+            </li>
+            <li class="value" data-reveal>
+              <div class="value__card">
+                <span class="value__icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
+                <div class="value__text">
+                  <h4 class="value__title">Impresariat Muzyczny</h4>
+                  <p>Pomożemy dobrać artystów, składy i repertuar do okazji, a także zorganizować ich występ.</p>
+                </div>
+              </div>
+            </li>
+            <li class="value" data-reveal>
+              <div class="value__card">
+                <span class="value__icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span>
+                <div class="value__text">
+                  <h4 class="value__title">Oświetlenie</h4>
+                  <p>Światło, które zamienia koncert, konferencję czy event firmowy w prawdziwe widowisko.</p>
+                </div>
+              </div>
+            </li>
+            <li class="value value--wide" data-reveal>
+              <div class="value__card">
+                <span class="value__icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="4" y="2" width="16" height="20" rx="2"/><circle cx="12" cy="14" r="4"/><path d="M12 6h.01"/></svg></span>
+                <div class="value__text">
+                  <h4 class="value__title">Nagłośnienie Meyer Sound</h4>
+                  <p>Pracujemy na systemie nagłośnienia firmy MEYER SOUND. To Royce Rolls w dziedzinie systemów nagłośnienia które zapewnia wyjątkową czystość dźwięku, doskonale sprawdzi się zarówno podczas wielkich wydarzeń, jak i eleganckich, kameralnych uroczystości.</p>
+                </div>
+              </div>
+            </li>
+            <li class="value" data-reveal>
+              <div class="value__card">
+                <span class="value__icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M12 17v4"/><path d="M8 21h8"/><path d="m10.5 8 4 2-4 2Z"/></svg></span>
+                <div class="value__text">
+                  <h4 class="value__title">Scenografia, dekoracje i multimedia</h4>
+                  <p>Spójna oprawa dopasowana do tematyki i potrzeb spotkania.</p>
+                </div>
+              </div>
+            </li>
+            <li class="value" data-reveal>
+              <div class="value__card">
+                <span class="value__icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                <div class="value__text">
+                  <h4 class="value__title">Obsługa konferencji</h4>
+                  <p>Sprzęt audiowizualny, tłumaczenia symultaniczne (ponad 150 kombinacji językowych), wsparcie prelegentów i opieka nad uczestnikami.</p>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <p class="values__more" data-reveal>Bankiety, konferencje, imprezy firmowe i prywatne. <a href="mailto:info@biurkowski.pl" data-drawer-open aria-haspopup="dialog" aria-controls="contactDrawer">Opowiedz nam o swoim wydarzeniu</a></p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Treści z oferty eventowej Biurkowski Events 2026 + KONFERENCJE (PDF od klienta) -->
+    <section class="sub-sec" aria-labelledby="quality-title">
+      <div class="sub-sec__inner">
+        <header class="sec-head"><h2 class="sec-head__title" id="quality-title" style="--fit:22" data-reveal>Jakość i fachowe wsparcie</h2><span class="draw-line" data-reveal aria-hidden="true"></span></header>
+        <div class="qual">
+          <p class="qual__lead" data-reveal>Nasz zespół złożony z doświadczonych muzyków, artystów oraz specjalistów od techniki scenicznej to gwarancja jakości i pełnego zadowolenia. Zapewnimy scenografię, dekoracje, multimedia, nagłośnienie i oświetlenie dostosowane do tematyki i potrzeb spotkania.</p>
+          <div class="qual__side" data-reveal>
+            <p class="qual__kicker">Obsługujemy</p>
+            <ul class="qual__items">
+              <li>Bankiety</li>
+              <li>Konferencje</li>
+              <li>Imprezy firmowe</li>
+              <li>Imprezy prywatne</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sub-sec sub-dark sub-split" aria-labelledby="tech-title">
+      <div class="sub-sec__inner">
+        <header class="sec-head"><h2 class="sec-head__title" id="tech-title" style="--fit:7" data-reveal>Technika</h2><span class="draw-line" data-reveal aria-hidden="true"></span></header>
+      </div>
+      <div class="split-list">
+        <article class="split" data-reveal>
+          <div class="split__body">
+            <span class="split__no" aria-hidden="true">01</span>
+            <h3 class="split__title">Własne zaplecze techniczne</h3>
+            <p>Nie stosujemy rozwiązań prowizorycznych, pracujemy wyłącznie na sprawdzonym sprzęcie renomowanych marek. Nieustannie inwestujemy w rozwój zaplecza technicznego, by oferować naszym klientom <strong>najwyższy poziom usług</strong> przy tworzeniu wyjątkowych wydarzeń. Nasza firma właśnie poszerzyła swoje zaplecze techniczne o profesjonalne nagłośnienia i oświetlenia.</p>
+          </div>
+          <figure class="split__photo"><img src="../assets/events/zaplecze.webp" width="1800" height="1200" alt="Scena w niebieskich wiązkach światła: ruchome głowy, wzory gobo na suficie i stanowisko DJ" loading="lazy" decoding="async" style="object-position:50% 50%"></figure>
+        </article>
+        <article class="split split--rev" data-reveal>
+          <div class="split__body">
+            <span class="split__no" aria-hidden="true">02</span>
+            <h3 class="split__title">Nagłośnienie Meyer Sound</h3>
+            <p>Nowe nagłośnienie firmy <strong>MEYER SOUND</strong> zapewnia wyjątkową czystość dźwięku, imponującą moc oraz pełne brzmienie, które doskonale sprawdzi się zarówno podczas plenerowych wydarzeń, jak i eleganckich, kameralnych uroczystości.</p>
+          </div>
+          <figure class="split__photo"><img src="../assets/events/naglosnienie.webp" width="1325" height="994" alt="Głośnik Meyer Sound z bliska, metalowa siatka w sześciokątne otwory" loading="lazy" decoding="async" style="object-position:50% 45%"></figure>
+        </article>
+        <article class="split" data-reveal>
+          <div class="split__body">
+            <span class="split__no" aria-hidden="true">03</span>
+            <h3 class="split__title">Oświetlenie sceniczne</h3>
+            <p><strong>Przygotujemy prawdziwe świetlne show.</strong> Nasze oświetlenie sceniczne zamieni każde Twoje wydarzenie, koncert, konferencję czy event firmowy, w wyjątkowe widowisko. To niezbędny element, który współtworzy magię każdego wydarzenia i wzmacnia przekaz artystyczny.</p>
+            <p>Nasi oświetleniowcy przygotują dla Państwa prawdziwe świetlne show, korzystając z najnowocześniejszych rozwiązań.</p>
+          </div>
+          <figure class="split__photo"><img src="../assets/events/oswietlenie.webp" width="1007" height="1510" alt="Saksofonistka na scenie w pomarańczowych i czerwonych wiązkach światła i dymie" loading="lazy" decoding="async" style="object-position:50% 1%"></figure>
+        </article>
+      </div>
+    </section>
+
+    <section class="sub-sec" aria-labelledby="conf-title">
+      <div class="sub-sec__inner">
+        <header class="sec-head"><h2 class="sec-head__title" id="conf-title" style="--fit:10" data-reveal>Konferencje</h2><span class="draw-line" data-reveal aria-hidden="true"></span></header>
+        <div class="venues">
+          <article class="venue" data-reveal>
+            <div class="venue__media venue__media--solo"><img src="../assets/events/konferencje.webp" width="935" height="801" alt="Sala konferencyjna z gobo na suficie, scena z napisem Noon Awards i uczestnicy" loading="lazy" decoding="async"></div>
+            <div class="venue__body">
+              <p class="venue__kicker">Profesjonalna obsługa</p>
+              <p>Profesjonalna obsługa to fundament udanej konferencji, pozwalający uczestnikom i prelegentom skupić się wyłącznie na merytorycznej stronie wydarzenia. Nasze wieloletnie doświadczenie zapewni jej płynny przebieg i gwarantuje, że każdy element programu zostanie dopracowany w najmniejszym szczególe, <strong>spełniając Państwa oczekiwania</strong>.</p>
+              <p class="venue__kicker venue__kicker--list">Główne zadania obejmują</p>
+              <ol class="tasks">
+                <li data-reveal><h4>Logistyka i wsparcie techniczne</h4><p>Zapewnienie sprzętu audiowizualnego, oświetlenia, nagłośnienia oraz ich sprawnego działania.</p></li>
+                <li data-reveal><h4>Tłumaczenia symultaniczne</h4><p>Zapewnienie całego zaplecza, kabin tłumaczeniowych z odbiornikami.</p></li>
+                <li data-reveal><h4>Obsługa prelegentów</h4><p>Upewnienie się, że dysponują oni odpowiednimi narzędziami i wsparciem przed swoimi wystąpieniami.</p></li>
+                <li data-reveal><h4>Realizacja wizji</h4><p>Pomoc w podłączeniu ich laptopów, obsługa prezentacji (np. PowerPoint, Keynote) oraz testowanie sprzętu przed sesjami.</p></li>
+                <li data-reveal><h4>Zarządzanie przestrzenią</h4><p>Nadzór nad układem sal, cateringiem, oznakowaniem i przepływem uczestników.</p></li>
+              </ol>
+            </div>
+          </article>
+          <article class="venue venue--rev" data-reveal>
+            <div class="venue__media venue__media--solo venue__media--portrait"><img src="../assets/events/tlumaczenia.webp" width="836" height="1115" alt="Kabina do tłumaczeń symultanicznych w hali" loading="lazy" decoding="async"></div>
+            <div class="venue__body">
+              <p class="venue__kicker">Języki bez barier</p>
+              <h3 class="venue__title venue__title--sm">Tłumaczenia symultaniczne</h3>
+              <p>Współpracujemy z jedną z najlepszych na świecie firm oferujących usługi tłumaczeń ustnych w czasie rzeczywistym. Oferta obejmuje tłumaczenia we wszystkich językach europejskich i wielu pozaeuropejskich, <strong>w ponad 150 kombinacjach językowych</strong>.</p>
+              <p>Zapewniamy tłumaczenia na najwyższym poziomie, zarówno zwykłe, jak i przysięgłe, a także szereg dodatkowych usług, takich jak tłumaczenia audiowizualne, lektorskie czy ustne, np.: tłumaczenie symultaniczne (na konferencji przez kabinę) i konsekutywne (tłumacz mówi po mówcy).</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sub-sec sub-sec--tint sub-sec--bleed" aria-labelledby="dj-title">
+      <div class="sub-sec__inner">
+        <header class="sec-head"><h2 class="sec-head__title" id="dj-title" style="--fit:14" data-reveal>Profesjonalny DJ</h2><span class="draw-line" data-reveal aria-hidden="true"></span></header>
+        <div class="djcut">
+          <figure class="djcut__photo" data-reveal><img src="../assets/events/dj-cutout.webp" width="1024" height="1402" alt="DJ Błażej Biurkowski uśmiechnięty, ze słuchawkami i ręką przy słuchawce, w granatowym garniturze" loading="lazy" decoding="async"></figure>
+          <div class="djcut__body">
+            <p class="venue__kicker">Poznaj naszą ofertę DJ-ską</p>
+            <p class="venue__quote">DJ nie tylko gra, on tworzy atmosferę…</p>
+            <p>Nasi DJ-e to prawdziwi fachowcy w swojej branży. Zagrali niezliczoną ilość imprez klubowych i prywatnych. Są w stanie zapewnić oprawę muzyczną na każde wydarzenie, event, pokaz mody, imprezę firmową i prywatną.</p>
+            <p>W ich repertuarze znajdziecie nie tylko najnowsze gatunki muzyki, ale też sprawdzone przeboje lat 70., 80. i 90. Nasze wieloletnie doświadczenie zaowocuje na Państwa imprezie.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sub-sec sub-dark" aria-labelledby="imp-title">
+      <div class="sub-sec__inner">
+        <header class="sec-head"><h2 class="sec-head__title" id="imp-title" style="--fit:17" data-reveal>Impresariat muzyczny</h2><span class="draw-line" data-reveal aria-hidden="true"></span></header>
+        <p class="sub-sec__lead" data-reveal>Nasi artyści znani z programów i show telewizyjnych <strong class="hl">„Jaka to Melodia”</strong>, <strong class="hl">„Mam Talent”</strong>, <strong class="hl">„The Voice of Poland”</strong> i <strong class="hl">„Must Be The Music”</strong> zadbają o dobry nastrój od początku do końca trwania eventu. Nasz team to doświadczeni i profesjonalni muzycy i DJ-e, prawdziwi fachowcy w swojej branży. Nienaganny wygląd, kultura osobista i energia to ich domena. Nasz atut to szeroki repertuar i umiejętność reagowania na gusta gości. Doskonale wiemy, jak odpowiednio dobrać muzykę.</p>
+        <ul class="artists">
+          <li class="artist" data-reveal>
+            <figure class="artist__photo"><img src="../assets/events/a-alicja.webp" width="973" height="1186" alt="Saksofonistka Alicja w szarej sukni na ciemnym tle" loading="lazy" decoding="async" style="object-position:50% 22%"></figure>
+            <h3 class="artist__name">Alicja</h3>
+            <p class="artist__role">saksofon</p>
+            <p class="artist__note">Jedna z najbardziej znanych saksofonistek w Polsce.</p>
+          </li>
+          <li class="artist" data-reveal>
+            <figure class="artist__photo"><img src="../assets/events/a-aleksandra.webp" width="761" height="1140" alt="Skrzypaczka Aleksandra ze skrzypcami" loading="lazy" decoding="async" style="object-position:50% 22%"></figure>
+            <h3 class="artist__name">Aleksandra</h3>
+            <p class="artist__role">skrzypce</p>
+            <p class="artist__note">Rozkręci i upiększy każdą uroczystość!</p>
+          </li>
+          <li class="artist" data-reveal>
+            <figure class="artist__photo"><img src="../assets/events/a-barbara.webp" width="1179" height="1469" alt="Skrzypaczka Barbara w czerwonej sukience" loading="lazy" decoding="async" style="object-position:50% 22%"></figure>
+            <h3 class="artist__name">Barbara</h3>
+            <p class="artist__role">skrzypce</p>
+            <p class="artist__note">Wprowadzi słuchaczy w nastrój do głębokiego przeżywania muzyki.</p>
+          </li>
+          <li class="artist" data-reveal>
+            <figure class="artist__photo"><img src="../assets/events/a-anna.webp" width="1179" height="1450" alt="Wokalistka Anna ze złotym płaszczem i mikrofonem" loading="lazy" decoding="async" style="object-position:50% 22%"></figure>
+            <h3 class="artist__name">Anna</h3>
+            <p class="artist__role">wokal</p>
+            <p class="artist__note">Charyzmatyczna wokalistka, przy której głosie można się rozmarzyć.</p>
+          </li>
+          <li class="artist" data-reveal>
+            <figure class="artist__photo"><img src="../assets/events/a-xenia.webp" width="944" height="1258" alt="Wokalistka Xenia na scenie w czerwonej sukni" loading="lazy" decoding="async" style="object-position:50% 22%"></figure>
+            <h3 class="artist__name">Xenia</h3>
+            <p class="artist__role">wokal</p>
+            <p class="artist__note">Wokalistka, tancerka, showmenka.</p>
+          </li>
+          <li class="artist" data-reveal>
+            <figure class="artist__photo"><img src="../assets/events/a-neya.webp" width="720" height="960" alt="Wokalistka NEYA z mikrofonem, zdjęcie czarno-białe" loading="lazy" decoding="async" style="object-position:50% 22%"></figure>
+            <h3 class="artist__name">NEYA</h3>
+            <p class="artist__role">wokal</p>
+            <p class="artist__note">Seksapil i nieokiełznana energia.</p>
+          </li>
+          <li class="artist" data-reveal>
+            <figure class="artist__photo"><img src="../assets/events/a-agata.webp" width="1179" height="1572" alt="Wokalistka Agata w cekinowym stroju na scenie" loading="lazy" decoding="async" style="object-position:50% 22%"></figure>
+            <h3 class="artist__name">Agata</h3>
+            <p class="artist__role">wokal</p>
+            <p class="artist__note">Występy w The Voice of Poland oraz Young Sing Star.</p>
+          </li>
+          <li class="artist" data-reveal>
+            <figure class="artist__photo"><img src="../assets/events/a-alex.webp" width="897" height="1345" alt="Trębacz Alex na scenie w niebieskim świetle" loading="lazy" decoding="async" style="object-position:50% 22%"></figure>
+            <h3 class="artist__name">Alex</h3>
+            <p class="artist__role">trąbka</p>
+            <p class="artist__note">Gorąca kubańska krew!</p>
+          </li>
+        </ul>
+        <h3 class="ens-title" data-reveal>Zespoły i projekty</h3>
+        <ol class="wed-choose wed-choose--4">
+          <li class="wed-choose__item" data-reveal>
+            <figure class="wed-choose__photo"><img src="../assets/events/e-djsax.webp" width="1200" height="801" alt="DJ przy konsolecie w towarzystwie saksofonistek projektu DJ & Lady Sax" loading="lazy" decoding="async" style="object-position:58% 35%"></figure>
+            <div class="wed-choose__body"><span class="wed-choose__no" aria-hidden="true">I</span><h3 class="wed-choose__title">DJ & Lady Sax i Przyjaciele</h3><p>Idealne połączenie muzyki prezentowanej przez DJ-a z niepowtarzalnym, ujmującym dźwiękiem saksofonu. W składzie wyłącznie saksofonistki znane z programów telewizyjnych.</p></div>
+          </li>
+          <li class="wed-choose__item" data-reveal>
+            <figure class="wed-choose__photo"><img src="../assets/events/e-manhattan.webp" width="1400" height="831" alt="Kwartet Manhattan Band w eleganckich strojach na jasnym tle" loading="lazy" decoding="async" style="object-position:50% 40%"></figure>
+            <div class="wed-choose__body"><span class="wed-choose__no" aria-hidden="true">II</span><h3 class="wed-choose__title">Manhattan Band</h3><p>Muzyczna podróż do złotej ery jazzu: kwartet „The Standard Bearers” wskrzesza ponadczasowy blask „World’s Famous Jazz Standards”. Oprawa dla słuchaczy ceniących klasę i autentyczne brzmienie.</p></div>
+          </li>
+          <li class="wed-choose__item" data-reveal>
+            <figure class="wed-choose__photo"><img src="../assets/events/e-tercet.webp" width="1128" height="1690" alt="Tercet Klasyczny: trzy muzyczki w czerwonych sukniach ze skrzypcami i wiolonczelą" loading="lazy" decoding="async" style="object-position:50% 55%"></figure>
+            <div class="wed-choose__body"><span class="wed-choose__no" aria-hidden="true">III</span><h3 class="wed-choose__title">Tercet Klasyczny</h3><p>Eleganckie aranżacje klasyki na skrzypce, wiolonczelę i altówkę: Vivaldi, Bach, Mozart, Beethoven i walce Straussa. Na formalne przyjęcia, bankiety i ceremonie ślubne.</p></div>
+          </li>
+          <li class="wed-choose__item" data-reveal>
+            <figure class="wed-choose__photo"><img src="../assets/events/e-gentlemen.webp" width="796" height="1193" alt="Trzej muzycy w smokingach z trąbką i saksofonem" loading="lazy" decoding="async" style="object-position:50% 45%"></figure>
+            <div class="wed-choose__body"><span class="wed-choose__no" aria-hidden="true">IV</span><h3 class="wed-choose__title">The Gentlemen</h3><p>Nasz najnowszy projekt: trąbka, saksofon i DJ. Trzech zawodowców, trzy nurty muzyczne, gorąca kubańska krew i klubowa energia (salsa, disco, funky) albo chillout i jazz.</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+
+    <section class="sub-sec sub-sec--tint" aria-labelledby="portfolio-title" data-portfolio>
+      <div class="sub-sec__inner">
+        <header class="sec-head"><h2 class="sec-head__title" id="portfolio-title" style="--fit:8" data-reveal>Portfolio</h2><span class="draw-line" data-reveal aria-hidden="true"></span></header>
+        <div class="sub-filters" role="tablist" aria-label="Filtr zdjęć">
+          <button type="button" role="tab" aria-selected="true" data-filter="all">Wszystko</button>
+          <button type="button" role="tab" aria-selected="false" data-filter="oswietlenie">Oświetlenie</button>
+          <button type="button" role="tab" aria-selected="false" data-filter="sax">DJ & Lady Sax</button>
+        </div>
+        <ul class="sub-gallery">
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/img-9284.webp" data-lb><img src="../assets/portfolio/thumb/img-9284.webp" width="1080" height="720" alt="Scena w niebieskim świetle: wiązki reflektorów i wzory gobo na suficie" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/img-3616.webp" data-lb><img src="../assets/portfolio/thumb/img-3616.webp" width="720" height="960" alt="Tańczący goście w zielonym świetle laserów i wzorach gobo" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/055.webp" data-lb><img src="../assets/portfolio/thumb/055.webp" width="960" height="720" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/img-2696.webp" data-lb><img src="../assets/portfolio/thumb/img-2696.webp" width="720" height="960" alt="Sala z zielonymi neonami na suficie i nakrytymi stołami" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/058.webp" data-lb><img src="../assets/portfolio/thumb/058.webp" width="960" height="720" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/img-5179.webp" data-lb><img src="../assets/portfolio/thumb/img-5179.webp" width="720" height="960" alt="Goście pod dekoracjami sufitowymi w turkusowym świetle" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/061.webp" data-lb><img src="../assets/portfolio/thumb/061.webp" width="1024" height="683" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/img-3605.webp" data-lb><img src="../assets/portfolio/thumb/img-3605.webp" width="720" height="960" alt="Parkiet pod sufitem oświetlonym na fioletowo i zielono" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/062.webp" data-lb><img src="../assets/portfolio/thumb/062.webp" width="1080" height="720" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/img-6908.webp" data-lb><img src="../assets/portfolio/thumb/img-6908.webp" width="720" height="960" alt="Ogród oświetlony na zielono i fioletowo podczas wieczornego przyjęcia" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/066.webp" data-lb><img src="../assets/portfolio/thumb/066.webp" width="1080" height="720" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/img-2532.webp" data-lb><img src="../assets/portfolio/thumb/img-2532.webp" width="720" height="960" alt="Sala studniówkowa w czerwonym świetle z dekoracją z balonów" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/068.webp" data-lb><img src="../assets/portfolio/thumb/068.webp" width="1084" height="720" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/051.webp" data-lb><img src="../assets/portfolio/thumb/051.webp" width="720" height="900" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/070.webp" data-lb><img src="../assets/portfolio/thumb/070.webp" width="1080" height="720" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/052.webp" data-lb><img src="../assets/portfolio/thumb/052.webp" width="720" height="900" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/071.webp" data-lb><img src="../assets/portfolio/thumb/071.webp" width="1080" height="720" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="oswietlenie"><a href="../assets/portfolio/full/053.webp" data-lb><img src="../assets/portfolio/thumb/053.webp" width="720" height="960" alt="Oświetlenie, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/mg-3427.webp" data-lb><img src="../assets/portfolio/thumb/mg-3427.webp" width="1080" height="720" alt="DJ przy konsolecie i wokalistka z saksofonem na scenie w niebieskim świetle" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/mg-2784.webp" data-lb><img src="../assets/portfolio/thumb/mg-2784.webp" width="720" height="1080" alt="Saksofonistka na scenie w czerwonych i białych wiązkach światła" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/mg-2696.webp" data-lb><img src="../assets/portfolio/thumb/mg-2696.webp" width="1080" height="720" alt="Saksofonistka na hokerze w fioletowych wiązkach światła i dymie" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/img-1231.webp" data-lb><img src="../assets/portfolio/thumb/img-1231.webp" width="720" height="960" alt="Wokalistka i saksofonistka pod neonem DJ &amp; Lady Sax, scena w czerwonym świetle" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/mg-2871.webp" data-lb><img src="../assets/portfolio/thumb/mg-2871.webp" width="1080" height="720" alt="Saksofonistka na scenie w pomarańczowym świetle i dymie" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/img-0049.webp" data-lb><img src="../assets/portfolio/thumb/img-0049.webp" width="720" height="960" alt="Saksofonistka w okrągłej sali oświetlonej na niebiesko, w tle stoły gości" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/mg-2732.webp" data-lb><img src="../assets/portfolio/thumb/mg-2732.webp" width="1080" height="720" alt="DJ przy konsolecie w czerwonym świetle, w tle saksofonistka przy pulpicie z nutami" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/img-3484.webp" data-lb><img src="../assets/portfolio/thumb/img-3484.webp" width="720" height="960" alt="Solo na saksofonie w białych wiązkach światła i wzorach gobo" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/038.webp" data-lb><img src="../assets/portfolio/thumb/038.webp" width="746" height="720" alt="Dj &amp; Lady Sax, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/mg-2827.webp" data-lb><img src="../assets/portfolio/thumb/mg-2827.webp" width="720" height="1080" alt="Saksofonistka na scenie w czerwonych wiązkach światła i różowym dymie" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/039.webp" data-lb><img src="../assets/portfolio/thumb/039.webp" width="1080" height="720" alt="Dj &amp; Lady Sax, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/img-2881.webp" data-lb><img src="../assets/portfolio/thumb/img-2881.webp" width="720" height="960" alt="Saksofonistka i artystka w czerwonych sukniach przy konsolecie DJ, w tle nocna panorama miasta" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/040.webp" data-lb><img src="../assets/portfolio/thumb/040.webp" width="720" height="720" alt="Dj &amp; Lady Sax, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/img-3487.webp" data-lb><img src="../assets/portfolio/thumb/img-3487.webp" width="720" height="960" alt="Solo na saksofonie w żółtych wiązkach światła" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/041.webp" data-lb><img src="../assets/portfolio/thumb/041.webp" width="1078" height="720" alt="Dj &amp; Lady Sax, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/img-6697.webp" data-lb><img src="../assets/portfolio/thumb/img-6697.webp" width="720" height="960" alt="Wokalistka na scenie w czerwonym świetle, w tle skrzypaczka" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/043.webp" data-lb><img src="../assets/portfolio/thumb/043.webp" width="1078" height="720" alt="Dj &amp; Lady Sax, DJ Błażej Biurkowski" loading="lazy" decoding="async"></a></li>
+          <li class="sub-gallery__item" data-cat="sax"><a href="../assets/portfolio/full/mg-2819.webp" data-lb><img src="../assets/portfolio/thumb/mg-2819.webp" width="720" height="1080" alt="Saksofonistka na hokerze w czarno-białym kadrze, dym na scenie" loading="lazy" decoding="async"></a></li>
+        </ul>
+        <p class="sub-more"><button type="button" class="sub-more__btn" data-more hidden>Pokaż więcej zdjęć</button><a href="../#portfolio">Zobacz całe portfolio</a></p>
+      </div>
+    </section>
+
+
+    <section class="sub-cta" aria-labelledby="cta-title">
+      <div class="sub-cta__inner">
+        <header class="sec-head"><h2 class="sec-head__title" id="cta-title" style="--fit:24" data-reveal>Zapytaj o dostępność terminu</h2><span class="draw-line" data-reveal aria-hidden="true"></span></header>
+        <p data-reveal>Napisz lub zadzwoń, a sprawdzimy, czy Twój termin jest wolny.</p>
+        <div class="sub-cta__actions" data-reveal>
+          <a class="btn btn--light" href="mailto:info@biurkowski.pl?subject=Zapytanie%20o%20event"><span>info@biurkowski.pl</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="sub-cta__phone" href="tel:+48502169499">+48 502 169 499</a>
+        </div>
+        <div class="sub-cta__also">
+          <span>Zobacz też</span>
+          <ul>
+          <li><a class="btn btn--line" href="../studniowki/"><span>Studniówki</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          <li><a class="btn btn--line" href="../wedding/"><span>Wedding</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="subfoot">
+    <p>ⓒ Błażej Biurkowski 2026. Wszelkie prawa zastrzeżone.</p>
+    <a class="footer__credit" href="https://www.nikpage.pl/" target="_blank" rel="noopener">
+      <span class="footer__credit-label">Projekt i realizacja</span>
+      <img src="../assets/nikpage-n.webp" width="24" height="24" alt="" loading="lazy" decoding="async">
+      <span class="footer__credit-name"><b>Nik</b>Page</span>
+    </a>
+  </footer>
+
+  <script src="../js/sub.js" defer></script>
+  <script src="../js/offer.js" defer></script>
+</body>
+</html>
