@@ -34,6 +34,29 @@
     Array.prototype.forEach.call(cols, function (col) { mio.observe(col); });
   }
 
+  /* pozycje listy zawinięte do kilku wierszy: szerokość = najdłuższy wiersz, żeby romby stały przy tekście, a nie przy brzegach ekranu */
+  var checks = document.querySelectorAll('.sub-inc .sub-check li');
+  function hugLines() {
+    Array.prototype.forEach.call(checks, function (li) {
+      li.style.width = '';
+      var range = document.createRange();
+      range.selectNodeContents(li);
+      var rects = range.getClientRects(), tops = {}, lines = 0, widest = 0, i;
+      for (i = 0; i < rects.length; i++) {
+        var key = Math.round(rects[i].top);
+        if (!tops[key]) { tops[key] = 1; lines++; }
+        widest = Math.max(widest, rects[i].width);
+      }
+      if (lines > 1) li.style.width = Math.ceil(widest) + 2 + 'px';
+    });
+  }
+  if (checks.length) {
+    var hugTimer;
+    hugLines();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(hugLines);
+    window.addEventListener('resize', function () { clearTimeout(hugTimer); hugTimer = setTimeout(hugLines, 120); });
+  }
+
   /* ---------- portfolio podstrony ---------- */
   var section = document.querySelector('[data-portfolio]');
   if (!section) return;
