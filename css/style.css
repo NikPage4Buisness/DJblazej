@@ -2123,3 +2123,29 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 /* lista oferty: pozycja w jednym rzędzie siatki ma tę samą wysokość (kreski pod pozycjami w obu kolumnach są równo), a tekst i romby są wyśrodkowane w pionie,
    także gdy sąsiednia pozycja zawinęła się do dwóch wierszy */
 .sub-inc .sub-check li { display: flex; align-items: center; justify-content: center; }
+
+/* „Profesjonalizm”: zdjęcia w kolumnach nie są przycinane, tylko dopasowane do szerokości kolumny w swoich własnych proporcjach. Komórka zdjęcia jest
+   (prawie) kwadratowa, a zdjęcie leży przy jej dolnej krawędzi, więc numery, tytuły i opisy zaczynają się na tej samej wysokości we wszystkich kolumnach.
+   Zaokrąglenia i cień ma samo zdjęcie. Na telefonie zdjęcie jest na całą szerokość ekranu i ma własne proporcje. */
+.trio__photo { aspect-ratio: 1 / 1.02; overflow: visible; border-radius: 0; box-shadow: none; display: flex; align-items: flex-end; }
+.trio__photo img { height: auto; object-fit: initial; border-radius: clamp(14px, 1.6vw, 24px); box-shadow: 0 30px 56px -34px rgba(11, 11, 11, .55); }
+.trio__item:hover .trio__photo img { transform: scale(1.02); }
+@media (max-width: 860px) {
+  .trio__photo { aspect-ratio: auto; display: block; }
+  .trio__photo img { border-radius: 0; box-shadow: none; }
+}
+
+/* „Doświadczenie” na telefonie: ramka z tekstem to płaski pas od lewej do prawej krawędzi ekranu, który leży między dwoma zdjęciami i ich nie zasłania
+   (zdjęcia w całości, jedno nad drugim); ten sam wygląd ramki: jasne mleczne tło i podwójna cienka ramka w środku */
+@media (max-width: 860px) {
+  .exp2 { display: flex; flex-direction: column; padding: 0; }
+  .exp2__ph { position: relative; z-index: auto; top: auto; bottom: auto; left: auto; right: auto; width: 100%; height: auto; }
+  .exp2__ph--l { order: 1; }
+  .exp2__panel { order: 2; }
+  .exp2__ph--r { order: 3; }
+  .exp2__ph img { position: static; display: block; width: 100%; height: auto; }
+  .exp2__panel { width: 100%; background: var(--cream); -webkit-backdrop-filter: none; backdrop-filter: none; border: 0; box-shadow: none; padding: clamp(26px, 7vw, 38px) clamp(20px, 6vw, 32px); }
+  .exp2__panel::before { inset: 9px; }
+  .exp2__panel .sec-head { margin-bottom: clamp(12px, 3.4vw, 18px); }
+  .exp2__panel p { line-height: 1.45; }
+}
