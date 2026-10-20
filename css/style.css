@@ -2172,3 +2172,12 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   .portfolio .gallery { grid-auto-rows: clamp(150px, 16vw, 440px); gap: clamp(8px, .9vw, 18px); }
   .portfolio .gallery__item button { border-radius: 0; }
 }
+
+/* nagłówek Portfolio na stronie głównej (od 861 px): numer, tytuł, linia i zakładki filtrów są wyśrodkowane (przy pełnej szerokości galerii tytuł przy lewej
+   krawędzi nachodził na boczną nawigację z kropkami, a zakładki dotykały prawej krawędzi) */
+@media (min-width: 861px) {
+  .portfolio .sec-head--row { flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: clamp(16px, 2.6vh, 30px); }
+  .portfolio .sec-head--row > div:first-child { display: flex; flex-direction: column; align-items: center; }
+  .portfolio .sec-head--row .draw-line { margin-inline: auto; transform-origin: center; }
+  .portfolio .filters { justify-content: center; }
+}
