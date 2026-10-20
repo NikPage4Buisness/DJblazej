@@ -1248,6 +1248,18 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   @media (max-height: 999px), (max-width: 1499px) { .hero { --ts: 1.18; } }
   @media (max-height: 899px), (max-width: 1349px) { .hero { --ts: 1.1; } }
   @media (max-height: 799px), (max-width: 1199px) { .hero { --ts: 1; } }
+  /* szeroki i niski ekran (proporcje okna co najmniej 2,1:1): kolumna tekstów zajmuje całe wolne miejsce między menu a twarzą (do 1200 px), nagłówek układa się
+     w trzech liniach (OD LAT TWORZĘ / HISTORIE / PISANE MUZYKĄ, łamane <br>) zamiast pięciu, więc wysokość hero pozwala na dużo większe litery;
+     ogranicza je już tylko wysokość hero (cztery i pół em na nagłówek z opisem + stałe odstępy) i szerokość wolnego miejsca (najdłuższa linia ma ok. 8,8 em).
+     Opis, przycisk, kontakt i ikony social skalują się razem z nagłówkiem. */
+  @media (min-aspect-ratio: 21/10) {
+    .hero {
+      --ts: 1.25;
+      --col-w: min(calc(100vw - var(--stage-w) * .315 - var(--gutter) - 48px - 25vw - var(--col-pad) - var(--col-shift)), 1200px);
+      --title-fs: min(150px, calc(var(--col-w) / 9.2), calc((var(--hero-h) - var(--header-h) - clamp(12px, calc(var(--hv) * 3), 36px) - var(--reserve) - 225px) / 4.5));
+    }
+    .hero__social { width: calc(var(--title-fs) * 8.8); }
+  }
   .hero__inner { position: static; padding-left: calc(25vw + var(--col-pad) + var(--col-shift)); padding-right: 0; }
   .hero__copy { width: var(--col-w); max-width: none; }
   .hero__cta { width: 100%; margin-top: clamp(28px, calc(var(--hv) * 5), 52px); }
@@ -1304,6 +1316,10 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   /* lity kolor zaczyna się 1px nad końcem wygaszania, żeby nie było szwu */
   background: linear-gradient(var(--ink), var(--ink)) 0 calc(var(--fade-h) - 1px) / 100% calc(100% - var(--fade-h) + 1px) no-repeat;
 }
+/* sekcja skrótów nachodzi na dół hero (margin-top ujemny, z-index 5), więc jej górny pas leży nad ikonami social z hero i przechwytywał kliknięcia:
+   sama sekcja nie reaguje na mysz, a jej treść (.menu-sec__inner, zaczyna się pod pasem wygaszania) tak */
+.menu-sec { pointer-events: none; }
+.menu-sec__inner { pointer-events: auto; }
 .menu-sec::before {
   content: ""; position: absolute; left: 0; right: 0; top: 0; height: var(--fade-h); pointer-events: none;
   background: linear-gradient(to bottom, rgba(11, 11, 11, 0) 0%, rgba(11, 11, 11, .04) 14%, rgba(11, 11, 11, .16) 34%, rgba(11, 11, 11, .42) 56%, rgba(11, 11, 11, .74) 78%, rgba(11, 11, 11, .93) 92%, var(--ink) 100%);
@@ -2147,4 +2163,12 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
   .exp2__panel::before { inset: 9px; }
   .exp2__panel .sec-head { margin-bottom: clamp(12px, 3.4vw, 18px); }
   .exp2__panel p { line-height: 1.45; }
+}
+
+/* Portfolio na stronie głównej (od 861 px): galeria wypełnia ekran jak w referencji klienta: od krawędzi do krawędzi (mały margines boczny), małe odstępy,
+   kafelki bez zaokrągleń i większe wiersze, rosnące z szerokością ekranu. Układ kafelków (bento) nadal układa JS. */
+@media (min-width: 861px) {
+  .portfolio > .container { max-width: none; width: 100%; padding-inline: clamp(8px, 1vw, 20px); }
+  .portfolio .gallery { grid-auto-rows: clamp(150px, 16vw, 440px); gap: clamp(8px, .9vw, 18px); }
+  .portfolio .gallery__item button { border-radius: 0; }
 }
