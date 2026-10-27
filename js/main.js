@@ -286,6 +286,12 @@
   var PORTRAIT = 0.9;
 
   function isPortrait(it) { return parseFloat(it.dataset.ar || '1.5') < PORTRAIT; }
+  // zdjęcie o skrajnych proporcjach (panorama, bardzo wysokie) w zwykłym kafelku byłoby mocno przycięte, więc pokazujemy je w całości
+  function isExtreme(it) { var ar = parseFloat(it.dataset.ar || '1.5'); return ar > 2.1 || ar < 0.48; }
+  // zmiana widocznych zdjęć z płynnym ruchem (js/gallery-motion.js); bez niego zmiana jest natychmiastowa
+  function animateGallery(update) {
+    if (window.BBMotion) window.BBMotion.run(gallery, items, update); else update();
+  }
   function isTallSlot(slot) { return slot === 't' || slot === 'bt'; }
   function isBigSlot(slot) { return slot === 'b' || slot === 'bt' || slot === 'w4'; }
   function setFit(it, on) {
@@ -405,7 +411,7 @@
         queue.splice(queue.indexOf(it), 1);
         if (s.slot !== 's') it.classList.add('bento-' + s.slot);
         it.style.order = order++;
-        setFit(it, s.slot === 'w4' || isTallSlot(s.slot) !== isPortrait(it));
+        setFit(it, s.slot === 'w4' || isTallSlot(s.slot) !== isPortrait(it) || isExtreme(it));
       });
     }
   }
@@ -427,9 +433,14 @@
   }
 
   var bentoResize = null;
+  var bentoWidth = window.innerWidth;
   window.addEventListener('resize', function () {
     clearTimeout(bentoResize);
-    bentoResize = setTimeout(applyBento, 120);
+    bentoResize = setTimeout(function () {
+      if (window.innerWidth === bentoWidth) { applyBento(); return; }
+      bentoWidth = window.innerWidth;
+      animateGallery(applyBento);
+    }, 120);
   });
 
   // Morphic: zaokrąglenia liczone per rząd (pasek może się zawinąć na wąskim ekranie)
@@ -467,16 +478,10 @@
       setTimeout(layoutFilters, 450);
       activeFilter = btn.dataset.filter;
       limit = STEP;
-      items.forEach(function (it) { it.classList.add('is-fading'); });
-      setTimeout(function () {
-        renderGallery();
-        requestAnimationFrame(function () {
-          items.forEach(function (it) { it.classList.remove('is-fading'); });
-        });
-      }, reduceMotion ? 0 : 300);
+      animateGallery(renderGallery);
     });
   });
-  moreBtn.addEventListener('click', function () { limit += STEP; renderGallery(); });
+  moreBtn.addEventListener('click', function () { animateGallery(function () { limit += STEP; renderGallery(); }); });
   renderGallery();
 
   /* ---------- LIGHTBOX ---------- */

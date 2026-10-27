@@ -7,3 +7,6 @@ v2/README.md
 v2/wordpress/
 .vercel/
 .env*
+
+# paczka motywu WordPressa (budowana skryptem wordpress/build-theme.mjs): nie wysyłamy na Vercel
+wordpress/

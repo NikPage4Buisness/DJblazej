@@ -1,0 +1,156 @@
+/* Edytor tekstów na stronie (wczytywany tylko dla zalogowanych z prawem edycji stron). */
+
+.bb-bar {
+  position: fixed; left: 16px; bottom: 16px; z-index: 2147483000;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  max-width: calc(100vw - 32px);
+  padding: 8px; border-radius: 14px;
+  background: #111; color: #fff;
+  font: 600 13px/1.2 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+}
+.bb-bar [hidden] { display: none !important; }
+.bb-tools { display: flex; flex-wrap: wrap; gap: 8px; }
+.bb-btn {
+  margin: 0; padding: 9px 14px; border: 0; border-radius: 10px; cursor: pointer;
+  background: #2b2b2b; color: #fff; font: inherit; letter-spacing: 0;
+}
+.bb-btn:hover { background: #3a3a3a; }
+.bb-btn:disabled { opacity: .45; cursor: default; }
+.bb-toggle, .bb-save { background: #e0262f; }
+.bb-toggle:hover, .bb-save:hover:not(:disabled) { background: #f0343d; }
+.bb-msg { padding: 0 6px; font-weight: 500; color: #ccc; }
+.bb-msg--ok { color: #7ee2a0; }
+.bb-msg--error { color: #ff9a9a; }
+
+/* tryb edycji: pola tekstowe są obrysowane, a kursor wyraźnie widoczny także w tekstach z przezroczystym wypełnieniem liter */
+body.bb-editing [data-bb] {
+  cursor: text;
+  -webkit-user-select: text; user-select: text;
+  caret-color: #e0262f;
+  outline: 2px dashed rgba(224, 38, 47, .5); outline-offset: 3px;
+  pointer-events: auto;
+}
+body.bb-editing [data-bb]:hover { outline-color: rgba(224, 38, 47, .9); background-color: rgba(224, 38, 47, .05); }
+body.bb-editing [data-bb]:focus { outline: 2px solid #e0262f; background-color: rgba(224, 38, 47, .08); }
+
+/* zdjęcia i linki w trybie edycji: niebieski obrys zdjęć, zielony obrys linków bez edytowalnego tekstu (ikony, przyciski) */
+body.bb-editing [data-bb-img] {
+  cursor: pointer;
+  outline: 2px dashed rgba(30, 120, 255, .75); outline-offset: -2px;
+}
+body.bb-editing [data-bb-img]:hover { outline-style: solid; filter: brightness(1.08); }
+body.bb-editing [data-bb-link]:not([data-bb]) {
+  cursor: pointer;
+  outline: 2px dashed rgba(0, 160, 90, .75); outline-offset: 3px;
+}
+body.bb-editing [data-bb-link]:not([data-bb]):hover { outline-style: solid; }
+
+/* okno dialogowe (zdjęcie, link, listy) */
+.bb-modal {
+  position: fixed; inset: 0; z-index: 2147483100;
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+  background: rgba(0, 0, 0, .6);
+  font: 400 14px/1.45 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #111;
+}
+.bb-modal__box {
+  width: min(520px, 100%); max-height: calc(100vh - 32px); overflow: auto;
+  padding: 18px; border-radius: 16px; background: #fff; box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+}
+.bb-modal__box--wide { width: min(980px, 100%); }
+.bb-modal__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; font-size: 16px; }
+.bb-modal__x { border: 0; background: none; font-size: 26px; line-height: 1; cursor: pointer; color: #555; padding: 0 4px; }
+.bb-modal .bb-btn { background: #eee; color: #111; }
+.bb-modal .bb-btn:hover { background: #ddd; }
+.bb-modal .bb-primary { background: #e0262f; color: #fff; }
+.bb-modal .bb-primary:hover { background: #f0343d; }
+.bb-prevwrap { display: flex; justify-content: center; margin-bottom: 10px; background: #f3f3f3; border-radius: 12px; padding: 8px; }
+.bb-prev { display: block; max-width: 100%; max-height: 240px; width: auto; height: auto; border-radius: 8px; }
+.bb-note { margin: 8px 0; color: #444; }
+.bb-note--status { min-height: 1.4em; color: #0a6; font-weight: 600; }
+.bb-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.bb-row--end { justify-content: flex-end; }
+.bb-label { display: block; margin: 10px 0; }
+.bb-label span { display: block; margin-bottom: 4px; font-weight: 600; }
+.bb-input { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid #bbb; border-radius: 10px; font: inherit; color: #111; background: #fff; }
+.bb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+.bb-cell { padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; background: #eee; cursor: pointer; aspect-ratio: 1; }
+.bb-cell:hover { border-color: #e0262f; }
+.bb-cell img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.bb-list { display: grid; gap: 6px; }
+.bb-rowbtn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 12px; border: 1px solid #ddd; border-radius: 10px; background: #fafafa; cursor: pointer; text-align: left; font: inherit; color: #111; }
+.bb-rowbtn:hover { border-color: #e0262f; }
+.bb-rowbtn span { color: #666; font-size: 12px; word-break: break-all; }
+
+/* ---------- galeria portfolio (etap 4) ---------- */
+
+/* kafelki galerii w trybie edycji: klik otwiera okno galerii */
+body.bb-editing [data-bb-item] { cursor: pointer; outline: 2px dashed rgba(30, 120, 255, .75); outline-offset: -2px; }
+body.bb-editing [data-bb-item]:hover { outline-style: solid; }
+
+/* drugie okno leży nad pierwszym */
+.bb-modal--sub { z-index: 2147483200; background: rgba(0, 0, 0, .45); }
+
+/* okno galerii: stały nagłówek i stopka, przewija się tylko siatka */
+.bb-modal__box--g { width: min(1100px, 100%); height: calc(100vh - 32px); max-height: none; display: flex; flex-direction: column; overflow: hidden; }
+.bb-modal__box--g > .bb-note { margin: 0 0 8px; flex: none; }
+.bb-gtools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; flex: none; }
+.bb-gtools .bb-gfilter { width: auto; min-width: 180px; padding: 8px 10px; }
+.bb-gcount { margin-left: auto; color: #555; font-weight: 600; }
+.bb-gscroll { flex: 1 1 auto; min-height: 0; overflow: auto; border-radius: 12px; background: #f3f3f3; padding: 8px; }
+.bb-modal__box--g > .bb-note--status { flex: none; margin: 6px 0 0; }
+.bb-modal__box--g > .bb-row { flex: none; }
+
+.bb-ggrid { position: relative; display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 8px; }
+.bb-gtile {
+  position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: #ddd;
+  cursor: grab; user-select: none; -webkit-user-select: none; outline: 2px solid transparent; outline-offset: -2px;
+}
+.bb-gtile img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+.bb-gtile:hover, .bb-gtile:focus-visible { outline-color: #e0262f; }
+.bb-gtile.is-drag { opacity: .35; }
+.bb-gtile.is-new { outline-color: #0a8f5a; }
+.bb-gtile__n, .bb-gtile__new, .bb-gtile__c {
+  position: absolute; padding: 2px 7px; border-radius: 999px; background: rgba(0, 0, 0, .72); color: #fff;
+  font: 700 11px/1.4 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; pointer-events: none;
+}
+.bb-gtile__n { left: 6px; top: 6px; }
+.bb-gtile__new { left: 6px; bottom: 6px; background: #0a8f5a; }
+.bb-gtile__c { right: 6px; bottom: 6px; max-width: calc(100% - 12px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bb-gtile__grip {
+  position: absolute; right: 6px; top: 6px; width: 28px; height: 28px; border-radius: 8px; background: rgba(0, 0, 0, .72); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 17px; line-height: 1; touch-action: none; cursor: grab;
+}
+.bb-gghost { position: fixed !important; left: 0; top: 0; z-index: 2147483300; pointer-events: none; opacity: .92; cursor: grabbing;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .45); outline: 2px solid #e0262f; }
+.bb-gdrop { display: none; position: absolute; width: 4px; border-radius: 2px; background: #e0262f; pointer-events: none; z-index: 3; }
+
+/* pola w oknach galerii */
+.bb-checks { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 6px 0; }
+.bb-check { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.bb-check input { width: 18px; height: 18px; margin: 0; accent-color: #e0262f; }
+.bb-label > span { margin-bottom: 4px; }
+.bb-inline { display: inline-flex; align-items: center; gap: 8px; }
+.bb-inline > span { font-weight: 600; }
+.bb-input--num { width: 84px; }
+.bb-row--between { justify-content: space-between; align-items: center; }
+.bb-row--center { align-items: center; }
+.bb-modal .bb-danger { background: #fff; color: #b3141c; border: 1px solid #e0b4b7; }
+.bb-modal .bb-danger:hover { background: #fbe9ea; }
+
+@media (max-width: 600px) {
+  .bb-modal { padding: 8px; }
+  .bb-modal__box--g { height: calc(100vh - 16px); padding: 12px; }
+  .bb-ggrid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 6px; }
+  .bb-gcount { margin-left: 0; width: 100%; }
+}
+.bb-label .bb-check span { display: inline; margin: 0; font-weight: 400; }
+
+/* style strony nadają akapitom własny kroj (Lora); w oknach edytora ma być ten sam krój co w reszcie okna */
+.bb-modal p, .bb-bar p { font-family: inherit; font-size: inherit; line-height: inherit; letter-spacing: normal; text-transform: none; font-style: normal; }
+
+/* wybór zdjęcia z listy wgranych (wersja bez WordPressa) i przycisk wylogowania */
+.bb-modal--pick { z-index: 2147483250; background: rgba(0, 0, 0, .45); }
+.bb-pickscroll { max-height: min(60vh, 520px); overflow: auto; border-radius: 12px; background: #f3f3f3; padding: 8px; }
+.bb-cell.is-picked { border-color: #e0262f; box-shadow: inset 0 0 0 3px #e0262f; }
+a.bb-btn { display: inline-block; text-decoration: none; }

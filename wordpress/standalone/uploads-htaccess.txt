@@ -1,0 +1,11 @@
+# Zdjęcia wgrane przez edytor: żadne skrypty nie mogą się tu wykonywać.
+Options -Indexes -ExecCGI
+<FilesMatch "\.(php|phtml|phar|php[0-9]|pl|py|cgi|sh)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>

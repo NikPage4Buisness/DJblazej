@@ -896,19 +896,19 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 /* Bento grid: rozmiary kafelków (b = 2x2, w2 = szeroki, t = wysoki, w4 = pełna szerokość)
    nadaje JS według widocznych zdjęć, tak żeby każdy blok był pełny i bez dziur */
 .gallery {
+  position: relative;   /* w galerii leżą też kopie znikających zdjęć na czas ruchu (js/gallery-motion.js) */
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-auto-rows: clamp(150px, 15vw, 240px);
   grid-auto-flow: dense;
   gap: clamp(8px, 1vw, 14px);
 }
-.gallery__item { min-width: 0; transition: opacity .5s var(--ease), transform .5s var(--ease); }
+.gallery__item { min-width: 0; }
 .gallery__item.bento-b { grid-column: span 2; grid-row: span 2; }
 .gallery__item.bento-w2 { grid-column: span 2; }
 .gallery__item.bento-t { grid-row: span 2; }
 .gallery__item.bento-w4 { grid-column: 1 / -1; }
 .gallery__item.bento-bt { grid-column: 1 / -1; grid-row: span 3; }
 .gallery__item.is-hidden, .gallery__item.is-extra { display: none; }
-.gallery__item.is-fading { opacity: 0; transform: scale(.96); }
 .gallery__item button {
   position: relative; display: block; width: 100%; height: 100%; overflow: hidden; background: var(--grey);
   border-radius: 14px;
@@ -1505,7 +1505,7 @@ body.is-loaded .hero__portrait img { opacity: 1; transform: none; }
 .sub-card strong { font-weight: 600; color: var(--ink); }
 @media (max-width: 860px) { .sub-cards, .sub-cards--3 { grid-template-columns: minmax(0, 1fr); } }
 
-.sub-gallery { column-count: 3; column-gap: clamp(8px, 1vw, 14px); list-style: none; margin: 0; padding: 0; }
+.sub-gallery { position: relative; column-count: 3; column-gap: clamp(8px, 1vw, 14px); list-style: none; margin: 0; padding: 0; }
 .sub-gallery__item { break-inside: avoid; margin-bottom: clamp(8px, 1vw, 14px); }
 .sub-gallery__item img { display: block; width: 100%; height: auto; border-radius: clamp(10px, 1vw, 16px); background: var(--cream); }
 @media (max-width: 860px) { .sub-gallery { column-count: 2; } }

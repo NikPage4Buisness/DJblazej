@@ -9,3 +9,6 @@ desktop.ini
 
 .vercel
 .env*
+
+# wynik budowy motywu WordPressa
+wordpress/dist/

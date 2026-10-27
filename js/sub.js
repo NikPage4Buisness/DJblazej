@@ -72,6 +72,11 @@
       return filter === 'all' || (' ' + li.getAttribute('data-cat') + ' ').indexOf(' ' + filter + ' ') !== -1;
     });
   }
+  var galleryEl = section.querySelector('.sub-gallery');
+  // zmiana widocznych zdjęć z płynnym ruchem (js/gallery-motion.js); bez niego zmiana jest natychmiastowa
+  function animate(update) {
+    if (window.BBMotion) window.BBMotion.run(galleryEl, items, update); else update();
+  }
   function render() {
     var list = matching();
     items.forEach(function (li) { li.hidden = true; });
@@ -83,10 +88,10 @@
       filter = b.getAttribute('data-filter');
       shown = PAGE;
       filterBtns.forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
-      render();
+      animate(render);
     });
   });
-  if (moreBtn) moreBtn.addEventListener('click', function () { shown += PAGE; render(); });
+  if (moreBtn) moreBtn.addEventListener('click', function () { animate(function () { shown += PAGE; render(); }); });
   render();
 
   /* ---------- powiększenie zdjęcia ---------- */

@@ -1,0 +1,9 @@
+# Dane strony (konto, treści, sesje). Pliki mają dodatkowe zabezpieczenie w środku, to jest druga warstwa.
+Options -Indexes
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>
