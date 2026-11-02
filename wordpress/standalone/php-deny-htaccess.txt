@@ -1,0 +1,11 @@
+# Pliki PHP w tym folderze dołącza index.php (po stronie serwera), więc z internetu nie wolno ich otwierać bezpośrednio.
+# Zdjęcia, style i skrypty z tego folderu (jeśli są) działają normalnie. To druga warstwa: pliki mają też zabezpieczenie w środku.
+<FilesMatch "\.(php|phtml|phar|php[0-9])$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>

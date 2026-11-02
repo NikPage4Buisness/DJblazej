@@ -114,6 +114,8 @@ function assemble(dir, withData) {
   fs.cpSync(path.join(src, 'cms'), path.join(dir, 'cms'), { recursive: true });
   fs.copyFileSync(path.join(src, 'index.php'), path.join(dir, 'index.php'));
   fs.writeFileSync(path.join(dir, '.htaccess'), fs.readFileSync(path.join(src, 'htaccess.txt'), 'utf8').replace('{{FORCE_HTTPS}}', () => FORCE_HTTPS));
+  /* druga warstwa ochrony: pliki PHP z cms/ i theme/ nie mogą być otwierane bezpośrednio z internetu */
+  for (const d of ['cms', 'theme']) fs.copyFileSync(path.join(src, 'php-deny-htaccess.txt'), path.join(dir, d, '.htaccess'));
   fs.writeFileSync(path.join(dir, 'cms', 'redirects.php'), redirectsPhp);
   fs.writeFileSync(path.join(dir, 'robots.txt'), robots);
   if (sitemap) fs.writeFileSync(path.join(dir, 'sitemap.xml'), sitemap);

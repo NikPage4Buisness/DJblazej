@@ -373,7 +373,8 @@ const toPhp = (html) => {
   h = h.replace(/\{\{BBS:([a-z0-9]{10})\}\}/g, "<?php bb_img_srcset( '$1' ); ?>");
   h = h.replace(/\{\{BBF:([a-z0-9]{10})\}\}/g, "<?php bb_img_full( '$1' ); ?>");
   h = h.replace(/\{\{BBL:([a-z0-9]{10})\}\}/g, "<?php bb_href( '$1' ); ?>");
-  return '<?php $bb = get_template_directory_uri(); ?><!doctype html>' + h.replace(/^<!doctype html>\s*/i, '\n');
+  /* zabezpieczenie: szablon otwarty bezpośrednio z internetu (bez WordPressa lub warstwy hostingowej) kończy się od razu, bez błędu PHP */
+  return '<?php if ( ! defined( \'ABSPATH\' ) ) { exit; } $bb = get_template_directory_uri(); ?><!doctype html>' + h.replace(/^<!doctype html>\s*/i, '\n');
 };
 const pages = [
   ['index.html', 'front-page.php'],
@@ -415,6 +416,9 @@ fs.writeFileSync(path.join(out, 'index.php'), `<?php
  * Właściwe strony: front-page.php (strona główna), page-eventy.php, page-studniowki.php, page-wedding.php,
  * page-referencje-dj-blazej.php i page-polityka-prywatnosci-i-plikow-cookies.php.
  */
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?><!doctype html>
 <html <?php language_attributes(); ?>>
 <head>
