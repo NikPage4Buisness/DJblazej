@@ -17,20 +17,22 @@ więc na razie nie edytuje się ich w panelu. Edycja przez kliknięcie w tekst t
    Jeśli wyskoczy błąd o rozmiarze pliku: rozpakuj zip i skopiuj folder `djblazej` do `wp-content/themes/` (menedżer plików hostingu, FTP albo
    w Local/Studio opcja „otwórz folder strony”). Motyw pojawi się na liście motywów.
 3. **Ustaw adresy:** **Ustawienia, Bezpośrednie odnośniki**, wybierz **Nazwa wpisu**, **Zapisz**.
-4. **Utwórz 3 strony** (**Strony, Dodaj nową**), treść zostaw pustą, opublikuj. Adres (slug) musi być dokładnie taki:
+4. **Utwórz 5 stron** (**Strony, Dodaj nową**), treść zostaw pustą, opublikuj. Adres (slug) musi być dokładnie taki:
 
    | Tytuł | Adres (slug) |
    | --- | --- |
    | Eventy | `eventy` |
    | Studniówki | `studniowki` |
    | Wedding | `wedding` |
+   | Referencje | `referencje-dj-blazej` |
+   | Polityka prywatności i plików cookies | `polityka-prywatnosci-i-plikow-cookies` |
 
    Adres zmienisz w prawym panelu strony, **Odnośnik**, pole „Adres URL”. Szablon podstrony dobiera się automatycznie po adresie.
 5. **Strona główna:** utwórz stronę „Strona główna” (treść pusta). **Ustawienia, Czytanie**, „Twoja strona główna wyświetla”,
    **Statyczna strona**, wybierz „Strona główna”, **Zapisz**.
 6. **Aktywuj motyw:** **Wygląd, Motywy**, przy „DJ Błażej Biurkowski” kliknij **Aktywuj**.
 7. **Sprawdź** (najlepiej w oknie incognito, bo zalogowany administrator widzi pasek WordPressa, który przesuwa górny pasek strony):
-   - `/` (strona główna), `/eventy/`, `/studniowki/`, `/wedding/`,
+   - `/` (strona główna), `/eventy/`, `/studniowki/`, `/wedding/`, `/referencje-dj-blazej/`, `/polityka-prywatnosci-i-plikow-cookies/`,
    - czy się ładują zdjęcia i loader, czy działa menu (w tym „Oferta” z podmenu), galeria portfolio z filtrami i powiększeniem zdjęcia,
    - widok na telefonie.
 
@@ -43,7 +45,8 @@ więc na razie nie edytuje się ich w panelu. Edycja przez kliknięcie w tekst t
 
 ## Co jest w paczce
 
-- `front-page.php`, `page-eventy.php`, `page-studniowki.php`, `page-wedding.php`: strony wygenerowane z plików `index.html`, `eventy/`, `studniowki/`, `wedding/`
+- `front-page.php`, `page-eventy.php`, `page-studniowki.php`, `page-wedding.php`, `page-referencje-dj-blazej.php`, `page-polityka-prywatnosci-i-plikow-cookies.php`:
+  strony wygenerowane z plików `index.html`, `eventy/`, `studniowki/`, `wedding/`, `referencje-dj-blazej/`, `polityka-prywatnosci-i-plikow-cookies/`
   (ścieżki do zasobów zamienione na adres motywu, linki między stronami na adresy WordPressa),
 - `css/`, `js/`, `assets/`: style, skrypty i zdjęcia,
 - `style.css` (nagłówek motywu), `functions.php`, `index.php` (awaryjny).

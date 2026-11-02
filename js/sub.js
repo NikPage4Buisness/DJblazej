@@ -57,6 +57,27 @@
     window.addEventListener('resize', function () { clearTimeout(hugTimer); hugTimer = setTimeout(hugLines, 120); });
   }
 
+  /* ---------- film z YouTube (strona Referencje) ----------
+     Przed kliknięciem to zwykły odnośnik z plakatem, więc nic nie idzie do zewnętrznych serwerów. Po kliknięciu w jego miejsce wchodzi odtwarzacz
+     youtube-nocookie. Adres filmu bierzemy z odnośnika (klient zmieni go w edytorze); bez JS i przy nierozpoznanym adresie działa jak zwykły link. */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-yt]'), function (box) {
+    var link = box.querySelector('a.yt__btn');
+    if (!link) return;
+    link.addEventListener('click', function (e) {
+      var m = /(?:youtu\.be\/|[?&]v=|\/embed\/|\/shorts\/)([\w-]{11})/.exec(link.getAttribute('href') || '');
+      if (!m) return;
+      e.preventDefault();
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + m[1] + '?autoplay=1&rel=0&playsinline=1';
+      f.title = 'Film';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.setAttribute('allowfullscreen', '');
+      box.textContent = '';
+      box.appendChild(f);
+      box.classList.add('is-playing');
+    });
+  });
+
   /* ---------- portfolio podstrony ---------- */
   var section = document.querySelector('[data-portfolio]');
   if (!section) return;

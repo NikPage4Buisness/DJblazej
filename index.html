@@ -56,9 +56,6 @@
         <ul class="menu__list menu__list--l">
           <li><a href="#home" data-nav>Home</a></li>
           <li><a href="#oferta" data-nav>O mnie</a></li>
-        </ul>
-        <a class="menu__logo" href="#home" data-nav aria-label="DJ Błażej Biurkowski, strona główna"><img src="assets/logo-monogram.svg" alt="" width="44" height="54"></a>
-        <ul class="menu__list menu__list--r">
           <li class="has-sub">
             <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="subBar">Oferta<svg class="submenu-toggle__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
             <ul class="submenu" id="subBar">
@@ -67,7 +64,11 @@
               <li><a href="wedding/">Wedding</a></li>
             </ul>
           </li>
+        </ul>
+        <a class="menu__logo" href="#home" data-nav aria-label="DJ Błażej Biurkowski, strona główna"><img src="assets/logo-monogram.svg" alt="" width="44" height="54"></a>
+        <ul class="menu__list menu__list--r">
           <li><a href="#portfolio" data-nav>Portfolio</a></li>
+          <li><a href="referencje-dj-blazej/">Referencje</a></li>
           <li><a href="#kontakt" data-nav>Kontakt</a></li>
         </ul>
       </div>
@@ -102,6 +103,7 @@
             </ul>
           </li>
           <li><a href="#portfolio" data-nav>Portfolio</a></li>
+          <li><a href="referencje-dj-blazej/">Referencje</a></li>
           <li><a href="#kontakt" data-nav>Kontakt</a></li>
         </ul>
       </nav>
@@ -171,6 +173,7 @@
               </ul>
             </li>
             <li><a href="#portfolio" data-nav>Portfolio</a></li>
+            <li><a href="referencje-dj-blazej/">Referencje</a></li>
             <li><a href="#kontakt" data-nav>Kontakt</a></li>
           </ul>
         </nav>
@@ -443,6 +446,7 @@
       </div>
       <footer class="footer">
         <p>ⓒ Błażej Biurkowski 2026. Wszelkie prawa zastrzeżone.</p>
+        <span class="foot-links"><a href="referencje-dj-blazej/">Referencje</a><a href="polityka-prywatnosci-i-plikow-cookies/">Polityka prywatności</a><button class="foot-links__btn" type="button" data-consent-open>Ustawienia cookies</button></span>
         <a class="footer__credit" href="https://www.nikpage.pl/" target="_blank" rel="noopener">
           <span class="footer__credit-label">Projekt i realizacja</span>
           <img src="assets/nikpage-n.webp" width="24" height="24" alt="" loading="lazy" decoding="async">
@@ -495,5 +499,6 @@
 
   <script src="js/gallery-motion.js" defer></script>
   <script src="js/main.js" defer></script>
+  <script src="js/consent.js" defer></script>
 </body>
 </html>

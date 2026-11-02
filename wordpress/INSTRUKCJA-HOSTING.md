@@ -32,13 +32,83 @@ Wynik w `wordpress/dist/`:
 
 1. Rozpakuj `djblazej-hosting.zip` na komputerze. **Wgraj całą zawartość przez FTP do katalogu domeny** (zwykle `public_html`), razem z plikiem
    `.htaccess` (jest ukryty, upewnij się, że program FTP pokazuje ukryte pliki).
-   W katalogu mają się znaleźć: `index.php`, `.htaccess`, `cms/`, `theme/`, `data/`, `uploads/`.
+   W katalogu mają się znaleźć: `index.php`, `.htaccess`, `robots.txt`, `sitemap.xml`, `cms/`, `theme/`, `data/`, `uploads/`.
 2. Otwórz `https://twoja-domena.pl/`. Strona powinna wyglądać tak jak w podglądzie.
 3. Otwórz `https://twoja-domena.pl/admin`. Zobaczysz „Pierwsze uruchomienie”. Wpisz **kod instalacyjny** z pliku `KOD-INSTALACYJNY.txt`,
    wybierz login i hasło (co najmniej 10 znaków) i kliknij „Załóż konto”. Konto zakłada się raz, kod przestaje wtedy działać.
 4. Po założeniu konta strona pokaże się z czerwonym przyciskiem **„Edytuj teksty, zdjęcia i linki”** w lewym dolnym rogu. Tak wygląda codzienna praca klienta.
 
 Przy instalacji w podkatalogu (np. `domena.pl/nowa/`) wgraj całość do tego podkatalogu. Strona sama wykrywa swój adres.
+
+## Sprawdzenie hostingu przed wdrożeniem
+
+Zamiast wersji testowej można sprawdzić hosting jednym plikiem. Przy budowaniu paczki powstaje `wordpress/dist/sprawdz-hosting-<losowe znaki>.php` (poza paczką, nazwa jest za każdym razem inna).
+
+1. Wgraj ten plik do folderu domeny (tam, gdzie ma stanąć strona, np. `domains/djblazej.pl/public_html`).
+2. Otwórz `https://djblazej.pl/sprawdz-hosting-....php` (z tą nazwą). Skrypt sprawdza dokładnie to, czego potrzebuje strona, na tej samej domenie i z tą samą wersją PHP:
+   wersję PHP, wymagane funkcje, GD z zapisem WebP (próbnym obrazem), exif, limity pamięci i wgrywania, zapis plików i blokady, HTTPS oraz to, czy serwer stosuje
+   reguły `.htaccess` (robi próbę na tymczasowym podfolderze, który od razu usuwa).
+3. Skopiuj wynik z dołu strony. Werdykt: **zielony** (wszystko jest), **żółty** (można wdrażać, są uwagi) albo **czerwony** (jest coś do naprawy przed wdrożeniem; przy każdym punkcie jest podane, co zrobić).
+4. Plik **sam się usuwa** po wyświetleniu wyniku (żeby go zostawić, dopisz do adresu `?zostaw=1`). Jeśli serwer nie pozwala zapytać samego siebie, próba `.htaccess` pokaże „nie udało się sprawdzić”: wtedy wystarczy, że po wgraniu strony otworzy się `/admin`.
+   Do adresu można też dopisać `?bez-proby=1`, żeby pominąć próbę `.htaccess`.
+
+Skrypt niczego nie zmienia poza własnym plikiem i tymczasowymi podfolderami (usuwanymi od razu). Nie ma go w `djblazej-hosting.zip`.
+
+## Wdrożenie na domenę, na której działa stara strona (WordPress)
+
+1. **Kopia.** Pobierz na dysk folder starej strony (`domains/<domena>`; w panelu „Archiwizuj” i „Pobierz”) oraz bazę danych WordPressa (phpMyAdmin → Eksport albo kopia baz w panelu). Poczta nie jest w tym folderze i wdrożenie jej nie dotyka.
+2. **Sprawdzenie hostingu** (wyżej), najlepiej ze starą stroną jeszcze na miejscu.
+3. **Przełączenie.** W menedżerze plików, w folderze domeny:
+   - utwórz obok `public_html` nowy folder, np. `stara-strona-wp` (nie wewnątrz `public_html`, bo byłby dostępny z internetu),
+   - przenieś do niego całą zawartość `public_html` **oprócz folderu `.well-known`** (służy do odnawiania certyfikatu SSL), razem ze starym `.htaccess`,
+   - wgraj `djblazej-hosting.zip` do `public_html` i rozpakuj go tam („Extract”), razem z ukrytym `.htaccess`,
+   - od razu otwórz `https://domena.pl/admin` i załóż konto kodem z `KOD-INSTALACYJNY.txt`.
+4. **Po przełączeniu** sprawdź: stronę główną i trzy podstrony, `/admin`, kilka starych adresów (patrz niżej), `http://` i `www` (powinny przekierować na `https://domena.pl`). Jeśli stary `.htaccess` ustawiał wersję PHP, a nowy ją zresetował, wybierz właściwą wersję PHP w panelu.
+5. **Wycofanie** (gdyby coś poszło źle): usuń zawartość `public_html` z wyjątkiem `.well-known` i przenieś z powrotem pliki z `stara-strona-wp`. Stara strona wróci w takim stanie, w jakim była.
+6. Po kilku tygodniach, gdy wszystko działa, folder `stara-strona-wp` i bazę starego WordPressa można usunąć.
+
+## Zgoda na cookies
+
+Przy pierwszej wizycie, chwilę po załadowaniu strony, w rogu pojawia się minimalistyczny pasek z dwoma równorzędnymi przyciskami **Odrzucam** i **Akceptuję** oraz linkiem do polityki prywatności (na telefonie pasek jest na całą szerokość u dołu).
+Działa to na wszystkich sześciu stronach i na zwykłym hostingu, i w WordPressie (plik `js/consent.js`).
+
+- Wybór zapisuje się we własnym cookie `bb_consent` na 12 miesięcy (cookie niezbędne: zapamiętuje ustawienia prywatności). Odwiedzający może zmienić zdanie przyciskiem **„Ustawienia cookies”** w stopce każdej strony.
+- **Dziś strona nie ładuje żadnych opcjonalnych narzędzi** (statystyk, reklam, pikseli), więc odrzucenie niczego nie wyłącza. Pasek jest gotowy na ich dodanie: kod narzędzia wstawia się wtedy tak, żeby ruszał dopiero po zgodzie:
+  `BBConsent.onAccept(function () { ...kod narzędzia... });` (pomocnicze: `BBConsent.accepted()` i `BBConsent.get()`; po każdym wyborze idzie też zdarzenie `bb:consent`).
+- Zalogowany użytkownik edytora nie widzi paska automatycznie (przeszkadzałby w edycji), a w oknie prywatnym i u odwiedzających pokazuje się normalnie.
+- Tekst paska jest w `js/consent.js` (zmienia się w kodzie, nie w edytorze treści).
+- Polityka prywatności (skopiowana ze starej strony) mówi o trzech możliwościach: zaakceptować wszystko, odrzucić wszystko i wybrać kategorie. Pasek daje dwie pierwsze; gdy pojawią się narzędzia opcjonalne, warto dodać wybór kategorii i zaktualizować politykę.
+
+## Strony Referencje i Polityka prywatności
+
+Obie strony są przeniesione ze starej strony i mają ten sam adres co tam, więc nie trzeba ich przekierowywać:
+
+- `/referencje-dj-blazej/`: film (odtwarzacz YouTube ładuje się dopiero po kliknięciu, więc przed kliknięciem nic nie idzie do zewnętrznych serwerów) i 58 opinii w jednej kolumnie.
+  Teksty opinii i podpisy klient poprawia w edytorze jak każdy inny tekst; adres filmu zmienia, klikając w plakat (jak zwykły link, wystarczy adres z youtu.be albo youtube.com).
+  Dodawanie i usuwanie całych opinii nie jest jeszcze w edytorze: robi się to w kodzie (`referencje-dj-blazej/index.html`) i wgrywa aktualizację.
+  Z opinii pominięto jeden dokładny duplikat (Paulina i Krzysztof), a jedna opinia nie ma podpisu, tak jak na starej stronie.
+- `/polityka-prywatnosci-i-plikow-cookies/`: tekst skopiowany bez zmian ze starej strony (stan z 15 lipca 2026 r.), w tym tabela celów przetwarzania, która na telefonie zamienia się w karty.
+  Wszystkie akapity, nagłówki i komórki tabeli można poprawiać w edytorze. **Treść wymaga przeglądu**: opisuje m.in. formularz kontaktowy, narzędzia analityczne i panel zgody na cookies,
+  których nowa strona nie ma (jest tylko poczta, telefon i linki do mediów społecznościowych).
+
+Linki do obu stron są w stopce każdej strony. **Referencje** mają też skrót w menu: na stronie głównej w górnym pasku, w menu w sekcji głównej i w sekcji skrótów
+(górny pasek ma układ 3 + 3: Home, O mnie, Oferta | Portfolio, Referencje, Kontakt), a na podstronach obok „Strona główna”; są też w bloku „Zobacz też” na podstronach oferty.
+Mapa strony (`sitemap.xml`) zawiera obie strony.
+
+## Przekierowania ze starych adresów
+
+Strona nie traci pozycji w Google, jeśli stare adresy kierują (kodem 301) na odpowiedniki w nowej. Lista jest w `wordpress/redirects.mjs` i powstała z map witryny starej strony (10 stron, 18 wpisów, 9 kategorii, 129 tagów):
+
+- strony: `/oferta-weselna/` → `/wedding/`, `/oferta-studniowkowa/` → `/studniowki/`, `/oferta-eventy/` → `/eventy/`, `/portfolio-zdjecia/` i `/portfolio-video/` → `/#portfolio`, `/kontak-dj-blazej/` → `/#kontakt`, `/oferta-2/` → `/#oferta`; strony `/referencje-dj-blazej/` i `/polityka-prywatnosci-i-plikow-cookies/` istnieją w nowym serwisie pod tym samym adresem, więc nie potrzebują przekierowania,
+- wpisy starego bloga: wesela → `/wedding/`, imprezy → `/eventy/`, studniówki → `/studniowki/` (adres `/eventy/` jest taki sam jak nowa strona i działa sam),
+- kategorie i tagi: według tematu (80 tagów → wesele, 23 → eventy, 8 → studniówki, 18 ogólnych → strona główna),
+- stare mapy witryny (`/sitemap_index.xml` itd.) → `/sitemap.xml`; `/sitemap.xml` zostaje tym samym adresem, który stara strona podawała w `robots.txt`, więc Search Console go nie zgubi.
+
+Działa to w `index.php` (nie w `.htaccess`), więc nie zależy od ustawień serwera. Zapytanie z `?utm_...` też jest obsługiwane (zapytanie się nie przenosi). Adresów, których nie ma na liście (np. `/wp-content/uploads/...`, pliki starych zdjęć), nie da się sensownie zastąpić: dostają zwykłe 404.
+Żeby zmienić listę, edytuj `wordpress/redirects.mjs` i zbuduj paczkę ponownie: skrypt budujący sprawdza, że każdy cel istnieje w nowym serwisie.
+
+Do tego paczka przekierowuje wariant domeny z `www` na adres docelowy (`SITE_URL`, domyślnie `https://djblazej.pl`), a `.htaccess` wymusza `https`.
+Po wdrożeniu Google potrzebuje kilku tygodni na przeniesienie pozycji i w tym czasie wahania w wynikach są normalne. W Search Console warto wejść w „Mapy witryn” i podać `sitemap.xml`.
 
 ## Codzienna edycja (dla klienta)
 
@@ -58,6 +128,19 @@ Różnice względem WordPressa:
    więc zmiany klienta (teksty, zdjęcia, galerie, konto) zostają.
 3. Po aktualizacji odśwież stronę z Ctrl+F5. Jeśli w nowej wersji zmieniły się teksty w projekcie, zmiany klienta dla tych tekstów mogą przestać obowiązywać
    (klucz tekstu zależy od jego treści domyślnej), dlatego po wdrożeniu teksty zmienia klient w edytorze, a my zmieniamy kod i wygląd.
+
+## Mapa strony (sitemap.xml) i robots.txt
+
+Paczka ma dwa pliki dla wyszukiwarek, tworzone przy budowaniu: `sitemap.xml` (lista stron do zaindeksowania) i `robots.txt` (wskazuje mapę).
+
+- Adres w mapie to domyślnie `https://djblazej.pl`. Inny (np. z `www`) ustawia się przy budowaniu paczki:
+  `SITE_URL=https://www.djblazej.pl node wordpress/build-standalone.mjs` (w PowerShellu: `$env:SITE_URL='https://www.djblazej.pl'; node wordpress/build-standalone.mjs`).
+  Adres musi być taki, pod jakim strona naprawdę działa (z `www` albo bez, z `https`).
+- Do mapy trafiają tylko strony bez `<meta name="robots" content="noindex">`. Podstrony oznaczone jako szkic (noindex) są pomijane, a skrypt wypisuje je po budowaniu.
+  Po akceptacji treści wystarczy usunąć tę linię z HTML i zbudować paczkę jeszcze raz: podstrona sama pojawi się w mapie.
+- Po wdrożeniu na docelową domenę: w Google Search Console dodaj usługę dla domeny, wejdź w „Mapy witryn” i wpisz `sitemap.xml`.
+- Panel `/admin` ma własny `noindex`, więc nie trafia do wyszukiwarki (nie blokujemy go w `robots.txt`, żeby wyszukiwarka mogła ten znacznik odczytać).
+- Mapa nie ma dat modyfikacji. Strona jest mała i rzadko zmienia adresy, a błędne daty szkodzą bardziej niż ich brak.
 
 ## Kopia zapasowa
 

@@ -3,7 +3,9 @@
  * Strona DJ Błażej Biurkowski na zwykłym hostingu PHP (bez WordPressa), z edycją na stronie.
  *
  * Ten plik obsługuje wszystkie adresy, które nie są istniejącymi plikami (patrz .htaccess):
- *   /, /eventy/, /studniowki/, /wedding/   strony (szablony z theme/)
+ *   /, /eventy/, /studniowki/, /wedding/,
+ *   /referencje-dj-blazej/, /polityka-prywatnosci-i-plikow-cookies/   strony (szablony z theme/)
+ *   stare adresy poprzedniej strony        przekierowanie 301 na odpowiednik (cms/redirect.php, dane z wordpress/redirects.mjs)
  *   /admin                                  konto: logowanie, hasło, historia zmian
  *   /cms-api/...                            zapis zmian z edytora
  * Zdjęcia, style i skrypty (theme/, uploads/) serwer wysyła bezpośrednio.
@@ -12,6 +14,7 @@
 define( 'ABSPATH', __DIR__ . '/' );
 
 require __DIR__ . '/cms/compat.php';
+require __DIR__ . '/cms/redirect.php';
 
 /** Szablony stron: ścieżka => plik szablonu (bez .php) w folderze theme/. */
 function bb_routes() {
@@ -21,6 +24,8 @@ function bb_routes() {
 		'/eventy/'    => 'page-eventy',
 		'/studniowki/' => 'page-studniowki',
 		'/wedding/'   => 'page-wedding',
+		'/referencje-dj-blazej/' => 'page-referencje-dj-blazej',
+		'/polityka-prywatnosci-i-plikow-cookies/' => 'page-polityka-prywatnosci-i-plikow-cookies',
 	);
 }
 
@@ -64,7 +69,16 @@ function bb_not_found() {
 }
 
 function bb_run() {
-	$path = bb_request_path();
+	$path   = bb_request_path();
+	$method = isset( $_SERVER['REQUEST_METHOD'] ) ? strtoupper( (string) $_SERVER['REQUEST_METHOD'] ) : 'GET';
+
+	// drugi wariant domeny (www albo bez www) kierujemy na docelową; tylko zwykłe odczyty (przekierowanie zapisu zgubiłoby dane)
+	if ( ( 'GET' === $method || 'HEAD' === $method ) && 0 !== strpos( $path, '/cms-api/' ) ) {
+		$to = bb_redirect_host( isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '', isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '/' );
+		if ( null !== $to ) {
+			bb_redirect_send( $to );
+		}
+	}
 
 	if ( 0 === strpos( $path, '/cms-api/' ) ) {
 		bb_rest_dispatch( substr( $path, 9 ) );
@@ -83,6 +97,11 @@ function bb_run() {
 	// adres bez ukośnika na końcu (np. /eventy) przekierowujemy na właściwy
 	if ( isset( $routes[ $path . '/' ] ) ) {
 		bb_redirect( home_url( $path . '/' ), 301 );
+	}
+	// stary adres poprzedniej strony (WordPress): 301 na odpowiednik w nowej, żeby zachować pozycje w Google
+	$old = bb_redirect_old( $path );
+	if ( null !== $old ) {
+		bb_redirect_send( home_url( $old ) );
 	}
 	bb_not_found();
 }

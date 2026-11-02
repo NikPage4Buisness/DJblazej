@@ -7,7 +7,9 @@
  *
  * Co robi:
  *  - kopiuje css/, js/ i assets/ (bez assets/source, czyli oryginałów) do motywu,
- *  - z index.html, eventy/, studniowki/ i wedding/ robi szablony PHP (front-page.php, page-eventy.php, page-studniowki.php, page-wedding.php),
+ *  - z index.html, eventy/, studniowki/, wedding/, referencje-dj-blazej/ i polityka-prywatnosci-i-plikow-cookies/ robi szablony PHP
+ *    (front-page.php, page-eventy.php, page-studniowki.php, page-wedding.php, page-referencje-dj-blazej.php, page-polityka-prywatnosci-i-plikow-cookies.php;
+ *    nazwa szablonu = adres strony w WordPressie, więc strona o takim adresie sama dostaje właściwy szablon),
  *    zamieniając ścieżki do zasobów na adres motywu, a linki między stronami na adresy WordPressa,
  *  - etap 2, teksty: znajduje w szablonach teksty do edycji (nagłówki, akapity, elementy list, podpisy, napisy na przyciskach i w linkach),
  *    nadaje im znacznik data-bb="klucz" i zastępuje ich treść wywołaniem bb_e( 'klucz' ); teksty domyślne trafiają do inc/texts.json,
@@ -55,7 +57,7 @@ fs.copyFileSync(path.join(src, 'gallery.php'), path.join(out, 'inc', 'gallery.ph
 /* ---------- 2. rozbiór HTML ---------- */
 const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr']);
 const RAW = new Set(['script', 'style', 'textarea']);
-const CAND = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'li', 'figcaption', 'blockquote', 'dt', 'dd']);
+const CAND = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'li', 'figcaption', 'blockquote', 'dt', 'dd', 'td', 'th']);
 const INLINE_OK = new Set(['em', 'strong', 'b', 'i', 'br', 'span', 'small', 'sup', 'sub', 'mark', 'abbr', 'u', 's']);
 const EXCL_TAGS = new Set(['nav', 'footer', 'button', 'dialog', 'svg', 'noscript', 'template', 'script', 'style', 'head', 'select', 'option', 'form', 'label']);
 /* menu, nagłówek strony, stopka, okno kontaktu, loader, filtry i galeria nie są edytowane jako teksty ani linki;
@@ -280,7 +282,7 @@ function markEditable(html, label) {
         const href = getAttr(child.attrs, 'href');
         if (href && !hasFlag(child.attrs, 'data-lb') && !href.startsWith('#')) {
           let norm = null, page = false, m;
-          if ((m = /^(?:\.\.\/)?(eventy|studniowki|wedding)\/$/.exec(href))) { norm = '/' + m[1] + '/'; page = true; }
+          if ((m = /^(?:\.\.\/)?(eventy|studniowki|wedding|referencje-dj-blazej|polityka-prywatnosci-i-plikow-cookies)\/$/.exec(href))) { norm = '/' + m[1] + '/'; page = true; }
           else if (/^\.\.\/$/.test(href)) { norm = '/'; page = true; }
           else if ((m = /^\.\.\/(#[\w-]+)$/.exec(href))) { norm = '/' + m[1]; page = true; }
           else if (/^(https?:|mailto:|tel:)/i.test(href)) { norm = href; }
@@ -361,7 +363,7 @@ const toPhp = (html) => {
   h = h.replace(/(["'(\s,])(?:\.\.\/)?assets\//g, '$1<?php echo $bb; ?>/assets/');
   h = h.replace(/(href|src)="(?:\.\.\/)?(css|js)\//g, '$1="<?php echo $bb; ?>/$2/');
   /* linki między stronami: adresy WordPressa */
-  h = h.replace(/href="(?:\.\.\/)?(eventy|studniowki|wedding)\/"/g, 'href="<?php echo esc_url( home_url( \'/$1/\' ) ); ?>"');
+  h = h.replace(/href="(?:\.\.\/)?(eventy|studniowki|wedding|referencje-dj-blazej|polityka-prywatnosci-i-plikow-cookies)\/"/g, 'href="<?php echo esc_url( home_url( \'/$1/\' ) ); ?>"');
   h = h.replace(/href="\.\.\/(#[\w-]*)?"/g, (m, hash) => `href="<?php echo esc_url( home_url( '/${hash || ''}' ) ); ?>"`);
   /* teksty, zdjęcia i linki edytowalne */
   h = h.replace(/\{\{BB:([0-9a-f]{10})\}\}/g, "<?php bb_e( '$1' ); ?>");
@@ -377,7 +379,9 @@ const pages = [
   ['index.html', 'front-page.php'],
   ['eventy/index.html', 'page-eventy.php'],
   ['studniowki/index.html', 'page-studniowki.php'],
-  ['wedding/index.html', 'page-wedding.php']
+  ['wedding/index.html', 'page-wedding.php'],
+  ['referencje-dj-blazej/index.html', 'page-referencje-dj-blazej.php'],
+  ['polityka-prywatnosci-i-plikow-cookies/index.html', 'page-polityka-prywatnosci-i-plikow-cookies.php']
 ];
 for (const [file, dst] of pages) {
   const marked = markEditable(fs.readFileSync(path.join(root, file), 'utf8'), dst);
@@ -408,7 +412,8 @@ Text Domain: djblazej
 fs.writeFileSync(path.join(out, 'index.php'), `<?php
 /**
  * Awaryjny szablon (np. gdy nie ma strony o pasującym adresie).
- * Właściwe strony: front-page.php (strona główna), page-eventy.php, page-studniowki.php, page-wedding.php.
+ * Właściwe strony: front-page.php (strona główna), page-eventy.php, page-studniowki.php, page-wedding.php,
+ * page-referencje-dj-blazej.php i page-polityka-prywatnosci-i-plikow-cookies.php.
  */
 ?><!doctype html>
 <html <?php language_attributes(); ?>>
